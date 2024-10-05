@@ -1,0 +1,20 @@
+query Page($handle: String!) {
+  page: metaobject(handle: { handle: $handle, type: "page" }) {
+    ...MenuFragment @mask_disable
+    content: field(key: "content") {
+      value
+    }
+    children: field(key: "sub_pages") {
+      references(first: 10) {
+        nodes {
+          ... on Metaobject {
+            ...MenuFragment @mask_disable
+          }
+        }
+      }
+    }
+    ...PageTopFragment
+    ...SectionsFragment @mask_disable
+    ...SeoFragment
+  }
+}

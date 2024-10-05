@@ -1,0 +1,47 @@
+query Products(
+  $sortKey: ProductCollectionSortKeys = TITLE
+  $reverse: Boolean = false
+  $filters: [ProductFilter!]
+  $first: Int
+) {
+  collection(handle: "frontpage") {
+    products(sortKey: $sortKey, reverse: $reverse, filters: $filters, first: $first) @paginate {
+      nodes {
+        id
+        title
+        handle
+        images(first: 1) {
+          nodes {
+            url
+            altText
+            height
+            width
+          }
+        }
+        ...AuthorsFragment
+        variants(first: 3) {
+          nodes {
+            id
+            price {
+              ...PriceFragment @mask_disable
+            }
+            discontinued: metafield(namespace: "book", key: "discontinued") {
+              value
+            }
+          }
+        }
+      }
+      filters {
+        id
+        label
+        type
+        values {
+          count
+          id
+          input
+          label
+        }
+      }
+    }
+  }
+}
