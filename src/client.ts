@@ -1,14 +1,17 @@
 import { HoudiniClient } from '$houdini'
-import { PUBLIC_SHOPIFY_STOREFRONT_TOKEN, PUBLIC_SHOPIFY_STOREFRONT_URL } from '$env/static/public'
+import {
+  PRIVATE_SHOPIFY_STOREFRONT_TOKEN,
+  PRIVATE_SHOPIFY_STOREFRONT_URL,
+} from '$env/static/private'
 
 const headers = {
   headers: {
-    'X-Shopify-Storefront-Access-Token': 'ff151810f966c1536e2d3b4fd437f38e',
+    'X-Shopify-Storefront-Access-Token': PRIVATE_SHOPIFY_STOREFRONT_TOKEN,
   },
 }
 
 export default new HoudiniClient({
-  url: 'https://argasso.myshopify.com/api/2024-10/graphql',
+  url: PRIVATE_SHOPIFY_STOREFRONT_URL,
   fetchParams() {
     return {
       ...headers,
