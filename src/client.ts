@@ -1,14 +1,14 @@
 import { HoudiniClient } from '$houdini'
-import { SHOPIFY_STOREFRONT_TOKEN, SHOPIFY_STOREFRONT_URL } from '$env/static/private'
+import { PUBLIC_SHOPIFY_STOREFRONT_TOKEN, PUBLIC_SHOPIFY_STOREFRONT_URL } from '$env/static/public'
 
 const headers = {
   headers: {
-    'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN,
+    'X-Shopify-Storefront-Access-Token': PUBLIC_SHOPIFY_STOREFRONT_TOKEN,
   },
 }
 
 export default new HoudiniClient({
-  url: SHOPIFY_STOREFRONT_URL,
+  url: PUBLIC_SHOPIFY_STOREFRONT_URL,
   fetchParams() {
     return {
       ...headers,

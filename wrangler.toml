@@ -69,7 +69,8 @@ pages_build_output_dir = ".svelte-kit/cloudflare"
 ######## PREVIEW environment config ########
 
 # [env.preview.vars]
-# API_KEY = "xyz789"
+# PUBLIC_SHOPIFY_STOREFRONT_URL = "your_url"
+# PUBLIC_SHOPIFY_STOREFRONT_TOKEN = "your_token"
 
 # [[env.preview.kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"
@@ -78,7 +79,8 @@ pages_build_output_dir = ".svelte-kit/cloudflare"
 ######## PRODUCTION environment config ########
 
 # [env.production.vars]
-# API_KEY = "abc123"
+# PUBLIC_SHOPIFY_STOREFRONT_URL = "your_url"
+# PUBLIC_SHOPIFY_STOREFRONT_TOKEN = "your_token"
 
 # [[env.production.kv_namespaces]]
 # binding = "MY_KV_NAMESPACE"
