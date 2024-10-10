@@ -1,41 +1,38 @@
 <script lang="ts">
-  import { fragment, graphql, type SektionBokgalleri } from '$houdini'
+  import { graphql, type SektionBokgalleri$data } from '$houdini'
+  import { onlyProduct, onlyProducts } from '$lib'
   import type { MenuItem } from '$lib/menu'
   import BookCardPromo from '../BookCardPromo.svelte'
   import Section from './Section.svelte'
-  // import Separator from './ui/separator/separator.svelte'
 
   let className = ''
   export { className as class }
-  export let section: SektionBokgalleri
+  export let section: SektionBokgalleri$data
   export let menu: MenuItem | undefined
 
-  $: data = fragment(
-    section,
-    graphql(`
-      fragment SektionBokgalleri on Metaobject {
-        id
-        rubrik: field(key: "rubrik") {
-          value
-        }
-        visa: field(key: "visa_antal") {
-          value
-        }
-        bocker: field(key: "bocker") {
-          references(first: 10) {
-            nodes {
-              ...BookPromo
-            }
+  graphql(`
+    fragment SektionBokgalleri on Metaobject {
+      id
+      rubrik: field(key: "rubrik") {
+        value
+      }
+      visa: field(key: "visa_antal") {
+        value
+      }
+      bocker: field(key: "bocker") {
+        references(first: 10) {
+          nodes {
+            ...BookPromo
           }
         }
       }
-    `),
-  )
+    }
+  `)
 </script>
 
-<Section title={$data.rubrik?.value || ''} level={2} class={className}>
+<Section title={section.rubrik?.value || ''} level={2} class={className}>
   <div class="flex flex-col justify-stretch md:flex-row">
-    {#each $data.bocker?.references?.nodes ?? [] as book, index}
+    {#each onlyProducts(section.bocker?.references?.nodes) ?? [] as book, index}
       {#if index > 0}
         <div class="hidden self-stretch px-8 md:flex">
           <!-- <Separator orientation="vertical" /> -->

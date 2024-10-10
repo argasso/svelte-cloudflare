@@ -1,20 +1,17 @@
 <script lang="ts">
-  import { fragment, graphql, type PriceFragment } from '$houdini'
+  import { fragment, graphql, type PriceFragment$data } from '$houdini'
   import { formatPrice } from '$lib'
 
   let className = ''
   export { className as class }
-  export let price: PriceFragment
+  export let price: PriceFragment$data
 
-  $: data = fragment(
-    price,
-    graphql(`
-      fragment PriceFragment on MoneyV2 {
-        amount
-        currencyCode
-      }
-    `),
-  )
+  graphql(`
+    fragment PriceFragment on MoneyV2 {
+      amount
+      currencyCode
+    }
+  `)
 </script>
 
-<span class={className}>{formatPrice($data)}</span>
+<span class={className}>{formatPrice(price)}</span>

@@ -10,8 +10,8 @@
   $: menu = makeMenu(MainMenu)
 </script>
 
-<!-- <section class="gradient">
-  <Hero2 title={Page.title?.value} sections={Page} />
-</section> -->
+<section class="gradient">
+  <Hero2 title={Page.title?.value} page={Page} />
+</section>
 <Wave class="gradient" />
-<!-- <Sections sections={Page} {menu} /> -->
+<Sections page={Page} {menu} />

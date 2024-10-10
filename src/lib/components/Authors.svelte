@@ -1,35 +1,33 @@
 <script lang="ts">
-  import { fragment, graphql, type AuthorsFragment } from '$houdini'
+  import { graphql, type AuthorsFragment$data } from '$houdini'
   import { authorUrl, onlyMetaobjects } from '$lib'
   // import Link from './Link.svelte'
 
   let className = ''
   export { className as class }
-  export let book: AuthorsFragment
+  export let book: AuthorsFragment$data
   export let one = false
 
-  $: data = fragment(
-    book,
-    graphql(`
-      fragment AuthorsFragment on Product {
-        authors: metafield(namespace: "custom", key: "authors") {
-          references(first: 3) {
-            nodes {
-              ... on Metaobject {
-                id
-                handle
-                name: field(key: "name") {
-                  value
-                }
+  $: authors = onlyMetaobjects(book.authors?.references?.nodes)
+  $: numAuthors = authors?.length ?? 0
+
+  graphql(`
+    fragment AuthorsFragment on Product {
+      authors: metafield(namespace: "custom", key: "authors") {
+        references(first: 3) {
+          nodes {
+            ... on Metaobject {
+              id
+              handle
+              name: field(key: "name") {
+                value
               }
             }
           }
         }
       }
-    `),
-  )
-  $: authors = onlyMetaobjects($data.authors?.references?.nodes)
-  $: numAuthors = authors?.length ?? 0
+    }
+  `)
 </script>
 
 {#if numAuthors > 0}

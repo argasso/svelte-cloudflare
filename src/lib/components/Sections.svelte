@@ -1,35 +1,32 @@
 <script lang="ts">
-  import { fragment, graphql, type SectionsFragment } from '$houdini'
+  import { fragment, graphql, type SectionsFragment, type SectionsFragment$data } from '$houdini'
   import { onlyMetaobjects } from '$lib'
   import type { MenuItem } from '$lib/menu'
   import SectionNews from './section/SectionNews.svelte'
   import SektionBokgalleri from './section/SektionBokgalleri.svelte'
 
-  export let sections: SectionsFragment
+  export let page: SectionsFragment$data
   export let menu: MenuItem | undefined
 
-  $: data = fragment(
-    sections,
-    graphql(`
-      fragment SectionsFragment on Metaobject {
-        sections: field(key: "sektioner") {
-          references(first: 10) {
-            nodes {
-              ... on Metaobject {
-                type
-              }
-              ...SektionBokgalleri
-              ...SectionNewsFragment
+  graphql(`
+    fragment SectionsFragment on Metaobject {
+      sections: field(key: "sektioner") {
+        references(first: 10) {
+          nodes {
+            ... on Metaobject {
+              type
             }
+            ...SektionBokgalleri
+            ...SectionNewsFragment
           }
         }
       }
-    `),
-  )
+    }
+  `)
 </script>
 
-{#if $data?.sections?.references?.nodes}
-  {#each onlyMetaobjects($data.sections?.references?.nodes) as section, index}
+{#if page?.sections?.references?.nodes}
+  {#each onlyMetaobjects(page.sections?.references?.nodes) as section, index}
     {#if section.type === 'sektion_slides'}
       {section.type}
     {/if}

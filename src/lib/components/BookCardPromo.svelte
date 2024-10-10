@@ -1,73 +1,71 @@
 <script lang="ts">
-  import { fragment, graphql, type BookPromo } from '$houdini'
+  import { type BookPromo$data, graphql } from '$houdini'
   import { bookUrl, isNonNil, onlyMetaobjects } from '$lib'
   import { flatten, type MenuItem } from '$lib/menu'
   import Authors from './Authors.svelte'
   import BookImage from './image/BookImage.svelte'
   import Pill from './Pill.svelte'
 
-  export let book: BookPromo
+  export let book: BookPromo$data
   export let menu: MenuItem | undefined
 
-  $: data = fragment(
-    book,
-    graphql(`
-      fragment BookPromo on Product {
-        id
-        title
-        handle
-        descriptionHtml
-        images(first: 1) {
-          nodes {
-            url
-            altText
-            height
-            width
-          }
+  $: variant = book?.variants.nodes?.[0]
+  $: menuItems = flatten(menu)
+  $: categories = onlyMetaobjects(variant.categories?.references?.nodes)
+    .map((c) => menuItems.find((i) => i.id === c.id))
+    .filter((c) => c?.parent?.href !== '/')
+    .filter(isNonNil)
+
+  graphql(`
+    fragment BookPromo on Product {
+      id
+      title
+      handle
+      descriptionHtml
+      images(first: 1) {
+        nodes {
+          url
+          altText
+          height
+          width
         }
-        ...AuthorsFragment
-        variants(first: 1) {
-          nodes {
-            price {
-              ...PriceFragment
-            }
-            categories: metafield(namespace: "book", key: "category") {
-              references(first: 5) {
-                nodes {
-                  ... on Metaobject {
-                    id
-                  }
+      }
+      ...AuthorsFragment
+      variants(first: 1) {
+        nodes {
+          price {
+            ...PriceFragment
+          }
+          categories: metafield(namespace: "book", key: "category") {
+            references(first: 5) {
+              nodes {
+                ... on Metaobject {
+                  id
                 }
               }
             }
           }
         }
       }
-    `),
-  )
-  $: variant = $data?.variants.nodes?.[0]
-  $: menuItems = flatten(menu)
-  $: categories = onlyMetaobjects(variant.categories?.references?.nodes)
-    .map((c) => menuItems.find((i) => i.id === c.id))
-    .filter((c) => c?.parent?.href !== '/')
-    .filter(isNonNil)
+    }
+  `)
 </script>
 
 <div class="flex flex-row items-start gap-6">
-  <BookImage href={bookUrl($data.handle)} image={$data.images.nodes[0]} width={128} />
+  <BookImage href={bookUrl(book.handle)} image={book.images.nodes[0]} width={128} />
   <div class="flex-0 flex flex-col items-start justify-center">
     <p class="my-0 font-serif text-xs">
-      <Authors book={$data}></Authors>
+      <Authors {book}></Authors>
     </p>
 
     <h3 class="my-0 text-lg font-semibold leading-6">
-      <a class="text-foreground" href={bookUrl($data.handle)}>{$data.title}</a>
+      <a class="text-foreground" href={bookUrl(book.handle)}>{book.title}</a>
     </h3>
 
     <p class="my-3 line-clamp-5 text-sm leading-normal text-muted-foreground">
-      {@html $data.descriptionHtml}
+      {@html book.descriptionHtml}
     </p>
-    <!-- {#if $data?.variants?.nodes?.[0]}
+    <!-- {#if book?.variants?.nodes?.[0]}
       <Price price={variant?.price} />
     {/if} -->
     {#if categories}

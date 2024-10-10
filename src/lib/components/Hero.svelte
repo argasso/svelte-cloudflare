@@ -1,34 +1,33 @@
 <script lang="ts">
-  import { fragment, graphql, type PageTopFragment } from '$houdini'
+  import { graphql, type HeroFragment$data } from '$houdini'
   import { onlyMetaobject, onlyMetaobjects } from '$lib'
 
   export let title: string | null | undefined = 'Upplev böcker från Argasso bokförlag'
   export let intro: string = 'Lättare att läsa för barn och ungdomar'
-  export let sections: PageTopFragment
+  export let page: HeroFragment$data | null
 
   $: titleParts = title?.split('Argasso') ?? []
+  $: hero = onlyMetaobject(page?.hero?.reference)
+  $: slides = onlyMetaobjects(hero?.slides?.references?.nodes)
 
-  $: data = fragment(
-    sections,
-    graphql(`
-      fragment PageTopFragment on Metaobject {
-        page_top: field(key: "page_top") {
-          reference {
-            ... on Metaobject {
-              type
-              slides: field(key: "slides") {
-                references(first: 10) {
-                  nodes {
-                    ... on Metaobject {
-                      type
-                      title: field(key: "title") {
-                        value
-                      }
-                      text: field(key: "text") {
-                        value
-                      }
-                      ...BookStackFragment
+  graphql(`
+    fragment HeroFragment on Metaobject {
+      hero: field(key: "page_top") {
+        reference {
+          ... on Metaobject {
+            type
+            slides: field(key: "slides") {
+              references(first: 10) {
+                nodes {
+                  ... on Metaobject {
+                    type
+                    title: field(key: "title") {
+                      value
                     }
+                    text: field(key: "text") {
+                      value
+                    }
+                    ...BookStackFragment
                   }
                 }
               }
@@ -36,11 +35,8 @@
           }
         }
       }
-    `),
-  )
-
-  $: page_top = onlyMetaobject($data.page_top?.reference)
-  $: slides = onlyMetaobjects(page_top?.slides?.references?.nodes)
+    }
+  `)
 </script>
 
 <div class="text-white">

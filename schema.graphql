@@ -10164,7 +10164,7 @@ type StoreAvailabilityEdge {
 }
 
 """
-An auto-generated type for paginating through a list of Strings.
+An auto-generated type for paginating through multiple Strings.
 
 """
 type StringConnection {
