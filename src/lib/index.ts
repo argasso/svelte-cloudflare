@@ -49,6 +49,33 @@ export function notEmpty<TValue>(value: TValue | null | undefined): value is TVa
   return value !== null && value !== undefined
 }
 
+const months = [
+  'januari',
+  'februari',
+  'mars',
+  'april',
+  'maj',
+  'juni',
+  'juli',
+  'augusti',
+  'september',
+  'oktober',
+  'november',
+  'december',
+]
+export function publishMonth(date: string) {
+  const d = new Date(date)
+  const year = d.getFullYear()
+  const month = months[d.getMonth()]
+  return `${month} ${year}`
+}
+
+export function parseJSON(input: string | null) {
+  if (input) {
+    return JSON.parse(input)
+  }
+}
+
 export function formatPrice(price: { amount: string; currencyCode: string }) {
   const formattedAmount = parseFloat(price.amount).toFixed(2).replace('.00', '')
   switch (price.currencyCode) {

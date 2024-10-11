@@ -2,7 +2,7 @@
   import { browser } from '$app/environment'
   import Footer from '$lib/components/Footer.svelte'
   // import LightSwitch from '$lib/components/LightSwitch.svelte'
-  // import MobileNav from '$lib/components/MobileNav.svelte'
+  import MobileNav from '$lib/components/MobileNav.svelte'
   import NavLink from '$lib/components/NavLink.svelte'
   // import NavMenuMega from '$lib/components/NavMenuMega.svelte'
   import Logo from '$lib/components/logo/Logo.svelte'
@@ -18,6 +18,7 @@
   import '../app.css'
   import NavMenuMega from '$lib/components/NavMenuMega.svelte'
   import { Drawer } from 'vaul-svelte'
+  import { Toaster } from 'svelte-sonner'
   export let data
 
   let headerHeight = 0
@@ -26,10 +27,11 @@
   let top = 0
   let headerEl: HTMLElement
 
-  $: ({ MainMenu } = data)
-  $: menu = makeMenu(MainMenu)
-  $: menuItems = menu?.children ?? []
+  $: ({ mainMenu } = data)
+  $: menuItems = mainMenu?.children ?? []
 </script>
+
+<Toaster />
 
 <div data-vaul-drawer-wrapper class="flex h-dvh flex-col">
   <header
@@ -40,17 +42,15 @@
   >
     <div class="container flex h-[var(--header-height)] justify-between">
       <nav class="flex items-stretch gap-4">
-        {#if menu}
+        {#if mainMenu}
           <div class="flex items-center md:hidden">
-            <!-- <MobileNav {menu} /> -->
+            <MobileNav menu={mainMenu} />
           </div>
         {/if}
         <NavLink href="/" exact={true}>
           <Logo class="h-10 w-28" />
         </NavLink>
-        <div class="hidden md:flex">
-          <NavMenuMega {menuItems}></NavMenuMega>
-        </div>
+        <NavMenuMega class="hidden md:flex" {menuItems}></NavMenuMega>
       </nav>
       <nav class="flex shrink-0 items-center gap-0">
         <!-- <ShopifySearch />

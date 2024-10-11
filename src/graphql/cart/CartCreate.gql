@@ -1,0 +1,10 @@
+mutation CartCreate($lineItems: [CartLineInput!]) {
+  cartCreate(input: { lines: $lineItems }) {
+    userErrors {
+      ...CartUserErrorFragment @mask_disable
+    }
+    cart {
+      ...CartFragment @mask_disable
+    }
+  }
+}

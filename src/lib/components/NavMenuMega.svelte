@@ -2,20 +2,23 @@
   import { page } from '$app/stores'
   import type { MenuItem } from '$lib/menu'
   import NavMenuMegaItem from './NavMenuMegaItem.svelte'
+  import { cn } from '$lib/utils.js'
 
+  let className = ''
+  export { className as class }
   export let menuItems: MenuItem[]
   export let exact = false
 
-  $: megaItems = menuItems.map((i) => ({ ...i, active: isActive(i) }))
-
-  function isActive(menuItem: MenuItem) {
-    return $page.url.pathname && menuItem.href && exact
-      ? $page.url.pathname === menuItem.href
-      : $page.url.pathname.includes(menuItem.href)
-  }
+  $: megaItems = menuItems.map((menuItem) => {
+    const active =
+      $page.url.pathname && menuItem.href && exact
+        ? $page.url.pathname === menuItem.href
+        : $page.url.pathname.includes(menuItem.href)
+    return { ...menuItem, active }
+  })
 </script>
 
-<div class="mega-container gap-4">
+<div class={cn('mega-container', className)}>
   {#each megaItems as { active, href, name, children }}
     <div class="mega-item">
       <a class="mega-item-link" class:active role="menu" {href}>
@@ -49,6 +52,7 @@
   .mega-container {
     pointer-events: none;
     display: flex;
+    gap: 1rem;
   }
 
   .mega-item {

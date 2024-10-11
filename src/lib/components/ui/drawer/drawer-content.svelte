@@ -2,8 +2,8 @@
   import { Drawer as DrawerPrimitive, type DrawerDirection } from 'vaul-svelte'
   import DrawerOverlay from './drawer-overlay.svelte'
   import { cn } from '$lib/utils.js'
-  import Button from '../button/button.svelte'
-  import { Cross2 } from 'svelte-radix'
+  import { Button } from '$lib/components/ui/button'
+  import Icons from '$lib/components/Icons.svelte'
 
   type $$Props = DrawerPrimitive.ContentProps & {
     direction?: DrawerDirection
@@ -67,7 +67,7 @@
             direction === 'right' ? 'right-5 top-2.5' : '',
             direction === 'left' ? 'left-5' : 'top-2.5',
           )}
-          ><Cross2 />
+          ><Icons type="close" />
           <span class="sr-only">Close</span>
         </Button>
       </DrawerPrimitive.Close>
