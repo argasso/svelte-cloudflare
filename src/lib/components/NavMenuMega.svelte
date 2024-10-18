@@ -18,7 +18,7 @@
   })
 </script>
 
-<div class={cn('mega-container', className)}>
+<div class="mega-container {className}">
   {#each megaItems as { active, href, name, children }}
     <div class="mega-item">
       <a class="mega-item-link" class:active role="menu" {href}>

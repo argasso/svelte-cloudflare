@@ -4,7 +4,7 @@
 
   let className = ''
   export { className as class }
-  export let price: PriceFragment$data
+  export let price: PriceFragment$data | undefined
 
   graphql(`
     fragment PriceFragment on MoneyV2 {
@@ -14,4 +14,4 @@
   `)
 </script>
 
-<span class={className}>{formatPrice(price)}</span>
+<span class={className}>{price ? formatPrice(price) : '-'}</span>

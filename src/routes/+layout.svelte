@@ -1,24 +1,21 @@
 <script lang="ts">
   import { browser } from '$app/environment'
   import Footer from '$lib/components/Footer.svelte'
-  // import LightSwitch from '$lib/components/LightSwitch.svelte'
+  import LightSwitch from '$lib/components/LightSwitch.svelte'
   import MobileNav from '$lib/components/MobileNav.svelte'
   import NavLink from '$lib/components/NavLink.svelte'
-  // import NavMenuMega from '$lib/components/NavMenuMega.svelte'
-  import Logo from '$lib/components/logo/Logo.svelte'
-  // import Cart from '$lib/components/shopify/Cart.svelte'
-  // import ShopifySearch from '$lib/components/shopify/ShopifySearch.svelte'
-  // import { Toaster } from '$lib/components/ui/sonner'
-  import { makeMenu } from '$lib/menu'
-  // import { initiateCart, refreshCart } from '$lib/shopify'
-  // import { isCartOpen, noScroll } from '$lib/stores/store'
-  // import { ModeWatcher } from 'mode-watcher'
-  import { onMount } from 'svelte'
-  // import '../app.pcss'
-  import '../app.css'
   import NavMenuMega from '$lib/components/NavMenuMega.svelte'
-  import { Drawer } from 'vaul-svelte'
+  import Logo from '$lib/components/logo/Logo.svelte'
+  import Cart from '$lib/components/Cart.svelte'
+  // import ShopifySearch from '$lib/components/shopify/ShopifySearch.svelte'
   import { Toaster } from 'svelte-sonner'
+  import { initiateCart, refreshCart } from '$lib/shopify'
+  import { getCart, isCartOpen, noScroll } from '$lib/stores/store'
+  import { ModeWatcher } from 'mode-watcher'
+  import { onMount } from 'svelte'
+
+  import '../app.css'
+
   export let data
 
   let headerHeight = 0
@@ -27,11 +24,24 @@
   let top = 0
   let headerEl: HTMLElement
 
-  $: ({ mainMenu } = data)
-  $: menuItems = mainMenu?.children ?? []
-</script>
+  onMount(async () => {
+    getCart()
+    if (typeof window !== 'undefined') {
+      document.addEventListener('keydown', (e) => {
+        let keyCode = e.keyCode
+        if (keyCode === 27) {
+          $isCartOpen = false
+        }
+      })
+    }
+    // For header scrolling
+    headerHeight = headerEl.clientHeight
+    prevY = headerEl.offsetTop
+  })
 
-<Toaster />
+  $: ({ menu } = data)
+  $: menuItems = menu?.children ?? []
+</script>
 
 <div data-vaul-drawer-wrapper class="flex h-dvh flex-col">
   <header
@@ -42,20 +52,22 @@
   >
     <div class="container flex h-[var(--header-height)] justify-between">
       <nav class="flex items-stretch gap-4">
-        {#if mainMenu}
+        {#if menu}
           <div class="flex items-center md:hidden">
-            <MobileNav menu={mainMenu} />
+            <MobileNav {menu} />
           </div>
         {/if}
         <NavLink href="/" exact={true}>
           <Logo class="h-10 w-28" />
         </NavLink>
-        <NavMenuMega class="hidden md:flex" {menuItems}></NavMenuMega>
+        <div class="hidden md:flex">
+          <NavMenuMega {menuItems}></NavMenuMega>
+        </div>
       </nav>
       <nav class="flex shrink-0 items-center gap-0">
-        <!-- <ShopifySearch />
+        <!-- <ShopifySearch />-->
         <LightSwitch />
-        <Cart /> -->
+        <Cart />
       </nav>
     </div>
   </header>
@@ -66,3 +78,7 @@
 
   <Footer />
 </div>
+
+<Toaster />
+
+<ModeWatcher />

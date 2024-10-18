@@ -8,6 +8,10 @@ declare global {
       ctx: ExecutionContext
       caches: CacheStorage & { default: Cache }
     }
+    interface Error {
+      message: string
+      fields?: Record<string, any>
+    }
   }
 }
 

@@ -6,7 +6,9 @@
   import Price from './Price.svelte'
   import Icons from '$lib/components/Icons.svelte'
   import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
-  import Button from '$lib/components/Button.svelte'
+  import { enhance } from '$app/forms'
+  import { Button } from './ui/button'
+  import BuyButton from './BuyButton.svelte'
 
   type BookThumb = NonNullable<Products$result['collection']>['products']['nodes'][number]
   export let bookThumb: BookThumb
@@ -35,22 +37,7 @@
         Boken har utgått
       </div>
     {:else}
-      <Button
-        on:click={addProduct}
-        aria-label="Lägg i varukorg"
-        variant="buy"
-        size="icon"
-        class="group col-start-1 row-start-1 -mb-3 -mr-4  items-center self-end justify-self-end hover:w-auto hover:bg-primary focus:w-auto focus:bg-primary"
-      >
-        <div class="hidden flex-1 whitespace-nowrap px-2 group-hover:block group-focus:block">
-          Lägg i varukorg
-        </div>
-        {#if $addToCartLoading === variantId}
-          <Icons class="flex-0 h-5 w-5" type="loading" />
-        {:else}
-          <Icons class="flex-0 h-5 w-5" type="cart-add" />
-        {/if}
-      </Button>
+      <BuyButton {variantId} />
     {/if}
   </div>
   <Price {price} class="text-xs" />

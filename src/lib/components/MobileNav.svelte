@@ -7,15 +7,16 @@
   import Icons from './Icons.svelte'
 
   export let menu: MenuItem
+  const direction = 'left'
 </script>
 
-<Drawer.Root shouldScaleBackground={false} direction="left">
+<Drawer.Root shouldScaleBackground={true} {direction}>
   <Drawer.Trigger asChild let:builder>
     <Button builders={[builder]} variant="header" size="icon">
       <Icons type="menu" />
     </Button>
   </Drawer.Trigger>
-  <Drawer.Content direction="left">
+  <Drawer.Content {direction}>
     <div class="flex h-full flex-col">
       <Drawer.Header class="flex-0 h-14 w-full items-center border-b p-0 sm:text-center">
         <h2 class="m-0 text-lg font-semibold">Meny</h2>

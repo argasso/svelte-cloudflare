@@ -11,7 +11,9 @@ export async function load(event) {
     throw error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
   }
 
-  const mainMenu = makeMenu(response.data?.menu)
+  const menu = makeMenu(response.data?.menu)
 
-  return { mainMenu }
+  return {
+    menu,
+  }
 }
