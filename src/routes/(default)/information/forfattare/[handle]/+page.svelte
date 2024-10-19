@@ -4,18 +4,17 @@
   import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
   import { convertSchemaToHtml } from '$lib/richtext/shopifyRichText'
   import BookCard from '$lib/components/BookCard.svelte'
+  import Breadcrumbs from '$lib/components/Breadcrumbs.svelte'
 
   export let data
 
-  $: ({ author, books } = data)
+  $: ({ author, books, crumbs } = data)
   $: html = author?.description?.value
     ? convertSchemaToHtml(JSON.parse(author?.description?.value))
     : undefined
 </script>
 
 <div class="container mt-10">
-  <!-- <Breadcrumb crumbs={breadcrumbs} /> -->
-
   <article>
     <div class="flex flex-col items-start gap-20 md:flex-row xl:pr-64">
       <div class="flex-1">
@@ -37,8 +36,10 @@
       </div>
     </div>
   </article>
+</div>
+<div class="bg-muted">
   {#if books.length > 0}
-    <section>
+    <section class="container mt-10 pt-10">
       <h3>Böcker av {author?.title?.value}</h3>
       <div
         class="grid grid-cols-2 justify-items-start gap-x-3 gap-y-10 py-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"

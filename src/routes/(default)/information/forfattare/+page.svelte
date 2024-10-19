@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { authorUrl, onlyMediaImages } from '$lib'
-  import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
+  import { authorUrl } from '$lib'
 
   export let data
 
@@ -28,11 +27,11 @@
   <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-6">
     {#each authors.entries() as [key, value]}
       <div>
-        <h3>{key}</h3>
+        <h2>{key}</h2>
         <hr />
         <div class="mt-2">
           {#each value as author}
-            <p class="m-0">
+            <p class="my-2">
               <a href={authorUrl(author.handle)}>{author.name?.value}</a>
             </p>
           {/each}

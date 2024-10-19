@@ -1,6 +1,6 @@
 import { CartCreateStore, CartLinesAddStore, CartLinesUpdateStore, CartStore } from '$houdini'
 import { error, type Action, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit'
-import type { SubmitFunction } from '../routes/cart/$types'
+import type { SubmitFunction } from '../routes/(default)/cart/$types'
 import { cart } from './stores/store'
 import { toast } from 'svelte-sonner'
 import { goto, invalidateAll } from '$app/navigation'
@@ -115,7 +115,7 @@ export const cartUpdate: Action = async (event) => {
   )
 
   if (data?.cartLinesUpdate && !errors) {
-    const { cart, userErrors } = data?.cartLinesUpdate
+    const { cart, userErrors } = data.cartLinesUpdate
     const merchandise = cart?.lines.edges.find((l) => l.node.id === lineId)?.node.merchandise
     return {
       cart,

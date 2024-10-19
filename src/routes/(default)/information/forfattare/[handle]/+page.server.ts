@@ -1,7 +1,5 @@
-import { AuthorStore, load_Author, load_Products, ProductsStore } from '$houdini'
-import { cartAdd, cartUpdate } from '$lib/cartService'
+import { AuthorStore, ProductsStore } from '$houdini'
 import { error } from '@sveltejs/kit'
-import { get } from 'svelte/store'
 
 export async function load(event) {
   const { handle } = event.params

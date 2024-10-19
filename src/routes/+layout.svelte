@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { browser } from '$app/environment'
+  // import { browser } from '$app/environment'
   import Footer from '$lib/components/Footer.svelte'
   import LightSwitch from '$lib/components/LightSwitch.svelte'
   import MobileNav from '$lib/components/MobileNav.svelte'
@@ -9,7 +9,7 @@
   import Cart from '$lib/components/Cart.svelte'
   // import ShopifySearch from '$lib/components/shopify/ShopifySearch.svelte'
   import { Toaster } from 'svelte-sonner'
-  import { initiateCart, refreshCart } from '$lib/shopify'
+  // import { initiateCart, refreshCart } from '$lib/shopify'
   import { getCart, isCartOpen, noScroll } from '$lib/stores/store'
   import { ModeWatcher } from 'mode-watcher'
   import { onMount } from 'svelte'
@@ -26,14 +26,6 @@
 
   onMount(async () => {
     getCart()
-    if (typeof window !== 'undefined') {
-      document.addEventListener('keydown', (e) => {
-        let keyCode = e.keyCode
-        if (keyCode === 27) {
-          $isCartOpen = false
-        }
-      })
-    }
     // For header scrolling
     headerHeight = headerEl.clientHeight
     prevY = headerEl.offsetTop

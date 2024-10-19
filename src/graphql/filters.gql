@@ -1,0 +1,17 @@
+query Filters @blocking @cache(policy: NetworkOnly) {
+  filters: collection(handle: "frontpage") {
+    products(first: 0) {
+      filters {
+        id
+        label
+        type
+        values {
+          count
+          id
+          input
+          label
+        }
+      }
+    }
+  }
+}
