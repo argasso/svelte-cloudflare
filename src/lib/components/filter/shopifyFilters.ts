@@ -1,13 +1,15 @@
-import type { Products, Products$result } from '$houdini'
 import { isNonNil } from '$lib'
 import { flatten, type MenuItem } from '$lib/menu'
+import type { ResultOf, VariablesOf } from '../../../graphql'
+import type { TFilterQuery } from '../../../routes/+layout.server'
+import type { TProductsQuery } from '../ProductsGrid.svelte'
 
 export type Filter = NonNullable<
-  NonNullable<Products$result>['collection']
+  ResultOf<TFilterQuery>['collection']
 >['products']['filters'][number]
 
-type ProductFilter = NonNullable<Products['input']['filters']>[number]
-type SortKey = NonNullable<Products['input']['sortKey']>
+type ProductFilter = NonNullable<VariablesOf<TProductsQuery>['filters']>[number]
+type SortKey = NonNullable<VariablesOf<TProductsQuery>['sortKey']>
 type SortOption = { label: string; value: string; sortKey: SortKey; reverse: boolean }
 
 export const defaultSortKey: SortOption = {

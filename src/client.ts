@@ -1,19 +1,25 @@
-import { HoudiniClient } from '$houdini'
+import { clientAddress } from './hooks.server'
 // import { PUBLIC_SHOPIFY_STOREFRONT_TOKEN, PUBLIC_SHOPIFY_STOREFRONT_URL } from '$env/static/public'
+import { cacheExchange, Client, fetchExchange, mapExchange } from '@urql/core'
 
-const headers = {
-  headers: {
-    // 'X-Shopify-Storefront-Access-Token': PUBLIC_SHOPIFY_STOREFRONT_TOKEN,
-    'X-Shopify-Storefront-Access-Token': 'ff151810f966c1536e2d3b4fd437f38e',
+const logExchange = mapExchange({
+  onOperation(operation) {
+    console.log('logExchange onOperation context', operation.context.meta?.cacheOutcome)
   },
-}
+  onResult(result) {
+    console.log('logExchange onResult meta', result.operation.context.meta)
+  },
+})
 
-export default new HoudiniClient({
-  // url: PUBLIC_SHOPIFY_STOREFRONT_URL,
+export const client = new Client({
   url: 'https://argasso.myshopify.com/api/2024-10/graphql',
-  fetchParams() {
+  exchanges: [logExchange, cacheExchange, fetchExchange],
+  fetchOptions: () => {
     return {
-      ...headers,
+      headers: {
+        'X-Shopify-Storefront-Access-Token': 'ff151810f966c1536e2d3b4fd437f38e',
+        'Shopify-Storefront-Buyer-IP': clientAddress,
+      },
     }
   },
 })

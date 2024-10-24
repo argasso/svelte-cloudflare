@@ -1,3 +1,5 @@
+import type { introspection_types } from '../graphql-env'
+
 // place files you want to import through the `$lib` alias in this folder.
 const BOOK_URL = '/bok'
 const BOOKS_URL = '/bocker'
@@ -15,38 +17,21 @@ export function authorUrl(handle: string) {
   return `${AUTHORS_URL}/${handle}`
 }
 
-export function onlyProducts<T extends { __typename: string }>(nodes: T[] | null | undefined) {
-  return (nodes ?? []).filter(
-    (e): e is Extract<T, { __typename: 'Product' }> => e.__typename === 'Product',
-  )
-}
+type Typename = introspection_types['MetafieldReference']['possibleTypes']
 
-export function onlyMetaobjects<T extends { __typename: string }>(nodes: T[] | null | undefined) {
-  return (nodes ?? []).filter(
-    (e): e is Extract<T, { __typename: 'Metaobject' }> => e.__typename === 'Metaobject',
-  )
-}
+export const isType =
+  <T extends Typename>(typename: T) =>
+  <N extends { __typename?: Typename }>(
+    node: N | null | undefined,
+  ): node is Extract<N, { __typename?: T }> => {
+    return node?.__typename === typename
+  }
 
-export function onlyMediaImages<T extends { __typename: string }>(nodes: T[] | null | undefined) {
-  return (nodes ?? []).filter(
-    (e): e is Extract<T, { __typename: 'MediaImage' }> => e.__typename === 'MediaImage',
-  )
-}
-
-export function onlyProduct<T extends { __typename: string }>(object: T | null | undefined) {
-  return object ? onlyProducts([object]).at(0) : undefined
-}
-
-export function onlyMetaobject<T extends { __typename: string }>(object: T | null | undefined) {
-  return object ? onlyMetaobjects([object]).at(0) : undefined
-}
-
-export function onlyMediaImage<T extends { __typename: string }>(object: T | null | undefined) {
-  return object ? onlyMediaImages([object]).at(0) : undefined
-}
-
-export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
-  return value !== null && value !== undefined
+export function getByType<T extends Typename, N extends { __typename?: Typename }>(
+  typename: T,
+  node: N | null | undefined,
+) {
+  return (isType(typename)(node) ? node : undefined) as Extract<N, { __typename?: T }> | undefined
 }
 
 const months = [

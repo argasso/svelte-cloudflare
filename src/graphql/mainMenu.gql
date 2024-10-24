@@ -1,4 +1,4 @@
-query MainMenu {
+query MainMenu @blocking @cache(policy: CacheOrNetwork) {
   menu: metaobject(handle: { handle: "startsida", type: "page" }) {
     ...MenuFragment @mask_disable
     children: field(key: "sub_pages") {

@@ -1,38 +1,45 @@
-<script lang="ts">
-  import { graphql, type SektionBokgalleri$data } from '$houdini'
-  import { onlyProduct, onlyProducts } from '$lib'
-  import type { MenuItem } from '$lib/menu'
-  import BookCardPromo from '../BookCardPromo.svelte'
-  import Section from './Section.svelte'
-
-  let className = ''
-  export { className as class }
-  export let section: SektionBokgalleri$data
-  export let menu: MenuItem | undefined
-
-  graphql(`
-    fragment SektionBokgalleri on Metaobject {
-      id
-      rubrik: field(key: "rubrik") {
-        value
-      }
-      visa: field(key: "visa_antal") {
-        value
-      }
-      bocker: field(key: "bocker") {
-        references(first: 10) {
-          nodes {
-            ...BookPromo
+<script lang="ts" context="module">
+  export const sektionBokgalleri = graphql(
+    `
+      fragment SektionBokgalleri on Metaobject @_unmask {
+        id
+        rubrik: field(key: "rubrik") {
+          value
+        }
+        visa: field(key: "visa_antal") {
+          value
+        }
+        bocker: field(key: "bocker") {
+          references(first: 10) {
+            nodes {
+              ...BookPromo
+            }
           }
         }
       }
-    }
-  `)
+    `,
+    [bookPromo],
+  )
+</script>
+
+<script lang="ts">
+  import { isType } from '$lib'
+  import type { MenuItem } from '$lib/menu'
+  import BookCardPromo, { bookPromo } from '../BookCardPromo.svelte'
+  import Section from './Section.svelte'
+  import { graphql, type FragmentOf } from '../../../graphql'
+
+  let className = ''
+  export { className as class }
+  export let section: FragmentOf<typeof sektionBokgalleri>
+  export let menu: MenuItem | undefined
+
+  $: products = section.bocker?.references?.nodes.filter(isType('Product'))
 </script>
 
 <Section title={section.rubrik?.value || ''} level={2} class={className}>
   <div class="flex flex-col justify-stretch md:flex-row">
-    {#each onlyProducts(section.bocker?.references?.nodes) ?? [] as book, index}
+    {#each products ?? [] as book, index}
       {#if index > 0}
         <div class="hidden self-stretch px-8 md:flex">
           <!-- <Separator orientation="vertical" /> -->

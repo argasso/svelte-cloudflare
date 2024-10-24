@@ -42,7 +42,7 @@
       <a class="mega-item-link" class:active role="menu" {href}>
         <span class="my-auto">{name}</span>
       </a>
-      {#if children.length > 0}
+      {#if children?.length > 0}
         <div class="mega-dropdown container">
           <div class="flex grow">
             <div class="flex grow items-stretch gap-2 rounded bg-muted p-2 text-primary">

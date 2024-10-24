@@ -1,5 +1,5 @@
-query Filters @blocking @cache(policy: NetworkOnly) {
-  filters: collection(handle: "frontpage") {
+query Filters($handle: String!) @blocking @cache(policy: CacheOrNetwork) {
+  filters: collection(handle: $handle) {
     products(first: 0) {
       filters {
         id

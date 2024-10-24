@@ -1,4 +1,4 @@
-query Cart($cartId: ID!) {
+query Cart($cartId: ID!) @cache(policy: NetworkOnly) {
   cart(id: $cartId) {
     ...CartFragment @mask_disable
   }

@@ -1,5 +1,4 @@
 <script lang="ts">
-  // import type { Cart$result } from '$houdini'
   import { browser } from '$app/environment'
   import Icons from '$lib/components/Icons.svelte'
   import Cart from '$lib/components/icons/Cart.svelte'
@@ -7,8 +6,8 @@
   import { Button } from '$lib/components/ui/button/index.js'
   import * as Drawer from '$lib/components/ui/drawer/index.js'
   import { ScrollArea } from '$lib/components/ui/scroll-area'
-  import { cartOpen, isCartLoading } from '$lib/shopify'
-  import { cart } from '$lib/stores/store'
+  import { cartOpen } from '$lib/shopify'
+  import { cart } from '$lib/stores/cartStore'
   import CartForm from './CartForm.svelte'
 
   $: items = $cart?.lines.edges ?? []
@@ -70,11 +69,7 @@
           </Drawer.Close>
           <Button class="" on:click={() => {}} target="_self" size="lg">
             <span> Till betalning </span>
-            {#if $isCartLoading}
-              <Icons type="loading" class="ml-3" />
-            {:else}
-              <Icons type="cart-checkout" class="ml-3" />
-            {/if}
+            <Icons type="cart-checkout" class="ml-3" />
           </Button>
         </Drawer.Footer>
       {:else}

@@ -1,7 +1,5 @@
 <script lang="ts">
-  import type { Products$result } from '$houdini'
   import { bookUrl } from '$lib'
-  import { addToCart, addToCartLoading } from '$lib/shopify'
   import Authors from './Authors.svelte'
   import Price from './Price.svelte'
   import Icons from '$lib/components/Icons.svelte'
@@ -10,8 +8,7 @@
   import { Button } from './ui/button'
   import BuyButton from './BuyButton.svelte'
 
-  type BookThumb = NonNullable<Products$result['collection']>['products']['nodes'][number]
-  export let bookThumb: BookThumb
+  export let bookThumb: any
   export let width: number = 160
   export let loading = false
 
@@ -20,10 +17,6 @@
   $: image = bookThumb.images.nodes?.[0]
   $: discontinued = variants.nodes[0].discontinued?.value === 'true'
   $: ({ id: variantId, price } = variants.nodes[0])
-
-  async function addProduct() {
-    await addToCart(variantId, { title, price, image })
-  }
 </script>
 
 <div class:loading class="mt-auto w-48 opacity-100">

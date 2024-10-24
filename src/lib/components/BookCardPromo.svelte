@@ -1,54 +1,61 @@
-<script lang="ts">
-  import { type BookPromo$data, graphql } from '$houdini'
-  import { bookUrl, isNonNil, onlyMetaobjects } from '$lib'
-  import { flatten, type MenuItem } from '$lib/menu'
-  import Authors from './Authors.svelte'
-  import BookImage from './image/BookImage.svelte'
-  import Pill from './Pill.svelte'
-
-  export let book: BookPromo$data
-  export let menu: MenuItem | undefined
-
-  $: variant = book?.variants.nodes?.[0]
-  $: menuItems = flatten(menu)
-  $: categories = onlyMetaobjects(variant.categories?.references?.nodes)
-    .map((c) => menuItems.find((i) => i.id === c.id))
-    .filter((c) => c?.parent?.href !== '/')
-    .filter(isNonNil)
-
-  graphql(`
-    fragment BookPromo on Product {
-      id
-      title
-      handle
-      descriptionHtml
-      images(first: 1) {
-        nodes {
-          url
-          altText
-          height
-          width
-        }
-      }
-      ...AuthorsFragment
-      variants(first: 1) {
-        nodes {
-          price {
-            ...PriceFragment
+<script lang="ts" context="module">
+  export const bookPromo = graphql(
+    `
+      fragment BookPromo on Product @_unmask {
+        id
+        title
+        handle
+        descriptionHtml
+        images(first: 1) {
+          nodes {
+            url
+            altText
+            height
+            width
           }
-          categories: metafield(namespace: "book", key: "category") {
-            references(first: 5) {
-              nodes {
-                ... on Metaobject {
-                  id
+        }
+        ...AuthorsFragment
+        variants(first: 1) {
+          nodes {
+            price {
+              ...PriceFragment
+            }
+            categories: metafield(namespace: "book", key: "category") {
+              references(first: 5) {
+                nodes {
+                  ... on Metaobject {
+                    id
+                  }
                 }
               }
             }
           }
         }
       }
-    }
-  `)
+    `,
+    [authorsFragment, priceFragment],
+  )
+</script>
+
+<script lang="ts">
+  import { bookUrl, isNonNil, isType } from '$lib'
+  import { flatten, type MenuItem } from '$lib/menu'
+  import { graphql, type FragmentOf } from '../../graphql'
+  import Authors, { authorsFragment } from './Authors.svelte'
+  import BookImage from './image/BookImage.svelte'
+  import Pill from './Pill.svelte'
+  import { priceFragment } from './Price.svelte'
+
+  export let book: FragmentOf<typeof bookPromo>
+  export let menu: MenuItem | undefined
+
+  $: variant = book?.variants.nodes?.[0]
+  $: menuItems = flatten(menu)
+  $: categories = variant.categories?.references?.nodes
+    .filter(isType('Metaobject'))
+    .map((c) => menuItems.find((i) => i.id === c.id))
+    .filter((c) => c?.parent?.href !== '/')
+    .filter(isNonNil)
 </script>
 
 <div class="flex flex-row items-start gap-6">

@@ -1,7 +1,8 @@
 <script lang="ts">
   import { enhance } from '$app/forms'
-  import type { Cart$result } from '$houdini'
-  import { cartSubmitFunction, cartUpdateAction } from '$lib/cartService'
+  import { cartSubmitFunction } from '$lib/cartClient'
+  import type { cartFragment } from '$lib/cartService'
+  import type { FragmentOf } from '../../graphql'
   import Cart from './icons/Cart.svelte'
   import Minus from './icons/Minus.svelte'
   import Plus from './icons/Plus.svelte'
@@ -10,7 +11,7 @@
   import Price from './Price.svelte'
   import { Button } from './ui/button'
 
-  export let cart: Cart$result['cart']
+  export let cart: FragmentOf<typeof cartFragment>
   export let showTotal = false
 
   $: items = cart?.lines.edges ?? []
@@ -38,7 +39,7 @@
         <form
           name={item.node.id}
           method="POST"
-          action={cartUpdateAction}
+          action={'/cart?/cartUpdate'}
           use:enhance={cartSubmitFunction}
         >
           <div class="flex-0 flex items-center gap-2">

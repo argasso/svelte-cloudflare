@@ -1,5 +1,3 @@
-// import type { SeoFragment$data } from "$houdini"
-
 export function convertSchemaToHtml(arr, scoped = false) {
   let html = ``
   if (arr.type === 'root' && arr.children.length > 0) {
@@ -84,8 +82,8 @@ export function buildText(el) {
 }
 
 type Element = {
-  type: string,
-  value: string,
+  type: string
+  value: string
   children?: Element[]
 }
 
@@ -95,12 +93,12 @@ function getOnlyText(element: Element): string {
   } else if (element.children?.length) {
     return element.children.map(getOnlyText).join(' ')
   }
-  return ""
+  return ''
 }
 
 export function convertSchemaToText(rich?: string | null) {
   if (rich) {
     const data = JSON.parse(rich) as Element
     return getOnlyText(data)
-  } 
+  }
 }

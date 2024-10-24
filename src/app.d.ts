@@ -12,6 +12,9 @@ declare global {
       message: string
       fields?: Record<string, any>
     }
+    interface Locals {
+      cartId: string | undefined
+    }
   }
 }
 

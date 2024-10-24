@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { Image } from '@unpic/svelte'
-  import { onlyMediaImages } from '$lib'
+  import { getByType } from '$lib'
+  import BookCard from '$lib/components/BookCard.svelte'
   import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
   import { convertSchemaToHtml } from '$lib/richtext/shopifyRichText'
-  import BookCard from '$lib/components/BookCard.svelte'
-  import Breadcrumbs from '$lib/components/Breadcrumbs.svelte'
+  import { Image } from '@unpic/svelte'
 
   export let data
 
@@ -12,6 +11,7 @@
   $: html = author?.description?.value
     ? convertSchemaToHtml(JSON.parse(author?.description?.value))
     : undefined
+  $: image = getByType('MediaImage', author.image?.reference)?.image
 </script>
 
 <div class="container mt-10">
@@ -25,11 +25,7 @@
       </div>
       <div class="max-w-xs flex-shrink">
         {#if author?.image?.reference}
-          <ShopifyImage
-            class="h-72 w-72 rounded-full"
-            image={onlyMediaImages([author.image?.reference])[0].image}
-            width={500}
-          />
+          <ShopifyImage class="h-72 w-72 rounded-full" {image} width={500} />
         {:else}
           <Image src={'/uploads/foerfattare/anonymous.jpg'} width={500} height={500} />
         {/if}

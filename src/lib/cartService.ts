@@ -1,45 +1,128 @@
-import { CartCreateStore, CartLinesAddStore, CartLinesUpdateStore, CartStore } from '$houdini'
 import { error, type Action, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit'
-import type { SubmitFunction } from '../routes/(default)/cart/$types'
-import { cart } from './stores/store'
-import { toast } from 'svelte-sonner'
-import { goto, invalidateAll } from '$app/navigation'
-import { applyAction } from '$app/forms'
-
-const cartStore = new CartStore()
-const cartCreateStore = new CartCreateStore()
-const cartLinesAddStore = new CartLinesAddStore()
-const cartLinesUpdateStore = new CartLinesUpdateStore()
+import { client } from '../client'
+import { graphql } from '../graphql'
+import { priceFragment } from './components/Price.svelte'
 
 export const cartAddAction = '/cart?/cartAdd'
 export const cartUpdateAction = '/cart?/cartUpdate'
+
+export const cartFragment = graphql(
+  `
+    fragment CartFragment on Cart @_unmask {
+      id
+      checkoutUrl
+      updatedAt
+      totalQuantity
+      cost {
+        totalAmount {
+          ...PriceFragment
+        }
+      }
+      lines(first: 100) {
+        edges {
+          node {
+            id
+            quantity
+            cost {
+              subtotalAmount {
+                ...PriceFragment
+              }
+              totalAmount {
+                ...PriceFragment
+              }
+            }
+            merchandise {
+              ... on ProductVariant {
+                id
+                title
+                product {
+                  images(first: 1) {
+                    edges {
+                      node {
+                        url
+                        altText
+                        width
+                        height
+                      }
+                    }
+                  }
+                  title
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `,
+  [priceFragment],
+)
+
+const cartCreateErrorFragment = graphql(`
+  fragment CartUserErrorFragment on CartUserError @_unmask {
+    field
+    message
+  }
+`)
 
 export const cartLoad = async (event: ServerLoadEvent | RequestEvent) => {
   const cartId = event.cookies.get('cartId')
 
   if (cartId) {
-    const { data } = await cartStore.fetch({ event, variables: { cartId } })
-    if (data?.cart) {
-      const { cart } = data
-      if (!isCartExpired(cart.updatedAt)) {
+    const cartResponse = await client.query(
+      graphql(
+        `
+          query Cart($cartId: ID!) @_unmask {
+            cart(id: $cartId) {
+              ...CartFragment
+            }
+          }
+        `,
+        [cartFragment],
+      ),
+      { cartId },
+      { fetch },
+    )
+    if (cartResponse.data?.cart) {
+      console.log('Has cart')
+      if (!isCartExpired(cartResponse.data.cart.updatedAt)) {
+        console.log('Not expired, returning')
+
         return {
-          cart,
+          cart: cartResponse.data?.cart,
         }
       }
     }
   }
 
-  const { data, errors } = await cartCreateStore.mutate({}, { event })
-
-  if (data?.cartCreate?.cart && !errors) {
-    const { cart } = data.cartCreate
-    event.cookies.set('cartId', cart.id, { path: '/' })
+  const cartCreateResponse = await client.mutation(
+    graphql(
+      `
+        mutation CartCreate($lineItems: [CartLineInput!]) {
+          cartCreate(input: { lines: $lineItems }) {
+            userErrors {
+              ...CartUserErrorFragment
+            }
+            cart {
+              ...CartFragment
+            }
+          }
+        }
+      `,
+      [cartFragment, cartCreateErrorFragment],
+    ),
+    {},
+    { fetch },
+  )
+  if (cartCreateResponse.data?.cartCreate?.cart && !cartCreateResponse.error) {
+    event.cookies.set('cartId', cartCreateResponse.data.cartCreate.cart.id, { path: '/' })
+    console.log('Created new cart with id', cartCreateResponse.data.cartCreate.cart.id)
     return {
-      cart,
+      cart: cartCreateResponse.data.cartCreate.cart,
     }
   }
 
-  console.error('Failed to create shopping cart', errors)
+  console.error('Failed to create shopping cart', cartCreateResponse.error)
   error(400, 'Kunde inte skapa din varukorg :(')
 }
 
@@ -54,21 +137,36 @@ export const cartAdd: Action = async (event) => {
     })
   }
 
-  const { data, variables, errors } = await cartLinesAddStore.mutate(
-    {
-      cartId,
-      lines: [
-        {
-          merchandiseId: variantId,
-          quantity: 1,
-        },
-      ],
-    },
-    { event },
+  const variables = {
+    cartId,
+    lines: [
+      {
+        merchandiseId: variantId,
+        quantity: 1,
+      },
+    ],
+  }
+  const response = await client.mutation(
+    graphql(
+      `
+        mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) @_unmask {
+          cartLinesAdd(cartId: $cartId, lines: $lines) {
+            cart {
+              ...CartFragment
+            }
+            userErrors {
+              ...CartUserErrorFragment
+            }
+          }
+        }
+      `,
+      [cartFragment, cartCreateErrorFragment],
+    ),
+    variables,
+    { fetch },
   )
-
-  if (data?.cartLinesAdd && !errors) {
-    const { cart, userErrors } = data?.cartLinesAdd
+  if (response.data?.cartLinesAdd && !response.error) {
+    const { cart, userErrors } = response.data.cartLinesAdd
     const merchandise = cart?.lines.edges.find((l) => l.node.merchandise.id === variantId)?.node
       .merchandise
 
@@ -82,7 +180,7 @@ export const cartAdd: Action = async (event) => {
     }
   }
 
-  console.error('Failed to add product to cart', errors)
+  console.error('Failed to add product to cart', response.error)
   error(400, 'Kunde inte lägga varan i varukorgen :(')
 }
 
@@ -100,22 +198,38 @@ export const cartUpdate: Action = async (event) => {
     })
   }
 
-  const { data, variables, errors } = await cartLinesUpdateStore.mutate(
-    {
-      cartId,
-      lines: [
-        {
-          id: lineId,
-          merchandiseId: variantId,
-          quantity: parseInt(quantity, 10),
-        },
-      ],
-    },
-    { event },
+  const variables = {
+    cartId,
+    lines: [
+      {
+        id: lineId,
+        merchandiseId: variantId,
+        quantity: parseInt(quantity, 10),
+      },
+    ],
+  }
+  const response = await client.mutation(
+    graphql(
+      `
+        mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+          cartLinesUpdate(cartId: $cartId, lines: $lines) {
+            cart {
+              ...CartFragment
+            }
+            userErrors {
+              ...CartUserErrorFragment
+            }
+          }
+        }
+      `,
+      [cartFragment, cartCreateErrorFragment],
+    ),
+    variables,
+    { fetch },
   )
 
-  if (data?.cartLinesUpdate && !errors) {
-    const { cart, userErrors } = data.cartLinesUpdate
+  if (response.data?.cartLinesUpdate && !response.error) {
+    const { cart, userErrors } = response.data.cartLinesUpdate
     const merchandise = cart?.lines.edges.find((l) => l.node.id === lineId)?.node.merchandise
     return {
       cart,
@@ -127,7 +241,7 @@ export const cartUpdate: Action = async (event) => {
     }
   }
 
-  console.error('Failed to update product in cart', errors)
+  console.error('Failed to update product in cart', response.error)
   error(400, 'Kunde inte uppdatera varan i varukorgen :(')
 }
 
@@ -143,24 +257,4 @@ function isCartExpired(updatedAt: string) {
   const difference = Date.now() - new Date(updatedAt).getTime()
   const totalDays = Math.ceil(difference / (1000 * 3600 * 24))
   return totalDays > 6
-}
-
-const position = 'top-right'
-
-export const cartSubmitFunction: SubmitFunction = () => {
-  return async ({ result }) => {
-    if (result.type === 'redirect') {
-      goto(result.location)
-    } else if (result.type === 'success') {
-      invalidateAll()
-      await applyAction(result)
-      cart.set(result.data?.cart)
-      const message = result.data?.message ?? 'Uppdaterade varukorgen'
-      const description = result.data?.merchandise?.product.title ?? ''
-      toast.success(message, { position, description })
-    } else if (result.type === 'failure') {
-      const description = 'Kunde inte uppdatera varukorgen.'
-      toast.error('Oj', { position, description })
-    }
-  }
 }

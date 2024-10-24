@@ -1,5 +1,8 @@
-import type { MainMenu$result } from '$houdini'
-import { isNonNil, onlyMetaobjects } from '$lib'
+import { isNonNil, isType } from '$lib'
+import type { ResultOf } from '../graphql'
+import type { mainMenuQuery } from './components/NavMenu.svelte'
+
+type ShopifyMenuItem = ResultOf<typeof mainMenuQuery>['menu']
 
 export type MenuItem = {
   id: string
@@ -8,8 +11,6 @@ export type MenuItem = {
   parent?: MenuItem
   children: MenuItem[]
 }
-
-type ShopifyMenuItem = MainMenu$result['menu']
 
 export function makeMenu(
   menu: ShopifyMenuItem | undefined,
@@ -20,11 +21,12 @@ export function makeMenu(
     const name = menu.name?.value ?? menu.title?.value ?? menu.handle
     const href = parent ? `${parent.href === '/' ? '' : parent.href}/${menu.handle}` : '/'
     const item = { id, name, href, parent, children: [] as MenuItem[] }
-    item.children.push(
-      ...onlyMetaobjects(menu?.children?.references?.nodes)
+    const children =
+      menu?.children?.references?.nodes
+        ?.filter(isType('Metaobject'))
         .map((child) => makeMenu(child as ShopifyMenuItem, item))
-        .filter(isNonNil),
-    )
+        .filter(isNonNil) ?? []
+    item.children.push(...children)
     return item
   }
 }

@@ -10,11 +10,12 @@
   // import ShopifySearch from '$lib/components/shopify/ShopifySearch.svelte'
   import { Toaster } from 'svelte-sonner'
   // import { initiateCart, refreshCart } from '$lib/shopify'
-  import { getCart, isCartOpen, noScroll } from '$lib/stores/store'
+  // import { getCart, isCartOpen, noScroll } from '$lib/stores/store'
   import { ModeWatcher } from 'mode-watcher'
   import { onMount } from 'svelte'
 
   import '../app.css'
+  import { getCart } from '$lib/stores/cartStore'
 
   export let data
 

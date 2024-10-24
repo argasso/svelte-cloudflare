@@ -1,4 +1,4 @@
-import { cartAdd, cartLoad, cartUpdate } from '$lib/cartService.js'
+import { cartAdd, cartLoad, cartUpdate } from '$lib/cartService'
 
 export async function load(event) {
   return await cartLoad(event)

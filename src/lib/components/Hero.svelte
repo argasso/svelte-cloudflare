@@ -1,33 +1,24 @@
-<script lang="ts">
-  import { graphql, type HeroFragment$data } from '$houdini'
-  import { onlyMetaobject, onlyMetaobjects } from '$lib'
-
-  export let title: string | null | undefined = 'Upplev böcker från Argasso bokförlag'
-  export let intro: string = 'Lättare att läsa för barn och ungdomar'
-  export let page: HeroFragment$data | null
-
-  $: titleParts = title?.split('Argasso') ?? []
-  $: hero = onlyMetaobject(page?.hero?.reference)
-  $: slides = onlyMetaobjects(hero?.slides?.references?.nodes)
-
-  graphql(`
-    fragment HeroFragment on Metaobject {
-      hero: field(key: "page_top") {
-        reference {
-          ... on Metaobject {
-            type
-            slides: field(key: "slides") {
-              references(first: 10) {
-                nodes {
-                  ... on Metaobject {
-                    type
-                    title: field(key: "title") {
-                      value
+<script lang="ts" context="module">
+  export const heroFragment = graphql(
+    `
+      fragment HeroFragment on Metaobject @_unmask {
+        pageTop: field(key: "page_top") {
+          reference {
+            ... on Metaobject {
+              type
+              slides: field(key: "slides") {
+                references(first: 10) {
+                  nodes {
+                    ... on Metaobject {
+                      type
+                      title: field(key: "title") {
+                        value
+                      }
+                      text: field(key: "text") {
+                        value
+                      }
+                      ...BookStackFragment
                     }
-                    text: field(key: "text") {
-                      value
-                    }
-                    ...BookStackFragment
                   }
                 }
               }
@@ -35,8 +26,24 @@
           }
         }
       }
-    }
-  `)
+    `,
+    [bookStackFragment],
+  )
+</script>
+
+<script lang="ts">
+  import { isType, getByType } from '$lib'
+  import { bookStackFragment } from './BookStack.svelte'
+  import { graphql, type FragmentOf } from '../../graphql'
+
+  export let title: string | null = 'Upplev böcker från Argasso bokförlag'
+  export let intro: string = 'Lättare att läsa för barn och ungdomar'
+  export let pageTop: FragmentOf<typeof heroFragment>['pageTop'] | null | undefined
+
+  $: titleParts = title?.split('Argasso') ?? []
+  $: slides = getByType('Metaobject', pageTop?.reference)?.slides?.references?.nodes.filter(
+    isType('Metaobject'),
+  )
 </script>
 
 <div class="text-white">

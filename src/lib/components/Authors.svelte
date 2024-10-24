@@ -1,18 +1,6 @@
-<script lang="ts">
-  import { graphql, type AuthorsFragment$data } from '$houdini'
-  import { authorUrl, onlyMetaobjects } from '$lib'
-  // import Link from './Link.svelte'
-
-  let className = ''
-  export { className as class }
-  export let book: AuthorsFragment$data
-  export let one = false
-
-  $: authors = onlyMetaobjects(book.authors?.references?.nodes)
-  $: numAuthors = authors?.length ?? 0
-
-  graphql(`
-    fragment AuthorsFragment on Product {
+<script lang="ts" context="module">
+  export const authorsFragment = graphql(`
+    fragment AuthorsFragment on Product @_unmask {
       authors: metafield(namespace: "custom", key: "authors") {
         references(first: 3) {
           nodes {
@@ -28,6 +16,20 @@
       }
     }
   `)
+</script>
+
+<script lang="ts">
+  import { authorUrl, getByType, isType } from '$lib'
+  import { graphql, type FragmentOf } from '../../graphql'
+  // import Link from './Link.svelte'
+
+  let className = ''
+  export { className as class }
+  export let book: FragmentOf<typeof authorsFragment>
+  export let one = false
+
+  $: authors = book.authors?.references?.nodes.filter(isType('Metaobject')) ?? []
+  $: numAuthors = authors?.length ?? 0
 </script>
 
 {#if numAuthors > 0}

@@ -2,14 +2,13 @@
   import { Slider } from '$lib/components/ui/slider'
   import { getShortKey, isPrice, type EnhancedFilter } from './shopifyFilters'
   import { getQueryStore } from '$lib/stores/URLSearchParamsStore'
-  import type { ProductFilter } from '$houdini'
 
   export let filter: EnhancedFilter
 
   const key = getShortKey(filter.id) ?? 'price'
   const query = getQueryStore(key)
 
-  $: parsed = JSON.parse(filter.values[0].input) as ProductFilter
+  $: parsed = JSON.parse(filter.values[0].input) // as ProductFilter
   $: initialRange = isPrice(parsed) ? parsed.price : { min: 0, max: 300 }
   let min: number
   $: min = min ?? initialRange.min

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms'
-  import { cartSubmitFunction } from '$lib/cartService'
+  import { cartSubmitFunction } from '$lib/cartClient'
   import Icons from './Icons.svelte'
   import { Button } from './ui/button'
 
