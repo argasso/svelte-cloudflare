@@ -1,9 +1,9 @@
 import type { Handle } from '@sveltejs/kit'
 
-export let clientAddress: string
+// export let clientAddress: string
 
 export const handle: Handle = async ({ event, resolve }) => {
-  clientAddress = event.getClientAddress()
+  // clientAddress = event.getClientAddress()
 
   event.locals.cartId = event.cookies.get('cartId')
 

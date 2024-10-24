@@ -1,4 +1,4 @@
-import { clientAddress } from './hooks.server'
+// import { clientAddress } from './hooks.server'
 // import { PUBLIC_SHOPIFY_STOREFRONT_TOKEN, PUBLIC_SHOPIFY_STOREFRONT_URL } from '$env/static/public'
 import { cacheExchange, Client, fetchExchange, mapExchange } from '@urql/core'
 
@@ -18,7 +18,7 @@ export const client = new Client({
     return {
       headers: {
         'X-Shopify-Storefront-Access-Token': 'ff151810f966c1536e2d3b4fd437f38e',
-        'Shopify-Storefront-Buyer-IP': clientAddress,
+        // 'Shopify-Storefront-Buyer-IP': clientAddress,
       },
     }
   },
