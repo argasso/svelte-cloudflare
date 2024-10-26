@@ -3,7 +3,6 @@ import {
   defaultSortKey,
   getActiveShopifyFilters,
   getCategoryFilterAsTree,
-  getDecendants,
   getEnhancedFilter,
   shortGID,
   sortOptions,
@@ -16,78 +15,82 @@ import { client } from '../../../client'
 
 export const load = async (event) => {
   const { url, parent } = event
-  const { initialFilters, menu } = await parent()
 
+  // Page
   const handle = url.pathname.split('/').at(-1) ?? ''
-  const searchParams = new URLSearchParams(url.searchParams)
+  const pageResponse = await client.query(pageQuery, { handle }, { fetch })
+  if (pageResponse.error) {
+    console.error('Page query failed', pageResponse.error)
+    error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
+  }
+  const page = pageResponse.data?.page
+  if (!page) {
+    error(404, 'Kan inte hitta sidan')
+  }
 
+  // Paging
+  const after = url.searchParams.get('after')
+  const before = url.searchParams.get('before')
+  const pageSize = url.searchParams.get('size')
+  const size = pageSize ? parseInt(pageSize) : DEFAULT_PAGE_SIZE
+  const navigation = before ? { before, last: size } : { after, first: size }
+
+  // Sorting
+  const pageSort = url.searchParams.get('sort')
+  const { sortKey, reverse } = sortOptions.find((s) => s.value === pageSort) || defaultSortKey
+
+  // Filtering
+  const { initialFilters, menu } = await parent()
+  const searchParams = new URLSearchParams(url.searchParams)
   const category = findMenuItem(menu, url.pathname)
   if (category) {
     searchParams.append('category', shortGID(category.id))
   }
-
   const filters = getActiveShopifyFilters(initialFilters, menu, searchParams)
-  const sizeStr = url.searchParams.get('size')
-  const first = sizeStr ? parseInt(sizeStr) : DEFAULT_PAGE_SIZE
 
-  const sortStr = url.searchParams.get('sort')
-  const { sortKey, reverse } = sortOptions.find((s) => s.value === sortStr) || defaultSortKey
-
-  // const totalCount =
-  //   initialFilters
-  //     ?.find((f) => f.id === 'filter.v.availability')
-  //     ?.values.reduce((prev, curr) => prev + curr.count, 0) ?? 0
-
-  const pageResponse = await client.query(pageQuery, { handle }, { fetch })
-  if (pageResponse.error) {
-    console.error('PageStore fetch failed', pageResponse.error)
-    error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
-  }
-
+  // Products
   const productsResponse = await client.query(
     productsQuery,
-    { filters, first, sortKey, reverse },
+    { ...navigation, sortKey, reverse, filters },
     { fetch },
   )
   if (productsResponse.error) {
     console.error('ProductsStore fetch failed', productsResponse.error)
     error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
   }
-
-  const page = pageResponse.data?.page
-
   const products = productsResponse.data?.collection?.products
-  const books = products?.nodes ?? []
-  const productFilters = products?.filters ?? []
+  if (!products) {
+    error(404, 'Kan inte hitta produkter')
+  }
 
-  const enhancedFilters = productFilters.map((f) =>
+  const enhancedFilters = products.filters.map((f) =>
     getEnhancedFilter(f, url.searchParams, initialFilters),
   )
   const currentFilters = enhancedFilters.map((f) =>
     getCategoryFilterAsTree(f, menu?.children ?? []),
   )
+  const totalCount =
+    currentFilters
+      ?.find((f) => f.id === 'filter.v.availability')
+      ?.values.reduce((prev, curr) => prev + curr.count, 0) ?? 0
 
-  // currentFilters.forEach((f) => {
-  //   console.log(f.id, f.values)
-  // })
+  const { nodes, pageInfo } = products
 
-  const appliedFilters = currentFilters
-    .flatMap(({ values }) => values.flatMap(getDecendants))
-    .filter((v) => v.active)
-
+  // Links
   const links = findMenuItem(menu, url.pathname)?.children
 
   return {
-    // menu,
     page,
     links,
-    books,
-    initialFilters,
-    currentFilters,
-    appliedFilters,
-    pageInfo: {
-      size: first,
-      // totalCount,
+    products: {
+      nodes,
+      pageInfo: {
+        ...pageInfo,
+        pageSize,
+        pageSort,
+        totalCount,
+      },
     },
+    filters: currentFilters,
   }
 }
