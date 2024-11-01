@@ -1,31 +1,10 @@
+import { mainMenuQuery } from '$lib/components/NavMenu.svelte'
+import { filtersQuery } from '$lib/components/filter/Filters.svelte'
 import { makeMenu } from '$lib/menu'
 import { error } from '@sveltejs/kit'
 import { client } from '../client'
-import { graphql } from '../graphql'
-import { mainMenuQuery } from '$lib/components/NavMenu.svelte'
 
 export const prerender = true
-
-export type TFilterQuery = typeof filtersQuery
-const filtersQuery = graphql(`
-  query Filters {
-    collection(handle: "frontpage") {
-      products(first: 0) {
-        filters {
-          id
-          label
-          type
-          values {
-            count
-            id
-            input
-            label
-          }
-        }
-      }
-    }
-  }
-`)
 
 export async function load({ fetch }) {
   const filterResponse = await client.query(filtersQuery, {}, { fetch })

@@ -85,8 +85,8 @@
   >['products']
   export type TProducts = Omit<TProductsServerResult, 'filters'> & {
     pageInfo: {
-      pageSize: string
       pageSort: string
+      pageSize: number
       totalCount: number
     }
   }
@@ -96,102 +96,95 @@
   import BookCard from '$lib/components/BookCard.svelte'
   import Section from '$lib/components/Section.svelte'
   import AppliedFilterButton from '$lib/components/filter/AppliedFilterButton.svelte'
-  import MobileFilter from '$lib/components/filter/MobileFilter.svelte'
-  import {
-    getDecendants,
-    sizeOptions,
-    sortOptions,
-    type EnhancedFilter,
-  } from '$lib/components/filter/shopifyFilters'
-  import GridSelect from '$lib/components/grid/GridSelect.svelte'
-  import Button from '$lib/components/ui/button/button.svelte'
-  import { Separator } from '$lib/components/ui/separator/index.js'
-  import ChevronLeft from 'lucide-svelte/icons/chevron-left'
-  import ChevronRight from 'lucide-svelte/icons/chevron-right'
-  import ProductGridNavigation from './ProductGridNavigation.svelte'
-  import GridSelect2 from './GridSelect2.svelte'
+  import { getDecendants, type EnhancedFilter } from '$lib/components/filter/shopifyFilters'
+  import ProductGridToolbar from './ProductGridToolbar.svelte'
+  import Filters from './filter/Filters.svelte'
+  import Separator from './ui/separator/separator.svelte'
+  import { enhance } from '$app/forms'
+  import Logo from './logo/Logo.svelte'
+  import { isFilterOpen } from '$lib/stores/store'
+  import Button from './Button.svelte'
 
   export let products: TProducts
   export let filters: EnhancedFilter[]
+  export let filtersOn = false
 
   $: books = products.nodes
   $: pageInfo = products.pageInfo
   $: count = books.length
-
   $: appliedFilters = filters
     .flatMap(({ values }) => values.flatMap(getDecendants))
     .filter((v) => v.active)
+
+  let form: HTMLFormElement
+  function requestSubmit() {
+    form?.requestSubmit()
+  }
+  const formId = 'product-filter'
 </script>
 
 {#if books.length >= 0}
   <Section class="bg-card">
-    <form name="productQuery">
-      <div class="mb-3 flex flex-wrap items-center gap-2 text-sm text-gray-600">
-        <div class="mr-2">
-          {#if pageInfo.totalCount > pageInfo.pageSize}
-            Visar {count} av {pageInfo.totalCount} böcker
-          {:else if count === 1}
-            Visar {count} bok
-          {:else}
-            Visar {count} böcker
+    <div
+      class:filtering={$isFilterOpen}
+      class="filtered-grid grid grid-rows-[auto_30px_1fr] items-start gap-8 gap-y-4 transition-all"
+    >
+      <div class="col-span-2">
+        <form bind:this={form} data-sveltekit-keepfocus data-sveltekit-noscroll id={formId}>
+          <ProductGridToolbar {count} {filters} {filtersOn} {pageInfo} {requestSubmit} />
+        </form>
+      </div>
+
+      <div class="row-start-2 flex gap-2 text-gray-500">
+        <div class="flex items-center">
+          {#each appliedFilters as filter (filter.id)}
+            <AppliedFilterButton {filter}></AppliedFilterButton>
+          {/each}
+          {#if appliedFilters.length > 0}
+            <Button type="submit" name="reset" value="filters" variant="link" form={formId}>
+              Rensa urvalsfilter
+            </Button>
           {/if}
         </div>
-        <div class="my-2 hidden self-stretch md:flex">
-          <Separator orientation="vertical" />
-        </div>
-        <GridSelect2
-          name="sort"
-          value={pageInfo.pageSort}
-          label="Välj ordning"
-          options={sortOptions}
-        />
-        <div class="my-2 hidden self-stretch md:flex">
-          <Separator orientation="vertical" />
-        </div>
-        <GridSelect2
-          name="size"
-          value={pageInfo.pageSize}
-          label="Antal per sida"
-          options={sizeOptions}
-          suffix="per sida"
-        />
-        <div class="my-2 hidden self-stretch md:flex">
-          <Separator orientation="vertical" />
-        </div>
-        <MobileFilter {filters} />
-        <div class="flex flex-1 justify-end">
-          <ProductGridNavigation {pageInfo} />
+      </div>
+
+      <div class="col-start-2 row-span-2 row-start-3 overflow-hidden">
+        <div class="filters w-64" inert={!$isFilterOpen}>
+          <Filters {filters} {formId} {requestSubmit} />
         </div>
       </div>
-    </form>
 
-    <div class="mb-5 flex gap-2 text-gray-500">
-      {#each appliedFilters as filter (filter.id)}
-        <AppliedFilterButton {filter}></AppliedFilterButton>
-      {/each}
-    </div>
-    <!-- <Separator class="my-2" /> -->
-    <div
-      class="grid flex-auto grid-cols-2 justify-items-start gap-x-4 gap-y-14 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
-    >
-      {#if books.length > 0}
-        {#each books as book}
-          <div class="self-end">
-            <BookCard bookThumb={book} />
+      <div
+        class="col-start-1 row-start-3 grid flex-auto grid-cols-2 justify-items-start gap-x-4 gap-y-14 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+      >
+        {#if books.length > 0}
+          {#each books as book}
+            <div class="self-end">
+              <BookCard bookThumb={book} />
+            </div>
+          {/each}
+        {:else}
+          <div class="col-span-2 sm:col-span-3 lg:col-span-4 xl:col-span-6">
+            <h2>Vi hittar inga böcker som matchar urvalet</h2>
+            <p>Prova att ändra gjorda urval eller nollställ urvalet.</p>
           </div>
-        {/each}
-        <form name="productQuery">
-          <div class="flex flex-1 justify-center">
-            <ProductGridNavigation {pageInfo} />
-          </div>
-        </form>
-      {:else}
-        <div class="col-span-2 sm:col-span-3 lg:col-span-4 xl:col-span-6">
-          <h2>Vi hittar inga böcker som matchar urvalet</h2>
-          <p>Prova att ändra gjorda urval eller nollställ urvalet.</p>
-        </div>
-      {/if}
+        {/if}
+      </div>
     </div>
-    <div class="my-3 flex flex-wrap items-center gap-2 pb-6 text-sm text-gray-600"></div>
+
+    <!-- {#if books.length > 0}
+        <ProductGridToolbar {count} {filters} {pageInfo} />
+      {/if} -->
   </Section>
 {/if}
+
+<style>
+  .filtered-grid {
+    grid-template-columns: 1fr 0px;
+  }
+
+  .filtered-grid.filtering,
+  .filtered-grid .filters:focus-within {
+    grid-template-columns: 1fr 256px;
+  }
+</style>

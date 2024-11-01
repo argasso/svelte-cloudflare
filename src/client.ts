@@ -4,10 +4,10 @@ import { cacheExchange, Client, fetchExchange, mapExchange } from '@urql/core'
 
 const logExchange = mapExchange({
   onOperation(operation) {
-    console.log('logExchange onOperation context', operation.context.meta?.cacheOutcome)
+    // console.log('logExchange onOperation context', operation.context.meta?.cacheOutcome)
   },
   onResult(result) {
-    console.log('logExchange onResult meta', result.operation.context.meta)
+    // console.log('logExchange onResult meta', result.operation.context.meta)
   },
 })
 

@@ -8,36 +8,37 @@
   export { className as class }
   export let key: string
   export let item: EnhancedFilterItem
+  export let requestSubmit
+  export let formId: string
 
-  const query = getQueryStore(key)
+  $: ({ label, value, count, active: checked, children = [] } = item)
 
-  $: ({ label, value, count, children = [] } = item)
-  $: checked = $query.includes(value)
   $: decendantValues = getDecendants(item).map((i) => i.value)
 
   function handleChange(event: any) {
     console.log('handleChange begin')
 
-    const { name, checked } = event.target as HTMLInputElement
-    if (checked) {
-      query.update((values) => [...values, name])
-    } else {
-      query.update((values) => values.filter((v) => !decendantValues.includes(v)))
-    }
+    // const { name, checked } = event.target as HTMLInputElement
+    // if (checked) {
+    //   query.update((values) => [...values, name])
+    // } else {
+    //   query.update((values) => values.filter((v) => !decendantValues.includes(v)))
+    // }
     console.log('handleChange end')
   }
-  $: console.log('checked', checked)
+  // $: console.log('checked', checked)
 </script>
 
 <li class={className}>
   <label class="flex items-center text-sm">
     <input
+      form={formId}
       type="checkbox"
-      name={value}
-      value={checked}
-      class="m-1 mr-2 h-6 w-6 rounded-sm text-primary"
-      on:change={handleChange}
-      bind:checked
+      name={key}
+      {value}
+      {checked}
+      on:change={requestSubmit}
+      class="m-1 mr-2 h-6 w-6 rounded-sm text-argasso-500"
     />
     {#if key === 'reading_level'}
       <ReadingLevel level={parseInt(label)} />
@@ -55,7 +56,7 @@
   {#if checked && children.length > 0}
     <ul class="mb-0 ml-4 list-none border-l-2 border-primary pl-2" transition:slide>
       {#each children as child}
-        <svelte:self {key} item={child} />
+        <svelte:self {key} item={child} {formId} {requestSubmit} />
       {/each}
     </ul>
   {/if}

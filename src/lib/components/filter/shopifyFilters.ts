@@ -1,8 +1,8 @@
 import { isNonNil } from '$lib'
 import { flatten, type MenuItem } from '$lib/menu'
 import type { ResultOf, VariablesOf } from '../../../graphql'
-import type { TFilterQuery } from '../../../routes/+layout.server'
 import type { TProductsQuery } from '../ProductsGrid.svelte'
+import type { TFilterQuery } from './Filters.svelte'
 
 export type Filter = NonNullable<
   ResultOf<TFilterQuery>['collection']
@@ -60,11 +60,7 @@ export const sortOptions: SortOption[] = [
 ]
 
 export const DEFAULT_PAGE_SIZE = 12
-export const sizeOptions = [
-  `${DEFAULT_PAGE_SIZE}`,
-  `${DEFAULT_PAGE_SIZE * 2}`,
-  `${DEFAULT_PAGE_SIZE * 4}`,
-]
+export const sizeOptions = [12, 24, 48]
 
 // export type ArgassoFilterItem = {
 // 	id?: string;
@@ -436,6 +432,7 @@ function getPriceRange(input: string, queryValues: string[]): string[] {
 export function getCategoryFilterAsTree(
   filter: EnhancedFilter,
   hierarchy: MenuItem[],
+  categoryId: string | undefined,
 ): EnhancedFilter {
   if (filter.id !== 'filter.v.m.book.category') {
     return filter
@@ -461,9 +458,9 @@ export function getCategoryFilterAsTree(
     }
   })
 
-  // if (categoryId){
-  // 	values = itemsById.get(shortGID(categoryId))?.children ?? []
-  // }
+  if (categoryId) {
+    values = itemsById.get(shortGID(categoryId))?.children ?? []
+  }
 
   return {
     ...filter,

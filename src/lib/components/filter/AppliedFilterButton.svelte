@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Cross from 'lucide-svelte/icons/cross'
-  import Button from '../ui/button/button.svelte'
+  import Cross from 'lucide-svelte/icons/x'
   import { getQueryStore } from '$lib/stores/URLSearchParamsStore'
   import { getDecendants, type EnhancedFilterItem } from './shopifyFilters'
+  import Button from '../Button.svelte'
 
   export let filter: EnhancedFilterItem
 
@@ -33,7 +33,14 @@
   }
 </script>
 
-<Button on:click={remove} size="sm" variant="ghost" class="h-6 rounded-full border p-2">
+<Button
+  on:click={remove}
+  size="sm"
+  variant="default"
+  class="group h-6 rounded-full p-2 pl-3 focus-visible:ring"
+>
   {label}
-  <Cross class="rounded-full opacity-40" />
+  <Cross
+    class="h-4 w-4 rounded-full border border-transparent opacity-70 group-hover:bg-white group-hover:text-foreground group-focus-visible:bg-white group-focus-visible:text-foreground"
+  />
 </Button>

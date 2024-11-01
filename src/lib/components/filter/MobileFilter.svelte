@@ -22,7 +22,7 @@
   // $: console.log('Mobile Filters: filters', filters)
 </script>
 
-<Drawer.Root shouldScaleBackground={false} direction="right">
+<!-- <Drawer.Root shouldScaleBackground={false} direction="right">
   <Drawer.Trigger asChild let:builder>
     <Button class={className} builders={[builder]} variant="ghost">
       <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
@@ -41,21 +41,21 @@
       {/if}
     </Button>
   </Drawer.Trigger>
-  <Drawer.Content direction="right">
-    <div class="flex h-full flex-col">
-      <Drawer.Header class="flex-0 h-14 w-full items-center border-b p-0 sm:text-center">
-        {#if loading}
-          <!-- <Skeleton class="h-[20px] w-[100px] rounded-full" /> -->
-          Loading...
-        {:else if activeCount > 0}
-          <h2 class="m-0 text-lg font-semibold">{totalCount} böcker i urvalet</h2>
-        {:else}
-          <h2 class="m-0 text-lg font-semibold">Urval</h2>
-        {/if}
-      </Drawer.Header>
-      <ScrollArea class="h-full flex-1 px-8 pr-7">
-        <Filters {filters}></Filters>
-      </ScrollArea>
-    </div>
-  </Drawer.Content>
-</Drawer.Root>
+  <Drawer.Content direction="right"> -->
+<div class="flex h-full flex-col">
+  <!-- <Drawer.Header class="flex-0 h-14 w-full items-center border-b p-0 sm:text-center"> -->
+  {#if loading}
+    <!-- <Skeleton class="h-[20px] w-[100px] rounded-full" /> -->
+    Loading...
+  {:else if activeCount > 0}
+    <h2 class="m-0 text-lg font-semibold">{totalCount} böcker i urvalet</h2>
+  {:else}
+    <h2 class="m-0 text-lg font-semibold">Urval</h2>
+  {/if}
+  <!-- </Drawer.Header> -->
+  <!-- <ScrollArea class="h-full flex-1 px-8 pr-7"> -->
+  <Filters {filters}></Filters>
+  <!-- </ScrollArea> -->
+</div>
+<!-- </Drawer.Content>
+</Drawer.Root> -->

@@ -1,6 +1,6 @@
 import { derived, writable } from 'svelte/store'
 
-export const pageStore = writable(false)
+export const isFilterOpen = writable(true)
 
 export const isOverlayOpen = writable(false)
 

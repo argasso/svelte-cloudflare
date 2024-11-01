@@ -1,7 +1,11 @@
 import { fontFamily } from 'tailwindcss/defaultTheme'
+const colors = require('tailwindcss/colors')
 
 /** @type {import('tailwindcss').Config} */
 const config = {
+  // future: {
+  //   respectDefaultRingColorOpacity: true,
+  // },
   darkMode: ['class'],
   content: ['./src/**/*.{html,js,svelte,ts}'],
   safelist: ['dark'],
@@ -23,6 +27,10 @@ const config = {
         // '2xl': '1700px'
       },
       colors: {
+        transparent: 'transparent',
+        current: 'currentColor',
+        black: colors.black,
+        white: colors.white,
         border: 'hsl(var(--border) / <alpha-value>)',
         input: 'hsl(var(--input) / <alpha-value>)',
         ring: 'hsl(var(--ring) / <alpha-value>)',
@@ -56,6 +64,22 @@ const config = {
           DEFAULT: 'hsl(var(--card) / <alpha-value>)',
           foreground: 'hsl(var(--card-foreground) / <alpha-value>)',
         },
+        argasso: {
+          DEFAULT: '#660028',
+          50: '#C2004C',
+          100: '#B80048',
+          200: '#A30040',
+          300: '#8F0038',
+          400: '#7A0030',
+          500: '#660028',
+          600: '#520020',
+          700: '#3D0018',
+          800: '#290010',
+          900: '#140008',
+        },
+      },
+      ringColor: {
+        DEFAULT: '#660028',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -70,6 +94,7 @@ const config = {
       },
     },
   },
+  plugins: [require('@tailwindcss/forms')],
 }
 
 export default config

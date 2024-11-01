@@ -2,7 +2,9 @@
   import { getShortValue, type EnhancedFilter } from './shopifyFilters'
   import ListFilterItem from './ListFilterItem.svelte'
 
+  export let formId: string
   export let filter: EnhancedFilter
+  export let requestSubmit
 
   let size = 10
   let value = ''
@@ -21,6 +23,8 @@
       class={visible.includes(getShortValue(item)) ? '' : 'hidden'}
       key={filter.key}
       {item}
+      {formId}
+      {requestSubmit}
     />
   {/each}
 </ul>

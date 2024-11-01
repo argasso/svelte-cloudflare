@@ -84,10 +84,7 @@ export const cartLoad = async (event: ServerLoadEvent | RequestEvent) => {
       { fetch },
     )
     if (cartResponse.data?.cart) {
-      console.log('Has cart')
       if (!isCartExpired(cartResponse.data.cart.updatedAt)) {
-        console.log('Not expired, returning')
-
         return {
           cart: cartResponse.data?.cart,
         }

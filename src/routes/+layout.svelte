@@ -1,17 +1,17 @@
 <script lang="ts">
   // import { browser } from '$app/environment'
   import Footer from '$lib/components/Footer.svelte'
-  import LightSwitch from '$lib/components/LightSwitch.svelte'
-  import MobileNav from '$lib/components/MobileNav.svelte'
+  // import LightSwitch from '$lib/components/LightSwitch.svelte'
+  // import MobileNav from '$lib/components/MobileNav.svelte'
   import NavLink from '$lib/components/NavLink.svelte'
   import NavMenuMega from '$lib/components/NavMenuMega.svelte'
   import Logo from '$lib/components/logo/Logo.svelte'
-  import Cart from '$lib/components/Cart.svelte'
+  // import Cart from '$lib/components/Cart.svelte'
   // import ShopifySearch from '$lib/components/shopify/ShopifySearch.svelte'
-  import { Toaster } from 'svelte-sonner'
+  // import { Toaster } from 'svelte-sonner'
   // import { initiateCart, refreshCart } from '$lib/shopify'
   // import { getCart, isCartOpen, noScroll } from '$lib/stores/store'
-  import { ModeWatcher } from 'mode-watcher'
+  // import { ModeWatcher } from 'mode-watcher'
   import { onMount } from 'svelte'
 
   import '../app.css'
@@ -47,7 +47,7 @@
       <nav class="flex items-stretch gap-4">
         {#if menu}
           <div class="flex items-center md:hidden">
-            <MobileNav {menu} />
+            <!-- <MobileNav {menu} /> -->
           </div>
         {/if}
         <NavLink href="/" exact={true}>
@@ -59,8 +59,8 @@
       </nav>
       <nav class="flex shrink-0 items-center gap-0">
         <!-- <ShopifySearch />-->
-        <LightSwitch />
-        <Cart />
+        <!-- <LightSwitch /> -->
+        <!-- <Cart /> -->
       </nav>
     </div>
   </header>
@@ -72,6 +72,6 @@
   <Footer />
 </div>
 
-<Toaster />
+<!-- <Toaster /> -->
 
-<ModeWatcher />
+<!-- <ModeWatcher /> -->

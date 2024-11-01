@@ -23,38 +23,32 @@
 
   let timer: NodeJS.Timeout
 
-  function debouncedQuery() {
-    clearTimeout(timer)
-    timer = setTimeout(setQuery, 500)
-  }
+  // function debouncedQuery() {
+  //   clearTimeout(timer)
+  //   timer = setTimeout(setQuery, 500)
+  // }
 
   function setQuery() {
-    if (unset) {
-      $query = []
-    } else {
-      $query = [...range.map(String)]
-    }
+    // if (unset) {
+    //   $query = []
+    // } else {
+    //   $query = [...range.map(String)]
+    // }
     console.log('setQuery', $query, range, unset)
   }
 
   function resetRange() {
     console.log('resetRange')
 
-    if (!range.includes(min) || !range.includes(max)) {
-      range = [min, max]
-    }
+    // if (!range.includes(min) || !range.includes(max)) {
+    //   range = [min, max]
+    // }
   }
 </script>
 
 <div class="pb-2">
   <div class:unset class="p-2">
-    <Slider
-      bind:value={range}
-      {min}
-      {max}
-      step={1}
-      on:change={(v) => console.log('slider change', v)}
-    />
+    <Slider bind:value={range} {min} {max} step={1} />
   </div>
   <div class="flex justify-between">
     <div class="w-20">
