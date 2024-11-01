@@ -51,7 +51,6 @@
     "svelte-sonner": "^0.3.28",
     "tailwind-merge": "^2.5.3",
     "tailwind-variants": "^0.2.1",
-    "vaul-svelte": "^0.3.2",
-    "winduum": "^2.0.2"
+    "vaul-svelte": "^0.3.2"
   }
 }
