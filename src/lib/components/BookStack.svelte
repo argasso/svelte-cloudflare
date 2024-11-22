@@ -1,59 +1,13 @@
-<script lang="ts" context="module">
-  export const bookStackFragment = graphql(`
-    fragment BookStackFragment on Metaobject @_unmask {
-      books: field(key: "books") {
-        references(first: 10) {
-          nodes {
-            ... on Product {
-              title
-              images(first: 1) {
-                nodes {
-                  url
-                  altText
-                  height
-                  width
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `)
-</script>
-
 <script lang="ts">
-  import { graphql, type FragmentOf } from '../../graphql'
-  import { getByType, isType } from '$lib'
+  import { isType } from '$lib'
+  import type { TBookStackFragment } from './BookStack.gql'
   import ShopifyImage from './image/ShopifyImage.svelte'
 
-  export let books: FragmentOf<typeof bookStackFragment> | null | undefined
+  export let books: TBookStackFragment | null | undefined
 
-  $: products = books.books?.references?.nodes.filter(isType('Product'))
-  $: left = 75 / (products.length ?? 1)
-  $: top = 150 / (products.length ?? 1)
-
-  graphql(`
-    fragment BookStackFragment on Metaobject {
-      books: field(key: "books") {
-        references(first: 10) {
-          nodes {
-            ... on Product {
-              title
-              images(first: 1) {
-                nodes {
-                  url
-                  altText
-                  height
-                  width
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `)
+  $: products = books?.books?.references?.nodes.filter(isType('Product'))
+  $: left = 75 / (products?.length ?? 1)
+  $: top = 150 / (products?.length ?? 1)
 </script>
 
 {#if products}

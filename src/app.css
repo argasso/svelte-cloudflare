@@ -20,8 +20,9 @@
   [type='checkbox'],
   [multiple],
   textarea,
-  select {
-    @apply hover:border-argasso-500 rounded-sm border-input;
+  select,
+  button {
+    @apply rounded-sm border border-input;
   }
 
   [type='text']:focus,
@@ -40,9 +41,11 @@
   [type='checkbox']:focus,
   [multiple]:focus,
   textarea:focus,
-  select:focus {
-    --tw-ring-color: hsl(336.47, 100%, 20%, 0);
-    border-color: hsl(336.47, 100%, 20%);
+  select:focus,
+  button:focus,
+  summary:focus {
+    /* --tw-ring-color: hsl(336.47, 100%, 20%, 0);
+    border-color: transparent; */
     @apply ring-0 ring-offset-0;
   }
 
@@ -62,10 +65,20 @@
   [type='checkbox']:focus-visible,
   [multiple]:focus-visible,
   textarea:focus-visible,
-  select:focus-visible {
+  select:focus-visible,
+  button:focus-visible,
+  summary:focus-visible {
     --tw-ring-color: hsl(336.47, 100%, 20%, 0.5);
-    border-color: hsl(336.47, 100%, 20%);
+    border-color: transparent;
     @apply ring-4 ring-offset-0;
+  }
+
+  details summary {
+    outline: none;
+  }
+
+  details summary::-webkit-details-marker {
+    display: none;
   }
 
   :root {
@@ -83,7 +96,7 @@
 
     --background: 336 0% 98%;
     --foreground: 336 0% 10%;
-    --card: 336 0% 91%;
+    --card: 336 0% 94%;
     --card-foreground: 336 0% 15%;
     --popover: 336 0% 95%;
     --popover-foreground: 336 95% 10%;
@@ -140,6 +153,10 @@
     @apply border-border;
   }
   body {
+    font-family: system-ui;
+    font-size: 1.125rem;
+    line-height: 1.6;
+
     @apply bg-background text-foreground;
   }
 }
@@ -171,6 +188,36 @@ h4 {
 
 p {
   margin-bottom: 12px;
+}
+
+button {
+  @apply inline-flex h-9 items-center justify-center gap-2 bg-transparent px-4 py-2 text-sm font-normal focus-visible:outline-none focus-visible:ring disabled:opacity-50;
+}
+
+button.primary {
+  @apply bg-primary text-primary-foreground shadow hover:bg-primary/90;
+}
+
+button.link {
+  @apply border-transparent text-primary underline-offset-4 hover:underline;
+}
+
+button.icon {
+  @apply h-9 w-9 border-transparent p-1;
+}
+
+button.button-sm {
+  @apply h-8 gap-1 rounded-md px-3 text-xs;
+}
+
+@layer components {
+  hr {
+    @apply h-[1px] w-full shrink-0 bg-border;
+  }
+
+  hr.vertical {
+    @apply my-2 h-auto min-h-full w-[1px] shrink-0 self-stretch bg-border;
+  }
 }
 
 main {

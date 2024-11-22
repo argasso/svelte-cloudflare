@@ -5,16 +5,16 @@
   import ChevronRight from 'lucide-svelte/icons/chevron-right'
   import type { HTMLAttributes } from 'svelte/elements'
   import { sizeOptions, sortOptions, type EnhancedFilter } from './filter/shopifyFilters'
-  import type { TProducts } from './ProductsGrid.svelte'
+  import type { TProducts } from './ProductsGrid.gql'
   import Toggle from './Toggle.svelte'
+  import Separator from './ui/separator/separator.svelte'
 
   interface $$Props extends HTMLAttributes<HTMLDivElement> {
     count: number
-    filters: EnhancedFilter[]
-    filtersOn: boolean
     pageInfo: TProducts['pageInfo']
     requestSubmit: () => void
   }
+
   let className: $$Props['class'] = undefined
   export { className as class }
   export let count: $$Props['count']
@@ -22,19 +22,19 @@
   export let requestSubmit: $$Props['requestSubmit']
 </script>
 
-<div class={cn('flex flex-wrap items-center gap-2 text-sm text-gray-600', className)}>
+<div class={cn('flex flex-wrap items-center gap-2 text-sm font-light text-foreground', className)}>
   <div class="mr-2">
     {#if pageInfo.totalCount > pageInfo.pageSize}
-      Visar {count} av {pageInfo.totalCount} böcker
+      Visar {count} av {pageInfo.totalCount} st
     {:else if count === 1}
-      Visar {count} bok
+      Visar {count} st
     {:else}
-      Visar {count} böcker
+      Visar {count} st
     {/if}
   </div>
 
   <select
-    class="block px-4 py-2 pr-8 text-sm leading-tight"
+    class="hidden px-4 py-2 pr-8 text-sm leading-tight md:block"
     name="sort"
     value={pageInfo.pageSort}
     on:change={requestSubmit}
@@ -45,7 +45,7 @@
   </select>
 
   <select
-    class="block px-4 py-2 pr-8 text-sm leading-tight"
+    class="hidden px-4 py-2 pr-8 text-sm leading-tight md:block"
     name="size"
     value={pageInfo.pageSize}
     on:change={requestSubmit}
@@ -55,36 +55,32 @@
     {/each}
   </select>
 
-  <div class="flex flex-1 justify-center gap-2">
-    <Button
-      id="before"
+  <div class="flex gap-2">
+    <button
+      class="bg-background px-4"
       type="submit"
       name="before"
       value={pageInfo.startCursor}
-      variant="outline"
-      class="gap-1 pl-2.5 font-normal"
       disabled={!pageInfo.hasPreviousPage}
     >
       <ChevronLeft class="h-4 w-4" />
-      <span>Föregående</span>
-    </Button>
+      <span class="hidden lg:inline-block">Föregående sida</span>
+    </button>
 
-    <Button
-      id="after"
+    <button
+      class="bg-background px-4"
       type="submit"
       name="after"
       value={pageInfo.endCursor}
-      variant="outline"
-      class="gap-1 pr-2.5  font-normal"
       disabled={!pageInfo.hasNextPage}
     >
-      <span>Nästa</span>
+      <span class="hidden lg:inline-block">Nästa sida</span>
       <ChevronRight class="h-4 w-4" />
-    </Button>
+    </button>
   </div>
-  <div class="flex justify-end">
+  <div class="flex flex-1 justify-end">
     <div class="js-only">
-      <Toggle name="filters" {requestSubmit}>Visa urvalsfilter</Toggle>
+      <Toggle name="filters">Urvalsfilter</Toggle>
     </div>
     <noscript>
       <Button type="submit" variant="outline">Filtrera</Button>

@@ -1,7 +1,7 @@
 import { error, type Action, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit'
 import { client } from '../client'
 import { graphql } from '../graphql'
-import { priceFragment } from './components/Price.svelte'
+import { priceFragment } from './components/Price.graphql'
 
 export const cartAddAction = '/cart?/cartAdd'
 export const cartUpdateAction = '/cart?/cartUpdate'

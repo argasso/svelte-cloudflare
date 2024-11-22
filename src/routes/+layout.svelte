@@ -1,7 +1,7 @@
 <script lang="ts">
   // import { browser } from '$app/environment'
   import Footer from '$lib/components/Footer.svelte'
-  // import LightSwitch from '$lib/components/LightSwitch.svelte'
+  import LightSwitch from '$lib/components/LightSwitch.svelte'
   // import MobileNav from '$lib/components/MobileNav.svelte'
   import NavLink from '$lib/components/NavLink.svelte'
   import NavMenuMega from '$lib/components/NavMenuMega.svelte'
@@ -11,7 +11,7 @@
   // import { Toaster } from 'svelte-sonner'
   // import { initiateCart, refreshCart } from '$lib/shopify'
   // import { getCart, isCartOpen, noScroll } from '$lib/stores/store'
-  // import { ModeWatcher } from 'mode-watcher'
+  import { ModeWatcher } from 'mode-watcher'
   import { onMount } from 'svelte'
 
   import '../app.css'
@@ -59,7 +59,7 @@
       </nav>
       <nav class="flex shrink-0 items-center gap-0">
         <!-- <ShopifySearch />-->
-        <!-- <LightSwitch /> -->
+        <LightSwitch />
         <!-- <Cart /> -->
       </nav>
     </div>
@@ -74,4 +74,4 @@
 
 <!-- <Toaster /> -->
 
-<!-- <ModeWatcher /> -->
+<ModeWatcher />

@@ -1,31 +1,12 @@
-<script lang="ts" context="module">
-  export const authorsFragment = graphql(`
-    fragment AuthorsFragment on Product @_unmask {
-      authors: metafield(namespace: "custom", key: "authors") {
-        references(first: 3) {
-          nodes {
-            ... on Metaobject {
-              id
-              handle
-              name: field(key: "name") {
-                value
-              }
-            }
-          }
-        }
-      }
-    }
-  `)
-</script>
-
 <script lang="ts">
   import { authorUrl, getByType, isType } from '$lib'
   import { graphql, type FragmentOf } from '../../graphql'
+  import type { TAuthors } from './Authors.graphql'
   // import Link from './Link.svelte'
 
   let className = ''
   export { className as class }
-  export let book: FragmentOf<typeof authorsFragment>
+  export let book: TAuthors
   export let one = false
 
   $: authors = book.authors?.references?.nodes.filter(isType('Metaobject')) ?? []

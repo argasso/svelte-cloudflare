@@ -19,7 +19,7 @@
   $: ({ id: variantId, price } = variants.nodes[0])
 </script>
 
-<div class:loading class="mt-auto w-48 opacity-100">
+<div class:loading class="mt-auto w-44 opacity-100">
   <div class="book relative grid w-40">
     <ShopifyImage class="col-start-1 row-start-1 rounded-r-sm bg-gray-100" {image} {width} />
     <a {href} class="book-overlay col-start-1 row-start-1" aria-label="Visa bok"></a>

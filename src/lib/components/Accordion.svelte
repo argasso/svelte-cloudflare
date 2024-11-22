@@ -13,11 +13,11 @@
 
 <details
   {name}
-  class="cursor-pointer transition-all [&_.left]:open:-rotate-45 [&_.right]:open:rotate-45"
+  class="cursor-pointer p-1 transition-all [&_.left]:open:-rotate-45 [&_.right]:open:rotate-45"
 >
   <summary
     class={cn(
-      'flex flex-1 items-center justify-between py-4 text-sm font-medium  hover:underline',
+      'flex flex-1 items-center justify-between rounded py-2 text-sm font-medium hover:underline focus-visible:ring',
       className,
     )}
   >

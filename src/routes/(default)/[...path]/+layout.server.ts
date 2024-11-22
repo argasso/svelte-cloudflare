@@ -1,7 +1,8 @@
 import { findMenuItem } from '$lib/menu.js'
 import { error } from '@sveltejs/kit'
-import { pageQuery } from '../../+page.svelte'
+import { pageQuery } from '$lib/gql/page.gql'
 import { client } from '../../../client'
+import { filtersQuery } from '$lib/components/filter/Filters.gql'
 
 export const load = async (event) => {
   const { url, parent } = event
@@ -23,8 +24,17 @@ export const load = async (event) => {
   // Links
   const links = findMenuItem(menu, url.pathname)?.children
 
+  // Filter
+  const filterResponse = await client.query(filtersQuery, {}, { fetch })
+  if (filterResponse.error) {
+    console.error('FiltersQuery failed', filterResponse.error)
+    error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
+  }
+  const initialFilters = filterResponse.data?.collection?.products.filters ?? []
+
   return {
     page,
     links,
+    initialFilters,
   }
 }

@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit'
 import { client } from '../client'
-import { pageQuery } from './+page.svelte'
+import { pageQuery } from '$lib/gql/page.gql'
 
 export async function load({ fetch }) {
   const pageResponse = await client.query(pageQuery, { handle: 'startsida' }, { fetch })

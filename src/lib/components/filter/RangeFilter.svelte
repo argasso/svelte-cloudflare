@@ -4,29 +4,27 @@
   import { getQueryStore } from '$lib/stores/URLSearchParamsStore'
 
   export let filter: EnhancedFilter
+  export let formId: string
+  export let requestSubmit: () => void
 
-  const key = getShortKey(filter.id) ?? 'price'
-  const query = getQueryStore(key)
+  $: console.log('filter', filter)
+  const [rangeMin, rangeMax, min, max] = filter.values[0].value
+    .split(' ')
+    .map((v) => parseInt(v, 10))
 
-  $: parsed = JSON.parse(filter.values[0].input) // as ProductFilter
-  $: initialRange = isPrice(parsed) ? parsed.price : { min: 0, max: 300 }
-  let min: number
-  $: min = min ?? initialRange.min
-  let max: number
-  $: max = max ?? initialRange.max
-
-  let range = $query?.length === 2 ? $query?.map((v) => parseFloat(v)) : [min, max]
+  let range = [rangeMin, rangeMax]
 
   $: unset = range[0] === min && range[1] === max
   $: range && debouncedQuery()
-  $: $query?.length !== 2 && resetRange()
+  //  $: $query?.length !== 2 && resetRange()
 
   let timer: NodeJS.Timeout
 
-  // function debouncedQuery() {
-  //   clearTimeout(timer)
-  //   timer = setTimeout(setQuery, 500)
-  // }
+  function debouncedQuery() {
+    console.log('in debounce')
+    clearTimeout(timer)
+    timer = setTimeout(requestSubmit, 500)
+  }
 
   function setQuery() {
     // if (unset) {
@@ -34,16 +32,16 @@
     // } else {
     //   $query = [...range.map(String)]
     // }
-    console.log('setQuery', $query, range, unset)
+    console.log('setQuery', range, unset)
   }
 
-  function resetRange() {
-    console.log('resetRange')
+  // function resetRange() {
+  //   console.log('resetRange')
 
-    // if (!range.includes(min) || !range.includes(max)) {
-    //   range = [min, max]
-    // }
-  }
+  //   // if (!range.includes(min) || !range.includes(max)) {
+  //   //   range = [min, max]
+  //   // }
+  // }
 </script>
 
 <div class="pb-2">
@@ -59,6 +57,7 @@
         type="number"
         name="min"
         id={`${filter.id}-min`}
+        form={formId}
         bind:value={range[0]}
       />
     </div>
@@ -70,6 +69,7 @@
         type="number"
         name="max"
         id={`${filter.id}-max`}
+        form={formId}
         bind:value={range[1]}
       />
     </div>

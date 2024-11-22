@@ -4,7 +4,7 @@
 
   export let data
 
-  $: ({ products, filters, filtersOn } = data)
+  $: ({ products, filters } = data)
 
   // const cartSubmitFunction: SubmitFunction = () => {
   // return async ({ result }) => {
@@ -25,7 +25,9 @@
   // }
 </script>
 
-<ProductsGrid {products} {filters} {filtersOn} />
+{#if products && filters}
+  <ProductsGrid {products} {filters} />
+{/if}
 
 <!-- <div class="container mb-10 flex flex-col gap-4 lg:flex-row"> -->
 <!-- <aside class="flex-0 hidden w-64 min-w-64 md:block">

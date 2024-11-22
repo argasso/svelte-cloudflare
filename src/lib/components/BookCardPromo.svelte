@@ -1,52 +1,12 @@
-<script lang="ts" context="module">
-  export const bookPromo = graphql(
-    `
-      fragment BookPromo on Product @_unmask {
-        id
-        title
-        handle
-        descriptionHtml
-        images(first: 1) {
-          nodes {
-            url
-            altText
-            height
-            width
-          }
-        }
-        ...AuthorsFragment
-        variants(first: 1) {
-          nodes {
-            price {
-              ...PriceFragment
-            }
-            categories: metafield(namespace: "book", key: "category") {
-              references(first: 5) {
-                nodes {
-                  ... on Metaobject {
-                    id
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    `,
-    [authorsFragment, priceFragment],
-  )
-</script>
-
 <script lang="ts">
   import { bookUrl, isNonNil, isType } from '$lib'
   import { flatten, type MenuItem } from '$lib/menu'
-  import { graphql, type FragmentOf } from '../../graphql'
-  import Authors, { authorsFragment } from './Authors.svelte'
+  import Authors from './Authors.svelte'
+  import type { TBookPromo } from './BookCardPromo.gql'
   import BookImage from './image/BookImage.svelte'
   import Pill from './Pill.svelte'
-  import { priceFragment } from './Price.svelte'
 
-  export let book: FragmentOf<typeof bookPromo>
+  export let book: TBookPromo
   export let menu: MenuItem | undefined
 
   $: variant = book?.variants.nodes?.[0]
@@ -58,7 +18,7 @@
     .filter(isNonNil)
 </script>
 
-<div class="flex flex-row items-start gap-6">
+<div class="flex flex-col items-start gap-6 xs:flex-row">
   <BookImage href={bookUrl(book.handle)} image={book.images.nodes[0]} width={128} />
   <div class="flex-0 flex flex-col items-start justify-center">
     <p class="my-0 font-serif text-xs">

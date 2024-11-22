@@ -1,8 +1,8 @@
 import { isNonNil } from '$lib'
 import { flatten, type MenuItem } from '$lib/menu'
 import type { ResultOf, VariablesOf } from '../../../graphql'
-import type { TProductsQuery } from '../ProductsGrid.svelte'
-import type { TFilterQuery } from './Filters.svelte'
+import type { TProductsQuery } from '../ProductsGrid.gql'
+import type { TFilterQuery } from './Filters.gql'
 
 export type Filter = NonNullable<
   ResultOf<TFilterQuery>['collection']
@@ -383,7 +383,7 @@ export type EnhancedFilter = Omit<Filter, 'values'> & {
 export function getEnhancedFilter(
   filter: Filter,
   searchParams: URLSearchParams,
-  initialFilters?: Filter[],
+  initialFilters: Filter[],
 ): EnhancedFilter {
   const filterType = filter.type
   const filterLabel = filter.label
@@ -392,10 +392,8 @@ export function getEnhancedFilter(
   const values = filter.values.map((v) => {
     const searchValues = searchParams.getAll(key)
     if (filterType === 'PRICE_RANGE') {
-      const input =
-        initialFilters?.find((f) => f.id === 'filter.v.price')?.values.at(0)?.input ?? v.input
-      const value = getPriceRange(input, searchValues).join('.')
-      return { ...v, filterType, filterLabel, key, value, active, input }
+      const value = getPriceRange(searchValues, initialFilters).join(' ')
+      return { ...v, filterType, filterLabel, key, value, active }
     } else {
       const value = getShortValue(v)
       return {
@@ -416,13 +414,16 @@ export function getEnhancedFilter(
   }
 }
 
-function getPriceRange(input: string, queryValues: string[]): string[] {
+function getPriceRange(queryValues: string[], initialFilters?: Filter[]): string[] {
+  const input = initialFilters?.find((f) => f.id === 'filter.v.price')?.values.at(0)?.input
   const parsed = JSON.parse(input) as ProductFilter
   if (isPrice(parsed)) {
+    const initialMin = `${parsed.price.min ?? 0}`
+    const initialMax = `${parsed.price.max ?? 300}`
     const [min, max] = queryValues.sort()
-    const minValue = `${min ?? parsed.price.min ?? 0}`
-    const maxValue = `${max ?? parsed.price.max ?? 300}`
-    return [minValue, maxValue]
+    const minValue = min ?? initialMin
+    const maxValue = max ?? initialMax
+    return [minValue, maxValue, initialMin, initialMax]
   } else {
     console.warn('missing price in filter input value', input)
     return []
@@ -432,7 +433,7 @@ function getPriceRange(input: string, queryValues: string[]): string[] {
 export function getCategoryFilterAsTree(
   filter: EnhancedFilter,
   hierarchy: MenuItem[],
-  categoryId: string | undefined,
+  categoryId?: string,
 ): EnhancedFilter {
   if (filter.id !== 'filter.v.m.book.category') {
     return filter
@@ -478,7 +479,7 @@ export function getActiveShopifyFilters(
   )
 
   return filters
-    .map((f) => getEnhancedFilter(f, searchParams))
+    .map((f) => getEnhancedFilter(f, searchParams, filters))
     .flatMap((f) =>
       f.values
         .filter((v) => v.active)

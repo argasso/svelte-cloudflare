@@ -1,39 +1,13 @@
-<script lang="ts" context="module">
-  export const sectionNewsFragment = graphql(`
-    fragment SectionNewsFragment on Metaobject @_unmask {
-      id
-      title: field(key: "title") {
-        value
-      }
-      text: field(key: "text") {
-        value
-      }
-      image: field(key: "image") {
-        reference {
-          ... on MediaImage {
-            image {
-              altText
-              url
-              width
-              height
-            }
-          }
-        }
-      }
-    }
-  `)
-</script>
-
 <script lang="ts">
   import { getByType } from '$lib'
-  import { convertSchemaToHtml } from '$lib/richtext/shopifyRichText'
   import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
+  import { convertSchemaToHtml } from '$lib/richtext/shopifyRichText'
   import Section from './Section.svelte'
-  import { graphql, type FragmentOf } from '../../../graphql'
+  import type { TSectionNews } from './SectionNews.gql'
 
   let className = ''
   export { className as class }
-  export let section: FragmentOf<typeof sectionNewsFragment>
+  export let section: TSectionNews
 
   $: html = section.text?.value ? convertSchemaToHtml(JSON.parse(section.text.value)) : undefined
 </script>

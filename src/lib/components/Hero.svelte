@@ -1,44 +1,10 @@
-<script lang="ts" context="module">
-  export const heroFragment = graphql(
-    `
-      fragment HeroFragment on Metaobject @_unmask {
-        pageTop: field(key: "page_top") {
-          reference {
-            ... on Metaobject {
-              type
-              slides: field(key: "slides") {
-                references(first: 10) {
-                  nodes {
-                    ... on Metaobject {
-                      type
-                      title: field(key: "title") {
-                        value
-                      }
-                      text: field(key: "text") {
-                        value
-                      }
-                      ...BookStackFragment
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    `,
-    [bookStackFragment],
-  )
-</script>
-
 <script lang="ts">
-  import { isType, getByType } from '$lib'
-  import { bookStackFragment } from './BookStack.svelte'
-  import { graphql, type FragmentOf } from '../../graphql'
+  import { getByType, isType } from '$lib'
+  import type { THeroFragment } from './Hero.gql'
 
   export let title: string | null = 'Upplev böcker från Argasso bokförlag'
   export let intro: string = 'Lättare att läsa för barn och ungdomar'
-  export let pageTop: FragmentOf<typeof heroFragment>['pageTop'] | null | undefined
+  export let pageTop: THeroFragment['pageTop'] | null | undefined
 
   $: titleParts = title?.split('Argasso') ?? []
   $: slides = getByType('Metaobject', pageTop?.reference)?.slides?.references?.nodes.filter(

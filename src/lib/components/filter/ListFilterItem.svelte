@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { getQueryStore } from '$lib/stores/URLSearchParamsStore'
-  import { slide } from 'svelte/transition'
   import ReadingLevel from '$lib/components/ReadingLevel.svelte'
-  import { getDecendants, type EnhancedFilterItem } from './shopifyFilters'
+  import { slide } from 'svelte/transition'
+  import { type EnhancedFilterItem } from './shopifyFilters'
 
   let className = ''
   export { className as class }
@@ -12,21 +11,6 @@
   export let formId: string
 
   $: ({ label, value, count, active: checked, children = [] } = item)
-
-  $: decendantValues = getDecendants(item).map((i) => i.value)
-
-  function handleChange(event: any) {
-    console.log('handleChange begin')
-
-    // const { name, checked } = event.target as HTMLInputElement
-    // if (checked) {
-    //   query.update((values) => [...values, name])
-    // } else {
-    //   query.update((values) => values.filter((v) => !decendantValues.includes(v)))
-    // }
-    console.log('handleChange end')
-  }
-  // $: console.log('checked', checked)
 </script>
 
 <li class={className}>

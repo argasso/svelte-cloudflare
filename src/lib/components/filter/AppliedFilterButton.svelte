@@ -34,10 +34,12 @@
 </script>
 
 <Button
-  on:click={remove}
   size="sm"
   variant="default"
-  class="group h-6 rounded-full p-2 pl-3 focus-visible:ring"
+  class="group h-6 rounded-full border-transparent p-2 pl-3 focus-visible:ring"
+  type="submit"
+  name="reset"
+  value={filter.id}
 >
   {label}
   <Cross

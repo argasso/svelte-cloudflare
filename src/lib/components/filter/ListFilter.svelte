@@ -2,8 +2,8 @@
   import { getShortValue, type EnhancedFilter } from './shopifyFilters'
   import ListFilterItem from './ListFilterItem.svelte'
 
-  export let formId: string
   export let filter: EnhancedFilter
+  export let formId: string
   export let requestSubmit
 
   let size = 10

@@ -1,37 +1,13 @@
-<script lang="ts" context="module">
-  export const sektionBokgalleri = graphql(
-    `
-      fragment SektionBokgalleri on Metaobject @_unmask {
-        id
-        rubrik: field(key: "rubrik") {
-          value
-        }
-        visa: field(key: "visa_antal") {
-          value
-        }
-        bocker: field(key: "bocker") {
-          references(first: 10) {
-            nodes {
-              ...BookPromo
-            }
-          }
-        }
-      }
-    `,
-    [bookPromo],
-  )
-</script>
-
 <script lang="ts">
   import { isType } from '$lib'
   import type { MenuItem } from '$lib/menu'
-  import BookCardPromo, { bookPromo } from '../BookCardPromo.svelte'
+  import BookCardPromo from '../BookCardPromo.svelte'
   import Section from './Section.svelte'
-  import { graphql, type FragmentOf } from '../../../graphql'
+  import type { TSektionBokgalleri } from './SektionBokgalleri.gql'
 
   let className = ''
   export { className as class }
-  export let section: FragmentOf<typeof sektionBokgalleri>
+  export let section: TSektionBokgalleri
   export let menu: MenuItem | undefined
 
   $: products = section.bocker?.references?.nodes.filter(isType('Product'))
