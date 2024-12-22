@@ -14,21 +14,13 @@
   function getLabel(filter: EnhancedFilterItem) {
     switch (filter.filterType) {
       case 'PRICE_RANGE':
-        return `${filter.label} ${filter.value.replace('.', ' - ')}`
+        return `${filter.label} ${filter.value.split(' ').slice(0, 2).join(' - ')}`
       case 'BOOLEAN':
         return `${filter.filterLabel} ${filter.label}`
       default:
         return filter.key === 'reading_level'
           ? `${filter.filterLabel} ${filter.label}`
           : filter.label
-    }
-  }
-
-  function remove() {
-    if (filter.filterType === 'PRICE_RANGE') {
-      query.update(() => [])
-    } else {
-      query.update((values) => values.filter((v) => !decendantValues.includes(v)))
     }
   }
 </script>

@@ -33,8 +33,8 @@
     >
       <div class="col-span-2">
         <form bind:this={form} data-sveltekit-keepfocus data-sveltekit-noscroll id={formId}>
-          <ProductGridToolbar {count} {filters} {pageInfo} {requestSubmit} />
-          <div class="flex flex-wrap items-center gap-2">
+          <ProductGridToolbar {count} {pageInfo} {requestSubmit} />
+          <div class="js-only flex min-h-10 flex-wrap items-center justify-end gap-2">
             {#each appliedFilters as filter (filter.id)}
               <AppliedFilterButton {filter}></AppliedFilterButton>
             {/each}

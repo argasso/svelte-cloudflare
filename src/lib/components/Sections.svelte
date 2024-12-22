@@ -9,6 +9,7 @@
   export let menu: MenuItem | undefined
 
   $: sections = page?.sections?.references?.nodes.filter(isType('Metaobject')) ?? []
+  $: console.log(sections)
 </script>
 
 {#each sections as section, index}

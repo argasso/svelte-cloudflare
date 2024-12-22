@@ -60,7 +60,6 @@ export const load = async (event) => {
   if (category) {
     searchParams.append('category', shortGID(category.id))
   }
-  console.log(initialFilters)
 
   const filters = getActiveShopifyFilters(initialFilters, menu, searchParams)
 

@@ -1,7 +1,18 @@
 import { graphql, type FragmentOf } from '../../graphql'
 
-export const seoFragment = graphql(`
-  fragment SeoFragment on Metaobject @_unmask {
+export const productSeoFragment = graphql(`
+  fragment ProductSeoFragment on Product @_unmask {
+    seo {
+      title
+      description
+    }
+  }
+`)
+
+export type TProductSeoFragment = FragmentOf<typeof productSeoFragment>
+
+export const metaobjecSeoFragment = graphql(`
+  fragment MetaobjectSeoFragment on Metaobject @_unmask {
     seo {
       title {
         value
@@ -13,4 +24,4 @@ export const seoFragment = graphql(`
   }
 `)
 
-export type TSeoFragment = FragmentOf<typeof seoFragment>
+export type TMetaobjectSeoFragment = FragmentOf<typeof metaobjecSeoFragment>

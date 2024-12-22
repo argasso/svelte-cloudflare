@@ -16,6 +16,8 @@
 
   import '../app.css'
   import { getCart } from '$lib/stores/cartStore'
+  import Cart from '$lib/components/Cart.svelte'
+  import { Toaster } from 'svelte-sonner'
 
   export let data
 
@@ -39,7 +41,7 @@
 <div data-vaul-drawer-wrapper class="flex h-dvh flex-col">
   <header
     class:scrolled={scrollY > 0}
-    class="gradient sticky top-0 z-10 flex items-stretch font-sans"
+    class="gradient flex items-stretch text-white"
     style:transform="translateY({-top}px)"
     bind:this={headerEl}
   >
@@ -53,14 +55,12 @@
         <NavLink href="/" exact={true}>
           <Logo class="h-10 w-28" />
         </NavLink>
-        <div class="hidden md:flex">
-          <NavMenuMega {menuItems}></NavMenuMega>
-        </div>
+        <NavMenuMega {menuItems} class="hidden md:flex" />
       </nav>
-      <nav class="flex shrink-0 items-center gap-0">
+      <nav class="flex shrink-0 items-center gap-1">
         <!-- <ShopifySearch />-->
         <LightSwitch />
-        <!-- <Cart /> -->
+        <Cart />
       </nav>
     </div>
   </header>
@@ -72,6 +72,6 @@
   <Footer />
 </div>
 
-<!-- <Toaster /> -->
+<Toaster />
 
 <ModeWatcher />

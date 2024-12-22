@@ -1,6 +1,5 @@
 <script lang="ts">
   import ProductsGrid from '$lib/components/ProductsGrid.svelte'
-  // import type { SubmitFunction } from './$types'
 
   export let data
 

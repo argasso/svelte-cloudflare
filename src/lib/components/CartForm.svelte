@@ -3,6 +3,8 @@
   import { cartSubmitFunction } from '$lib/cartClient'
   import type { cartFragment } from '$lib/cartService'
   import type { FragmentOf } from '../../graphql'
+  import Authors from './Authors.svelte'
+  import Icons from './Icons.svelte'
   import Cart from './icons/Cart.svelte'
   import Minus from './icons/Minus.svelte'
   import Plus from './icons/Plus.svelte'
@@ -23,15 +25,20 @@
       <hr />
     {/if}
 
-    <div class="flex w-full gap-4 py-3">
+    <div class="flex w-full gap-4 py-5">
       <div class="self-start">
         <BookImage width={64} image={item.node.merchandise.product.images.edges[0]?.node} />
       </div>
-      <div class="flex flex-1 flex-col justify-between py-2">
+      <div class="flex flex-1 flex-col justify-between">
         <div class="flex-1">
+          <Authors book={item.node.merchandise.product}></Authors>
           <h3 class="m-0 text-base font-semibold">
             {item.node.merchandise.product.title}
+            <span class="text-xs font-normal text-muted-foreground"
+              >- {item.node.merchandise.binding?.value}, {item.node.merchandise.barcode}
+            </span>
           </h3>
+
           {#if item.node.merchandise.title !== 'Default Title'}
             <p class="m-0 text-sm">{item.node.merchandise.title}</p>
           {/if}
@@ -81,7 +88,7 @@
               <Trash class="h-5 w-5" />
             </Button>
             <div class="ml-auto">
-              <Price class="m-0" price={item.node.cost.totalAmount}></Price>
+              <Price class="m-0 font-bold" price={item.node.cost.totalAmount}></Price>
             </div>
           </div>
         </form>
@@ -90,14 +97,27 @@
   {/each}
   {#if showTotal}
     <hr />
-    <div class="my-4 flex flex-row justify-between px-8 text-right">
+    <div class="my-4 flex flex-row justify-between text-right">
       <h2 class="m-0 text-base">Delsumma inkl. moms</h2>
-      <Price price={cart?.cost.totalAmount} />
+      <Price class="font-bold" price={cart?.cost.totalAmount} />
     </div>
-    <p class="mx-8 text-xs italic">
+    <p class="text-xs italic">
       Fraktkostnad beräknas i nästa steg. Alltid gratis frakt över 600 kr.
     </p>
   {/if}
+  <div class="flex flex-col justify-end gap-3 py-10 sm:flex-row">
+    <Button
+      on:click={() => {
+        window.history.back()
+      }}
+      variant="outline"
+      size="lg">Fortsätt handla</Button
+    >
+    <Button href={cart.checkoutUrl} target="_self" size="lg">
+      <span> Till betalning </span>
+      <Icons type="cart-checkout" class="ml-3" />
+    </Button>
+  </div>
 {:else}
   <div class="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
     <div

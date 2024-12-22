@@ -34,6 +34,10 @@ export function getByType<T extends Typename, N extends { __typename?: Typename 
   return (isType(typename)(node) ? node : undefined) as Extract<N, { __typename?: T }> | undefined
 }
 
+export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined
+}
+
 const months = [
   'januari',
   'februari',
@@ -48,11 +52,13 @@ const months = [
   'november',
   'december',
 ]
-export function publishMonth(date: string) {
-  const d = new Date(date)
-  const year = d.getFullYear()
-  const month = months[d.getMonth()]
-  return `${month} ${year}`
+export function publishMonth(date?: string) {
+  if (date) {
+    const d = new Date(date)
+    const year = d.getFullYear()
+    const month = months[d.getMonth()]
+    return `${month} ${year}`
+  }
 }
 
 export function parseJSON(input: string | null) {

@@ -1,10 +1,7 @@
 import { mainMenuQuery } from '$lib/components/NavMenu.gql'
-import { filtersQuery } from '$lib/components/filter/Filters.gql'
 import { makeMenu } from '$lib/menu'
 import { error } from '@sveltejs/kit'
 import { client } from '../client'
-
-export const prerender = true
 
 export async function load({ fetch }) {
   const mainMenuResponse = await client.query(mainMenuQuery, {}, { fetch })
@@ -16,7 +13,7 @@ export async function load({ fetch }) {
   const menu = makeMenu(mainMenuResponse.data?.menu)
 
   return {
-    maxage: 3600,
+    // maxage: 3600,
     menu,
   }
 }

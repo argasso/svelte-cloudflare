@@ -15,7 +15,6 @@
     <NavLink {href}>{name}</NavLink>
     {#if children?.length > 0}
       <Button
-        aria-label="Meny - {name}"
         variant="header"
         size="icon"
         popovertarget={id}
@@ -45,9 +44,9 @@
         {id}
         class="container absolute inset-y-auto top-[var(--header-height)] w-full bg-transparent drop-shadow-md"
       >
-        <div class="flex grow items-stretch gap-2 rounded-lg bg-muted p-2 text-primary">
+        <div class="flex grow items-stretch gap-2 rounded bg-muted p-2 text-primary">
           {#each children as child}
-            <ul class="grow list-none rounded-lg bg-background p-3">
+            <ul class="grow list-none rounded bg-background p-3">
               <NavMenuMegaItem
                 class="text-base font-bold"
                 menuItem={child}

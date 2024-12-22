@@ -388,12 +388,22 @@ export function getEnhancedFilter(
   const filterType = filter.type
   const filterLabel = filter.label
   const key = getShortKey(filter.id)
-  const active = searchParams.has(key)
+  let active = searchParams.has(key)
   const values = filter.values.map((v) => {
     const searchValues = searchParams.getAll(key)
     if (filterType === 'PRICE_RANGE') {
-      const value = getPriceRange(searchValues, initialFilters).join(' ')
-      return { ...v, filterType, filterLabel, key, value, active }
+      const prices = getPriceRange(searchValues, initialFilters)
+      const value = prices.join(' ')
+      const [min, max, initialMin, initialMax] = prices
+      active = min != initialMin || max != initialMax
+      return {
+        ...v,
+        filterType,
+        filterLabel,
+        key,
+        value,
+        active,
+      }
     } else {
       const value = getShortValue(v)
       return {
@@ -496,7 +506,8 @@ export function getActiveShopifyFilters(
               const min = Math.min(...numbers)
               const max = Math.max(...numbers)
               const filter = { price: { min, max } }
-              return [filter]
+              const isApplied = min != parsed.price?.min || max != parsed.price.max
+              return isApplied ? [filter] : []
             } else {
               console.log('expected 2 values for price', query)
               return []

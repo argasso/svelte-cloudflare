@@ -7,7 +7,6 @@
   import { sizeOptions, sortOptions, type EnhancedFilter } from './filter/shopifyFilters'
   import type { TProducts } from './ProductsGrid.gql'
   import Toggle from './Toggle.svelte'
-  import Separator from './ui/separator/separator.svelte'
 
   interface $$Props extends HTMLAttributes<HTMLDivElement> {
     count: number
@@ -34,7 +33,7 @@
   </div>
 
   <select
-    class="hidden px-4 py-2 pr-8 text-sm leading-tight md:block"
+    class="hidden bg-background px-4 py-2 pr-8 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5 md:block"
     name="sort"
     value={pageInfo.pageSort}
     on:change={requestSubmit}
@@ -45,7 +44,7 @@
   </select>
 
   <select
-    class="hidden px-4 py-2 pr-8 text-sm leading-tight md:block"
+    class="hidden bg-background px-4 py-2 pr-8 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5 md:block"
     name="size"
     value={pageInfo.pageSize}
     on:change={requestSubmit}
@@ -56,19 +55,19 @@
   </select>
 
   <div class="flex gap-2">
-    <button
-      class="bg-background px-4"
-      type="submit"
+    <Button
+      class="font-light"
+      variant="outline"
       name="before"
       value={pageInfo.startCursor}
       disabled={!pageInfo.hasPreviousPage}
     >
       <ChevronLeft class="h-4 w-4" />
       <span class="hidden lg:inline-block">Föregående sida</span>
-    </button>
+    </Button>
 
-    <button
-      class="bg-background px-4"
+    <Button
+      variant="outline"
       type="submit"
       name="after"
       value={pageInfo.endCursor}
@@ -76,14 +75,14 @@
     >
       <span class="hidden lg:inline-block">Nästa sida</span>
       <ChevronRight class="h-4 w-4" />
-    </button>
+    </Button>
   </div>
   <div class="flex flex-1 justify-end">
     <div class="js-only">
       <Toggle name="filters">Urvalsfilter</Toggle>
     </div>
     <noscript>
-      <Button type="submit" variant="outline">Filtrera</Button>
+      <Button type="submit" name="reset" value="filters" variant="default">Rensa urval</Button>
     </noscript>
   </div>
 </div>

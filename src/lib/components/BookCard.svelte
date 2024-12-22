@@ -1,12 +1,9 @@
 <script lang="ts">
   import { bookUrl } from '$lib'
-  import Authors from './Authors.svelte'
-  import Price from './Price.svelte'
-  import Icons from '$lib/components/Icons.svelte'
   import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
-  import { enhance } from '$app/forms'
-  import { Button } from './ui/button'
+  import Authors from './Authors.svelte'
   import BuyButton from './BuyButton.svelte'
+  import Price from './Price.svelte'
 
   export let bookThumb: any
   export let width: number = 160
@@ -35,7 +32,7 @@
   </div>
   <Price {price} class="text-xs" />
   <div class="h-28 pt-3">
-    <Authors book={bookThumb} one class="uppercase" />
+    <Authors book={bookThumb} one />
     <a {href} class="text-foreground hover:underline">
       <h3 class="my-0 text-base font-semibold leading-6">{title}</h3>
     </a>

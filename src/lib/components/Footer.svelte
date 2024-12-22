@@ -1,8 +1,7 @@
 <script lang="ts">
   import Logo from '$lib/components/logo/Logo.svelte'
+  import Button from './Button.svelte'
   import Wave from './Wave.svelte'
-  // import { Button } from './ui/button'
-  // import { Input } from './ui/input'
 </script>
 
 <Wave class="gradient-inverted" inversed />
@@ -10,7 +9,7 @@
   <div class="container">
     <div class="order-first flex flex-wrap text-center md:text-left">
       <nav class="mb-10 w-full md:w-1/2 lg:w-1/3">
-        <h3>Kontaktuppgifter</h3>
+        <h2>Kontaktuppgifter</h2>
         <ul class="list-none p-0 text-red-100">
           <li class="mb-2">
             Lasarettsgatan 12
@@ -22,7 +21,7 @@
         </ul>
       </nav>
       <nav class="mb-10 w-full md:w-1/2 lg:w-1/3">
-        <h3>Villkor</h3>
+        <h2>Villkor</h2>
         <ul class="list-none p-0 text-red-100">
           <li class="mb-2">
             <a href="/integritetspolicy" class="mb-2 text-red-100">
@@ -38,7 +37,7 @@
         </ul>
       </nav>
       <div class="mb-10 w-full md:w-1/2 lg:w-1/3">
-        <h3><label for="mce-EMAIL">Nyhetsbrev</label></h3>
+        <h2><label for="mce-EMAIL">Nyhetsbrev</label></h2>
         <div
           class="flex flex-wrap items-end justify-center md:flex-nowrap md:justify-start lg:flex-wrap xl:flex-nowrap"
         >
@@ -51,7 +50,7 @@
               target="_blank"
               class="flex w-full max-w-sm items-center space-x-2"
             >
-              <!-- <Input
+              <input
                 id="mce-EMAIL"
                 name="EMAIL"
                 type="email"
@@ -63,7 +62,7 @@
                 name="subscribe"
                 type="submit"
                 class="drop-shadow-md">Prenumerera</Button
-              > -->
+              >
             </form>
           </div>
         </div>

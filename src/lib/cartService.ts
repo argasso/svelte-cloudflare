@@ -2,6 +2,7 @@ import { error, type Action, type RequestEvent, type ServerLoadEvent } from '@sv
 import { client } from '../client'
 import { graphql } from '../graphql'
 import { priceFragment } from './components/Price.graphql'
+import { authorsFragment } from './components/Authors.graphql'
 
 export const cartAddAction = '/cart?/cartAdd'
 export const cartUpdateAction = '/cart?/cartUpdate'
@@ -35,6 +36,11 @@ export const cartFragment = graphql(
               ... on ProductVariant {
                 id
                 title
+                binding: metafield(namespace: "book", key: "binding") {
+                  value
+                }
+                barcode
+                sku
                 product {
                   images(first: 1) {
                     edges {
@@ -47,6 +53,7 @@ export const cartFragment = graphql(
                     }
                   }
                   title
+                  ...AuthorsFragment
                 }
               }
             }
@@ -55,7 +62,7 @@ export const cartFragment = graphql(
       }
     }
   `,
-  [priceFragment],
+  [priceFragment, authorsFragment],
 )
 
 const cartCreateErrorFragment = graphql(`

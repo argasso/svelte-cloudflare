@@ -3,7 +3,9 @@
 declare global {
   namespace App {
     interface Platform {
-      env: Env
+      env: {
+        ARGASSO_FILES: R2Bucket
+      }
       cf: CfProperties
       ctx: ExecutionContext
       caches: CacheStorage & { default: Cache }

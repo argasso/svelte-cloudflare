@@ -23,6 +23,9 @@ export const bookPromo = graphql(
           price {
             ...PriceFragment
           }
+          publishMonth: metafield(namespace: "book", key: "publish_month") {
+            value
+          }
           categories: metafield(namespace: "book", key: "category") {
             references(first: 5) {
               nodes {

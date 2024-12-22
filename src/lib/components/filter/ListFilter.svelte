@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getShortValue, type EnhancedFilter } from './shopifyFilters'
   import ListFilterItem from './ListFilterItem.svelte'
+  import Button from '../Button.svelte'
 
   export let filter: EnhancedFilter
   export let formId: string
@@ -39,3 +40,8 @@
     >
   </div>
 {/if}
+<noscript>
+  <div class="w-full p-1 py-3">
+    <Button form={formId} type="submit" class="w-full">Gör urval</Button>
+  </div>
+</noscript>

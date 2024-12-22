@@ -9,7 +9,11 @@
 </script>
 
 <li class="text-sm">
-  <a on:click class="block rounded px-4 py-2 hover:bg-slate-100 {className}" {href}>
+  <a
+    on:click
+    class="block rounded px-4 py-2 text-muted-foreground hover:bg-accent hover:text-primary hover:underline {className}"
+    {href}
+  >
     {name}
   </a>
   {#if children.length}

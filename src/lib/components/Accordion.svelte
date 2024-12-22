@@ -2,13 +2,13 @@
   import type { HTMLAttributes } from 'svelte/elements'
   import { cn } from '$lib/utils'
 
-  interface $$Props extends HTMLAttributes<HTMLDetailsElement> {
-    name: string | undefined
+  type $$Props = HTMLAttributes<HTMLDetailsElement> & {
+    name: string
   }
 
   let className: $$Props['class'] = undefined
   export { className as class }
-  export let name: $$Props['name'] = undefined
+  export let name: $$Props['name']
 </script>
 
 <details

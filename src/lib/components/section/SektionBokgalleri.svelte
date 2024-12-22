@@ -18,7 +18,7 @@
     {#each products ?? [] as book, index}
       {#if index > 0}
         <div class="hidden self-stretch px-8 md:flex">
-          <!-- <Separator orientation="vertical" /> -->
+          <hr class="vertical" />
         </div>
       {/if}
       <div class="mb-5 flex-1 md:mb-0">

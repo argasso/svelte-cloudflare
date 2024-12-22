@@ -70,7 +70,7 @@
   summary:focus-visible {
     --tw-ring-color: hsl(336.47, 100%, 20%, 0.5);
     border-color: transparent;
-    @apply ring-4 ring-offset-0;
+    @apply outline-none ring-4 ring-offset-0;
   }
 
   details summary {
@@ -94,10 +94,12 @@
     --step-4: clamp(2.0736rem, 1.4221rem + 3.2575vw, 3.9467rem);
     --step-5: clamp(2.4883rem, 1.5239rem + 4.8219vw, 5.2609rem);
 
+    --header-height: 3.5rem;
+
     --background: 336 0% 98%;
     --foreground: 336 0% 10%;
-    --card: 336 0% 94%;
-    --card-foreground: 336 0% 15%;
+    --card: 336 0% 96%;
+    --card-foreground: 336 0% 10%;
     --popover: 336 0% 95%;
     --popover-foreground: 336 95% 10%;
     --primary: 336 100% 20%;
@@ -111,7 +113,7 @@
     --destructive: 0 50% 50%;
     --destructive-foreground: 336 0% 91%;
     --border: 336 20% 82%;
-    --input: 336 0% 50%;
+    --input: 336 0% 60%;
     --ring: 336 100% 20%;
     --radius: 0.5rem;
   }
@@ -190,11 +192,27 @@ p {
   margin-bottom: 12px;
 }
 
-button {
-  @apply inline-flex h-9 items-center justify-center gap-2 bg-transparent px-4 py-2 text-sm font-normal focus-visible:outline-none focus-visible:ring disabled:opacity-50;
+/* button {
+  @apply inline-flex h-9 items-center justify-center gap-2 rounded-sm border border-input bg-transparent px-4 py-2 text-sm font-normal disabled:opacity-50;
 }
 
-button.primary {
+a.btn-outline,
+a.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-sm border border-input px-4 py-2 text-sm font-normal disabled:opacity-50;
+}
+
+a.btn-outline {
+  @apply hover:no-underline;
+}
+
+.btn-outline {
+  @apply border bg-background text-foreground;
+}
+.btn-outline:not(:disabled) {
+  @apply hover:border-argasso-500 hover:bg-argasso-500/5 hover:text-primary;
+}
+
+.btn-primary {
   @apply bg-primary text-primary-foreground shadow hover:bg-primary/90;
 }
 
@@ -202,8 +220,17 @@ button.link {
   @apply border-transparent text-primary underline-offset-4 hover:underline;
 }
 
-button.icon {
-  @apply h-9 w-9 border-transparent p-1;
+.btn-lg {
+  @apply h-12 gap-3 rounded-full px-8 text-lg;
+}
+
+.btn-icon {
+  @apply h-9 w-9 rounded-sm border border-transparent p-1;
+} */
+
+select {
+  @apply bg-card text-card-foreground;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
 }
 
 button.button-sm {
@@ -216,7 +243,7 @@ button.button-sm {
   }
 
   hr.vertical {
-    @apply my-2 h-auto min-h-full w-[1px] shrink-0 self-stretch bg-border;
+    @apply h-auto min-h-full w-[1px] shrink-0 self-stretch bg-border;
   }
 }
 

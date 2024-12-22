@@ -1,7 +1,7 @@
 import { heroFragment } from '$lib/components/Hero.gql'
 import { menuFragment } from '$lib/components/NavMenu.gql'
 import { sectionsFragment } from '$lib/components/Sections.gql'
-import { seoFragment } from '$lib/components/Seo.graphql'
+import { metaobjecSeoFragment } from '$lib/components/Seo.graphql'
 import { graphql } from '../../graphql'
 
 export const pageQuery = graphql(
@@ -23,9 +23,9 @@ export const pageQuery = graphql(
         }
         ...HeroFragment
         ...SectionsFragment
-        ...SeoFragment
+        ...MetaobjectSeoFragment
       }
     }
   `,
-  [menuFragment, heroFragment, sectionsFragment, seoFragment],
+  [menuFragment, heroFragment, sectionsFragment, metaobjecSeoFragment],
 )

@@ -7,11 +7,17 @@
 
 <nav class="flex py-3" aria-label="Breadcrumb">
   <ol class="inline-flex items-center">
-    {#each crumbs as { href, name }}
+    {#each crumbs as { href, name }, index}
       <li class="inline-flex items-center text-muted-foreground">
-        <a {href} class="inline-flex items-center text-sm text-muted-foreground">
-          {name}
-        </a>
+        {#if index < crumbs.length - 1}
+          <a {href} class="inline-flex items-center text-sm">
+            {name}
+          </a>
+        {:else}
+          <span class="text-sm text-muted-foreground">
+            {name}
+          </span>
+        {/if}
       </li>
     {/each}
   </ol>

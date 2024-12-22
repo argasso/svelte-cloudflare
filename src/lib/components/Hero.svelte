@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getByType, isType } from '$lib'
+  import Button from './Button.svelte'
   import type { THeroFragment } from './Hero.gql'
 
   export let title: string | null = 'Upplev böcker från Argasso bokförlag'
@@ -28,12 +29,12 @@
         {/each}
       </h1>
       <h2 class="my-3 font-serif text-xl font-normal italic text-red-100">{intro}</h2>
-      <!-- <Button
+      <Button
         href="/bocker"
         size="lg"
         class="hover my-4 bg-red-50 text-gray-800 hover:bg-white hover:text-black hover:no-underline"
         >Se alla våra böcker</Button
-      > -->
+      >
     </div>
     {#if slides && slides.length > 0}
       <div class="my-4 w-full md:my-0 md:w-2/5">

@@ -1,13 +1,11 @@
 <script lang="ts">
   import { Slider } from '$lib/components/ui/slider'
-  import { getShortKey, isPrice, type EnhancedFilter } from './shopifyFilters'
-  import { getQueryStore } from '$lib/stores/URLSearchParamsStore'
+  import { type EnhancedFilter } from './shopifyFilters'
 
   export let filter: EnhancedFilter
   export let formId: string
   export let requestSubmit: () => void
 
-  $: console.log('filter', filter)
   const [rangeMin, rangeMax, min, max] = filter.values[0].value
     .split(' ')
     .map((v) => parseInt(v, 10))
@@ -16,32 +14,13 @@
 
   $: unset = range[0] === min && range[1] === max
   $: range && debouncedQuery()
-  //  $: $query?.length !== 2 && resetRange()
 
   let timer: NodeJS.Timeout
 
   function debouncedQuery() {
-    console.log('in debounce')
     clearTimeout(timer)
     timer = setTimeout(requestSubmit, 500)
   }
-
-  function setQuery() {
-    // if (unset) {
-    //   $query = []
-    // } else {
-    //   $query = [...range.map(String)]
-    // }
-    console.log('setQuery', range, unset)
-  }
-
-  // function resetRange() {
-  //   console.log('resetRange')
-
-  //   // if (!range.includes(min) || !range.includes(max)) {
-  //   //   range = [min, max]
-  //   // }
-  // }
 </script>
 
 <div class="pb-2">
@@ -55,7 +34,7 @@
         data-vaul-no-drag
         class="h-8 w-20 rounded"
         type="number"
-        name="min"
+        name="price"
         id={`${filter.id}-min`}
         form={formId}
         bind:value={range[0]}
@@ -67,7 +46,7 @@
         data-vaul-no-drag
         class="h-8 w-20 rounded"
         type="number"
-        name="max"
+        name="price"
         id={`${filter.id}-max`}
         form={formId}
         bind:value={range[1]}
