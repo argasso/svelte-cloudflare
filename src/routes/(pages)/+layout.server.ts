@@ -14,12 +14,14 @@ import { pageQuery } from '$lib/gql/page.gql.js'
 import { findMenuItem, getPathToItem } from '$lib/menu'
 import { client } from '../../client'
 import { filtersQuery } from '$lib/components/filter/Filters.gql.js'
-import type { VariablesOf } from '../../graphql'
+import type { ResultOf, VariablesOf } from '../../graphql'
+import { isType } from '$lib'
+import type { FileInfoType } from '../api/files/[handle]/info/+server'
 // import type { ResultOf, VariablesOf } from '../../../graphql'
 // import type { TProductsQuery } from '../../ProductsGrid.gql'
 
 export const load = async (event) => {
-  const { parent, url } = event
+  const { parent, url, fetch } = event
   const { menu } = await parent()
   // const path = url.pathname.split('/').slice(0, -1).join('/')
   const crumbs = getPathToItem(findMenuItem(menu, url.pathname))
@@ -32,6 +34,25 @@ export const load = async (event) => {
     error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
   }
   const page = pageResponse.data?.page
+
+  const sections = page?.sections?.references?.nodes.map(async (node) => {
+    if (isType('Metaobject')(node)) {
+      if (node.type === 'section_download') {
+        const filename = node.filename?.value
+        if (filename) {
+          const rsp = await fetch(`/api/files/${filename}/info`)
+          if (rsp.ok) {
+            const info = (await rsp.json()) as FileInfoType
+            return {
+              ...node,
+              ...info,
+            }
+          }
+        }
+      }
+    }
+    return node
+  })
 
   // Links
   const links = findMenuItem(menu, url.pathname)?.children
@@ -114,6 +135,7 @@ export const load = async (event) => {
   return {
     crumbs,
     page,
+    sections,
     links,
     initialFilters,
     products,
