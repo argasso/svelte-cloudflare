@@ -1,26 +1,23 @@
 <script lang="ts">
+  import Breadcrumbs from '$lib/components/Breadcrumbs.svelte'
   import Button from '$lib/components/Button.svelte'
-  import LinkList from '$lib/components/LinkList.svelte'
+  import ProductsGrid from '$lib/components/ProductsGrid.svelte'
   import Section from '$lib/components/Section.svelte'
-  import Seo from '$lib/components/Seo.svelte'
-  import { convertSchemaToHtml, convertSchemaToText } from '$lib/richtext/shopifyRichText'
+  import Sections from '$lib/components/Sections.svelte'
+  import { convertSchemaToHtml } from '$lib/richtext/shopifyRichText.js'
 
   export let data
 
-  $: ({ page, links } = data)
+  $: ({ crumbs, page, links, menu, products } = data)
   $: title = page?.title?.value
   $: html = page?.content?.value ? convertSchemaToHtml(JSON.parse(page?.content.value)) : undefined
-  $: seoTitle = page.seo?.title?.value
-  $: seoDescription = page.seo?.title?.value
 </script>
 
+<div class="container">
+  <Breadcrumbs {crumbs} />
+</div>
+
 {#if page}
-  <Seo
-    {seoTitle}
-    {seoDescription}
-    pageTitle={title}
-    pageContent={convertSchemaToText(page.content?.value)}
-  />
   <Section>
     <div class="flex flex-row gap-10">
       <div class="flex-1">
@@ -43,6 +40,11 @@
       </aside>
     </div>
   </Section>
+  <Sections {page} {menu} />
 {/if}
 
 <slot />
+
+{#if products}
+  <ProductsGrid {products} />
+{/if}

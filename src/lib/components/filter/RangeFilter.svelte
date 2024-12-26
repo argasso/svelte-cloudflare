@@ -6,11 +6,9 @@
   export let formId: string
   export let requestSubmit: () => void
 
-  const [rangeMin, rangeMax, min, max] = filter.values[0].value
-    .split(' ')
-    .map((v) => parseInt(v, 10))
+  $: [rangeMin, rangeMax, min, max] = filter.values[0].value.split(' ').map((v) => parseInt(v, 10))
 
-  let range = [rangeMin, rangeMax]
+  $: range = [rangeMin, rangeMax]
 
   $: unset = range[0] === min && range[1] === max
   $: range && debouncedQuery()

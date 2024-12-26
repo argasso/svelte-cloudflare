@@ -8,7 +8,7 @@ export type Filter = NonNullable<
   ResultOf<TFilterQuery>['collection']
 >['products']['filters'][number]
 
-type ProductFilter = NonNullable<VariablesOf<TProductsQuery>['filters']>[number]
+export type ProductFilter = NonNullable<VariablesOf<TProductsQuery>['filters']>[number]
 type SortKey = NonNullable<VariablesOf<TProductsQuery>['sortKey']>
 type SortOption = { label: string; value: string; sortKey: SortKey; reverse: boolean }
 
@@ -430,7 +430,7 @@ function getPriceRange(queryValues: string[], initialFilters?: Filter[]): string
   if (isPrice(parsed)) {
     const initialMin = `${parsed.price.min ?? 0}`
     const initialMax = `${parsed.price.max ?? 300}`
-    const [min, max] = queryValues.sort()
+    const [min, max] = queryValues.sort((a, b) => a.localeCompare(b, 'en', { numeric: true }))
     const minValue = min ?? initialMin
     const maxValue = max ?? initialMax
     return [minValue, maxValue, initialMin, initialMax]

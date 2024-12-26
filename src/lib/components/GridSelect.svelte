@@ -30,7 +30,6 @@
   function optionalJoin(...values: (string | undefined)[]) {
     return values.filter(isNonNil).join(' ')
   }
-  //   $: console.log(name, value, options)
 </script>
 
 <select

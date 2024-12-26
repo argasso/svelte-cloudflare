@@ -1,5 +1,6 @@
 import { graphql, type ResultOf } from '../../graphql'
 import { authorsFragment } from './Authors.graphql'
+import type { EnhancedFilter } from './filter/shopifyFilters'
 import { priceFragment } from './Price.graphql'
 
 export const pageInfoFragment = graphql(`
@@ -83,9 +84,8 @@ export type TProductsQuery = typeof productsQuery
 export type TProductsServerResult = NonNullable<ResultOf<TProductsQuery>['collection']>['products']
 
 export type TProducts = Omit<TProductsServerResult, 'filters'> & {
-  pageInfo: {
-    pageSort: string
-    pageSize: number
-    totalCount: number
-  }
+  pageSort: string
+  pageSize: number
+  totalCount: number
+  filters: EnhancedFilter[]
 }

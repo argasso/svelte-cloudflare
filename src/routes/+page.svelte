@@ -15,7 +15,7 @@
   seoTitle={page?.seo?.title?.value}
   seoDescription={page?.seo?.description?.value}
   pageTitle={title}
-  pageContent={"'Lättare att läsa för barn och ungdomar"}
+  pageDescription={"'Lättare att läsa för barn och ungdomar"}
 />
 
 <section class="gradient">

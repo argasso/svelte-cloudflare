@@ -1,17 +1,17 @@
 <script lang="ts">
   import { getByType } from '$lib'
   import BookCard from '$lib/components/BookCard.svelte'
-  import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
+  import ShopifyImage, { type ImageProp } from '$lib/components/image/ShopifyImage.svelte'
   import { convertSchemaToHtml } from '$lib/richtext/shopifyRichText'
   import { Image } from '@unpic/svelte'
 
   export let data
 
-  $: ({ author, books, crumbs } = data)
+  $: ({ author, books } = data)
   $: html = author?.description?.value
     ? convertSchemaToHtml(JSON.parse(author?.description?.value))
     : undefined
-  $: image = getByType('MediaImage', author.image?.reference)?.image
+  $: image = getByType('MediaImage', author.image?.reference)?.image as ImageProp // TODO check why url is unknown
 </script>
 
 <div class="container mt-10">

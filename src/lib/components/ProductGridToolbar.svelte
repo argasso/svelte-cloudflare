@@ -10,47 +10,48 @@
 
   interface $$Props extends HTMLAttributes<HTMLDivElement> {
     count: number
-    pageInfo: TProducts['pageInfo']
+    products: TProducts
     requestSubmit: () => void
   }
 
   let className: $$Props['class'] = undefined
   export { className as class }
-  export let count: $$Props['count']
-  export let pageInfo: $$Props['pageInfo']
+  export let products: $$Props['products']
   export let requestSubmit: $$Props['requestSubmit']
+
+  $: ({ pageInfo, pageSize, pageSort } = products)
 </script>
 
 <div class={cn('flex flex-wrap items-center gap-2 text-sm font-light text-foreground', className)}>
-  <div class="mr-2">
-    {#if pageInfo.totalCount > pageInfo.pageSize}
-      Visar {count} av {pageInfo.totalCount} st
+  <!-- <div class="mr-2">
+    {#if totalCount > pageSize}
+      Visar {count} av {totalCount} st
     {:else if count === 1}
       Visar {count} st
     {:else}
       Visar {count} st
     {/if}
-  </div>
+  </div> -->
 
   <select
     class="hidden bg-background px-4 py-2 pr-8 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5 md:block"
     name="sort"
-    value={pageInfo.pageSort}
+    value={pageSort}
     on:change={requestSubmit}
   >
     {#each sortOptions as { value, label }}
-      <option {value} selected={value === pageInfo.pageSort}>{label}</option>
+      <option {value} selected={value === pageSort}>{label}</option>
     {/each}
   </select>
 
   <select
     class="hidden bg-background px-4 py-2 pr-8 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5 md:block"
     name="size"
-    value={pageInfo.pageSize}
+    value={pageSize}
     on:change={requestSubmit}
   >
     {#each sizeOptions as size}
-      <option value={size} selected={size == pageInfo.pageSize}>{size} per sida</option>
+      <option value={size} selected={size == pageSize}>{size} per sida</option>
     {/each}
   </select>
 
@@ -58,6 +59,7 @@
     <Button
       class="font-light"
       variant="outline"
+      type="submit"
       name="before"
       value={pageInfo.startCursor}
       disabled={!pageInfo.hasPreviousPage}
@@ -67,6 +69,7 @@
     </Button>
 
     <Button
+      class="font-light"
       variant="outline"
       type="submit"
       name="after"

@@ -12,7 +12,7 @@
         secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground border-transparent',
         header: 'bg-transparent hover:bg-white/10 hover:text-white border-transparent',
-        link: 'text-primary underline-offset-4 hover:underline',
+        link: 'text-primary underline-offset-4 hover:underline border-transparent',
         buy: 'bg-primary/70 text-primary-foreground shadow rounded-full p-2 text-xs',
       },
       size: {

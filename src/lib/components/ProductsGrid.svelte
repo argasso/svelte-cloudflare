@@ -1,18 +1,18 @@
 <script lang="ts">
+  import { enhance } from '$app/forms'
   import BookCard from '$lib/components/BookCard.svelte'
   import Section from '$lib/components/Section.svelte'
   import AppliedFilterButton from '$lib/components/filter/AppliedFilterButton.svelte'
-  import { getDecendants, type EnhancedFilter } from '$lib/components/filter/shopifyFilters'
+  import { getDecendants } from '$lib/components/filter/shopifyFilters'
   import { isFilterOpen } from '$lib/stores/store'
+  import Button from './Button.svelte'
   import ProductGridToolbar from './ProductGridToolbar.svelte'
   import type { TProducts } from './ProductsGrid.gql'
   import Filters from './filter/Filters.svelte'
 
   export let products: TProducts
-  export let filters: EnhancedFilter[]
 
-  $: books = products.nodes
-  $: pageInfo = products.pageInfo
+  $: ({ filters, nodes: books, totalCount, pageSize } = products)
   $: count = books.length
   $: appliedFilters = filters
     .flatMap(({ values }) => values.flatMap(getDecendants))
@@ -31,23 +31,34 @@
       class:filtering={$isFilterOpen}
       class="filtered-grid grid grid-rows-[auto_1fr] items-start gap-8 gap-y-4 transition-all"
     >
-      <div class="col-span-2">
+      <div class="col-span-2 text-sm font-light text-foreground">
+        <div class="mr-2 py-5">
+          {#if totalCount > pageSize}
+            Visar {count} av {totalCount} böcker
+          {:else if count === 1}
+            Visar {count} bok
+          {:else}
+            Visar {count} böcker
+          {/if}
+        </div>
+
         <form bind:this={form} data-sveltekit-keepfocus data-sveltekit-noscroll id={formId}>
-          <ProductGridToolbar {count} {pageInfo} {requestSubmit} />
-          <div class="js-only flex min-h-10 flex-wrap items-center justify-end gap-2">
+          <ProductGridToolbar {count} {products} {requestSubmit} />
+          <div class="js-only flex min-h-10 flex-wrap items-center gap-2">
             {#each appliedFilters as filter (filter.id)}
               <AppliedFilterButton {filter}></AppliedFilterButton>
             {/each}
             {#if appliedFilters.length > 0}
-              <button
-                class="link button-sm"
+              <Button
+                variant="link"
+                size="sm"
                 type="submit"
                 name="reset"
                 value="filters"
                 form={formId}
               >
                 Rensa urvalsfilter
-              </button>
+              </Button>
             {/if}
           </div>
         </form>

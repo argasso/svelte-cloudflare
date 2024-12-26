@@ -1,7 +1,7 @@
 import { authorsFragment } from '$lib/components/Authors.graphql'
 import { priceFragment } from '$lib/components/Price.graphql'
 import { productSeoFragment } from '$lib/components/Seo.graphql'
-import { graphql } from '../../../../graphql'
+import { graphql } from '../../../graphql'
 
 export const productQuery = graphql(
   `
