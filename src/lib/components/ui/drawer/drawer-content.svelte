@@ -20,7 +20,7 @@
     class={cn(
       'fixed z-50 flex border bg-background p-0',
       direction === 'bottom'
-        ? 'bottom-0 left-0 right-0 h-[90%] flex-col rounded-t-[10px] md:h-[50%]'
+        ? 'bottom-0 left-0 right-0 h-[90%] flex-col rounded-t-xl sm:bottom-1/4 sm:mx-auto sm:h-1/2 sm:w-[600px] sm:rounded-xl sm:after:data-[vaul-drawer]:data-[vaul-drawer-direction=bottom]:h-0'
         : '',
       direction === 'top'
         ? 'left-0 right-0 top-0 h-[90%] flex-col rounded-b-[10px] md:h-[50%]'
@@ -55,6 +55,10 @@
           direction === 'right' ? '-left-3' : '',
         )}
       />
+
+      <div class="h-full w-full">
+        <slot />
+      </div>
       <DrawerPrimitive.Close asChild let:builder>
         <Button
           builders={[builder]}
@@ -71,10 +75,6 @@
           <span class="sr-only">Close</span>
         </Button>
       </DrawerPrimitive.Close>
-
-      <div class="h-full w-full">
-        <slot />
-      </div>
     </div>
   </DrawerPrimitive.Content>
 </DrawerPrimitive.Portal>

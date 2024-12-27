@@ -18,6 +18,8 @@
   import { getCart } from '$lib/stores/cartStore'
   import Cart from '$lib/components/Cart.svelte'
   import { Toaster } from 'svelte-sonner'
+  import MobileNav from '$lib/components/MobileNav.svelte'
+  import Search from '$lib/components/search/Search.svelte'
 
   export let data
 
@@ -49,7 +51,7 @@
       <nav class="flex items-stretch gap-4">
         {#if menu}
           <div class="flex items-center md:hidden">
-            <!-- <MobileNav {menu} /> -->
+            <MobileNav {menu} />
           </div>
         {/if}
         <NavLink href="/" exact={true}>
@@ -58,14 +60,14 @@
         <NavMenuMega {menuItems} class="hidden md:flex" />
       </nav>
       <nav class="flex shrink-0 items-center gap-1">
-        <!-- <ShopifySearch />-->
+        <Search />
         <LightSwitch />
         <Cart />
       </nav>
     </div>
   </header>
 
-  <main class="-mb-12 flex-1">
+  <main class="-mb-20 flex-1">
     <slot />
   </main>
 

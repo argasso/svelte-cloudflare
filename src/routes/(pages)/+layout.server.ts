@@ -14,9 +14,10 @@ import { pageQuery } from '$lib/gql/page.gql.js'
 import { findMenuItem, getPathToItem } from '$lib/menu'
 import { client } from '../../client'
 import { filtersQuery } from '$lib/components/filter/Filters.gql.js'
-import type { ResultOf, VariablesOf } from '../../graphql'
-import { isType } from '$lib'
+import type { FragmentOf, ResultOf, VariablesOf } from '../../graphql'
+import { getByType, isType } from '$lib'
 import type { FileInfoType } from '../api/files/[handle]/info/+server'
+import type { sectionDownloadFragment } from '$lib/components/section/SectionDownload.gql'
 // import type { ResultOf, VariablesOf } from '../../../graphql'
 // import type { TProductsQuery } from '../../ProductsGrid.gql'
 
@@ -35,7 +36,7 @@ export const load = async (event) => {
   }
   const page = pageResponse.data?.page
 
-  const sections = page?.sections?.references?.nodes.map(async (node) => {
+  page?.sections?.references?.nodes.forEach(async (node) => {
     if (isType('Metaobject')(node)) {
       if (node.type === 'section_download') {
         const filename = node.filename?.value
@@ -43,15 +44,14 @@ export const load = async (event) => {
           const rsp = await fetch(`/api/files/${filename}/info`)
           if (rsp.ok) {
             const info = (await rsp.json()) as FileInfoType
-            return {
-              ...node,
-              ...info,
-            }
+            console.log(info)
+            decorateSectionDownload(node, info)
+          } else {
+            console.warn('Failed to fetch file for section download. ', rsp.statusText)
           }
         }
       }
     }
-    return node
   })
 
   // Links
@@ -135,7 +135,6 @@ export const load = async (event) => {
   return {
     crumbs,
     page,
-    sections,
     links,
     initialFilters,
     products,
@@ -154,4 +153,31 @@ async function getProducts(variables: NonNullable<VariablesOf<TProductsQuery>>) 
   }
 
   return productsResponse.data?.collection?.products
+}
+
+type TSectionDownload = FragmentOf<typeof sectionDownloadFragment>
+function decorateSectionDownload(node: TSectionDownload, info: FileInfoType) {
+  const file = node.file
+  const filename = node.filename?.value
+  if (file) {
+    node.filename = {
+      value: getByType('GenericFile', file.reference)?.url?.split('/').at(-1) ?? null,
+    }
+  } else if (filename) {
+    node.file = {
+      reference: {
+        __typename: 'GenericFile',
+        id: info.key,
+        alt: 'Cloudflare file',
+        originalFileSize: info.size,
+        mimeType: info.httpMetadata?.contentType ?? null,
+        url: `/api/files/${filename}`,
+        previewImage: {
+          url: '',
+          height: null,
+          width: null,
+        },
+      },
+    }
+  }
 }
