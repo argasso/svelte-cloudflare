@@ -20,7 +20,7 @@
     class={cn(
       'fixed z-50 flex border bg-background p-0',
       direction === 'bottom'
-        ? 'bottom-0 left-0 right-0 h-[90%] flex-col rounded-t-xl sm:bottom-1/4 sm:mx-auto sm:h-1/2 sm:w-[600px] sm:rounded-xl sm:after:data-[vaul-drawer]:data-[vaul-drawer-direction=bottom]:h-0'
+        ? 'bottom-0 left-0 right-0 h-[90%] flex-col rounded-t-xl sm:mx-auto sm:w-[500px] sm:rounded-xl sm:bg-transparent sm:after:data-[vaul-drawer]:data-[vaul-drawer-direction=bottom]:bg-transparent'
         : '',
       direction === 'top'
         ? 'left-0 right-0 top-0 h-[90%] flex-col rounded-b-[10px] md:h-[50%]'

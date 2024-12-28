@@ -59,7 +59,7 @@
         </NavLink>
         <NavMenuMega {menuItems} class="hidden md:flex" />
       </nav>
-      <nav class="flex shrink-0 items-center gap-1">
+      <nav class="flex shrink-0 items-center">
         <Search />
         <LightSwitch />
         <Cart />

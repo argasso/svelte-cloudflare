@@ -3,11 +3,13 @@
   import { bookUrl } from '$lib'
   import { Button } from '$lib/components/ui/button/index.js'
   import * as Command from '$lib/components/ui/command'
-  import * as Drawer from '$lib/components/ui/drawer/index.js'
+  // import * as Drawer from '$lib/components/ui/drawer/index.js'
   import type { PageServerData } from '../../../routes/api/search/+server'
   import Icons from '../Icons.svelte'
   import ShopifyImage from '../image/ShopifyImage.svelte'
+  import Logo from '../logo/Logo.svelte'
   import { Separator } from '../ui/separator'
+  import { Drawer } from 'vaul-svelte'
 
   const direction = 'bottom'
 
@@ -38,17 +40,108 @@
       code: '&crarr;',
     },
     {
-      label: 'Nästa träff',
+      label: 'Nästa',
       code: '&darr;',
     },
     {
-      label: 'Föregående träff',
+      label: 'Föregående',
       code: '&uarr;',
+    },
+    {
+      label: 'Stäng',
+      code: 'ESC',
     },
   ]
 </script>
 
-<Drawer.Root bind:open shouldScaleBackground={true} {direction} openFocus={'#input-div'}>
+<Drawer.Root shouldScaleBackground={true} bind:open>
+  <Drawer.Trigger asChild let:builder>
+    <Button builders={[builder]} variant="header" size="icon">
+      <Icons type="search" />
+    </Button>
+  </Drawer.Trigger>
+  <Drawer.Portal>
+    <Drawer.Content
+      class="fixed bottom-0 left-0 right-0 z-50 mx-auto h-[90%] w-full max-w-lg flex-col overflow-hidden rounded-t-[10px] bg-popover after:data-[vaul-drawer]:bg-background sm:bg-transparent sm:after:data-[vaul-drawer]:data-[vaul-drawer-direction=bottom]:bg-transparent"
+    >
+      <div
+        class="absolute left-1/2 top-0 my-2 h-1.5 w-12 flex-shrink-0 -translate-x-6 rounded-full bg-zinc-300 sm:hidden"
+      />
+      <Command.Root shouldFilter={false} class="h-full rounded-none sm:h-1/2 sm:rounded-[10px]">
+        <Command.Input
+          id="input-div"
+          bind:value
+          placeholder="Sök titel..."
+          class="mr-10 h-14 border-transparent focus:ring-0"
+        />
+        <Command.List class="h-full max-h-none">
+          <Command.Empty class="h-full">
+            {#if value.length > 0}
+              Hittar ingenting som motsvarar sökningen.
+            {:else}
+              Skriv något att söka efter
+            {/if}
+          </Command.Empty>
+          {#if results?.products && results?.products.length > 0}
+            <Command.Group heading={`Hittade ${results.products.length} böcker`}>
+              {#each results.products as product}
+                <Command.Item
+                  class="flex gap-4 text-accent-foreground  aria-selected:text-foreground"
+                  value={product.handle}
+                  onSelect={() =>
+                    runCommand(() => {
+                      product.handle && goto(bookUrl(product.handle))
+                    })}
+                >
+                  <ShopifyImage image={product.images.nodes[0]} height={60} />
+                  {product.title}
+                </Command.Item>
+              {/each}
+            </Command.Group>
+          {/if}
+        </Command.List>
+        <Separator />
+        <div class="flex-0 hidden items-start gap-4 p-3 sm:flex">
+          {#each shortcuts as { label, code }, index}
+            {#if index > 0}
+              <Separator orientation="vertical" />
+            {/if}
+            <div class="flex gap-2">
+              <span class="text-sm text-muted-foreground">{label}</span>
+              <kbd
+                class="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono font-medium text-muted-foreground opacity-100 sm:flex"
+              >
+                {#if code.startsWith('&')}
+                  {@html code}
+                {:else}
+                  <span class="text-xs">{code}</span>
+                {/if}
+              </kbd>
+            </div>
+          {/each}
+        </div>
+      </Command.Root>
+
+      <!-- Workaround for closing on outside click when showing as dialog style. Overlay not clickable below dialog. -->
+      <label for="close-button" class="block h-0 bg-transparent sm:h-1/2"></label>
+
+      <Drawer.Close asChild let:builder>
+        <Button
+          id="close-button"
+          builders={[builder]}
+          variant="ghost"
+          size="icon"
+          class="absolute right-2.5 top-2.5 rounded-full"
+          ><Icons type="close" />
+          <span class="sr-only">Close</span>
+        </Button>
+      </Drawer.Close>
+    </Drawer.Content>
+    <Drawer.Overlay class="fixed inset-0 bg-black/60  dark:bg-neutral-900/70" />
+  </Drawer.Portal>
+</Drawer.Root>
+
+<!-- <Drawer.Root bind:open shouldScaleBackground={true} {direction} openFocus={'#input-div'}>
   <Drawer.Trigger asChild let:builder>
     <Button builders={[builder]} variant="header" size="icon">
       <Icons type="search" />
@@ -108,7 +201,7 @@
       </div>
     </div>
   </Drawer.Content>
-</Drawer.Root>
+</Drawer.Root> -->
 
 <!-- <Drawer.Root shouldScaleBackground={true} {direction}>
   <Drawer.Trigger asChild let:builder>
