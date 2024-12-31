@@ -7,6 +7,17 @@
 
   export let data
 
+  const crumbs = [
+    {
+      href: '/',
+      name: 'Startsida',
+    },
+    {
+      href: undefined,
+      name: 'Varukorg',
+    },
+  ]
+
   $: ({ author, books } = data)
   $: html = author?.description?.value
     ? convertSchemaToHtml(JSON.parse(author?.description?.value))

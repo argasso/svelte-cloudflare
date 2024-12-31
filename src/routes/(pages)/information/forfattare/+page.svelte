@@ -23,7 +23,6 @@
 </script>
 
 <div class="container pb-20">
-  <h1>Författare</h1>
   <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-6">
     {#each authors.entries() as [key, value]}
       <div>

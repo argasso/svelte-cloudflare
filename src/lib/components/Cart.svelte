@@ -1,7 +1,6 @@
 <script lang="ts">
   import { browser } from '$app/environment'
-  import Icons from '$lib/components/Icons.svelte'
-  import Cart from '$lib/components/icons/Cart.svelte'
+  import Cart from 'lucide-svelte/icons/shopping-cart'
   import { cart } from '$lib/stores/cartStore'
   import Button from './Button.svelte'
 
@@ -29,11 +28,7 @@
     </div>
   {/if}
   <div class="flex h-full items-center">
-    <!-- {#if quantity > 0}
-      <Icons type="cart-heart" />
-    {:else} -->
-    <Cart class="" />
-    <!-- {/if} -->
+    <Cart />
   </div>
 </Button>
 

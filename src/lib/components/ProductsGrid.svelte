@@ -29,7 +29,7 @@
   <Section class="bg-card">
     <div
       class:filtering={$isFilterOpen}
-      class="filtered-grid grid grid-rows-[auto_1fr] items-start gap-8 gap-y-4 transition-all"
+      class="filtered-grid grid grid-rows-[auto_1fr] items-start gap-y-4 transition-all"
     >
       <div class="col-span-2 text-sm font-light text-foreground">
         <div class="mr-2 py-5">
@@ -43,7 +43,7 @@
         </div>
 
         <form bind:this={form} data-sveltekit-keepfocus data-sveltekit-noscroll id={formId}>
-          <ProductGridToolbar {count} {products} {requestSubmit} />
+          <ProductGridToolbar {products} {filters} {formId} {requestSubmit} />
           <div class="js-only flex min-h-10 flex-wrap items-center gap-2">
             {#each appliedFilters as filter (filter.id)}
               <AppliedFilterButton {filter}></AppliedFilterButton>
@@ -64,13 +64,13 @@
         </form>
       </div>
 
-      <div class="filters col-start-2 row-span-2 row-start-3 overscroll-contain">
+      <div class="filters col-start-2 row-span-2 row-start-2 overscroll-contain">
         <div class=" w-64" inert={!$isFilterOpen}>
           <Filters {filters} {formId} {requestSubmit} />
         </div>
       </div>
 
-      <div class:filtering={$isFilterOpen} class="book-grid col-start-1 row-start-3">
+      <div class:filtering={$isFilterOpen} class="book-grid col-start-1 row-start-2">
         {#if books.length > 0}
           {#each books as book}
             <div class="self-end">
@@ -85,10 +85,6 @@
         {/if}
       </div>
     </div>
-
-    <!-- {#if books.length > 0}
-        <ProductGridToolbar {count} {filters} {pageInfo} />
-      {/if} -->
   </Section>
 {/if}
 
@@ -101,6 +97,7 @@
     .filtered-grid.filtering,
     .filters:focus-within {
       grid-template-columns: 1fr 256px;
+      gap: 0 2rem;
     }
     .filters {
       overflow-x: hidden;
@@ -109,6 +106,9 @@
 
   @media (max-width: 640px) {
     .filters {
+      display: none;
+    }
+    /* .filters {
       position: fixed;
       bottom: 0;
       top: 0;
@@ -118,7 +118,7 @@
       z-index: 30;
       overflow-y: auto;
       background-color: hsl(var(--background));
-    }
+    } */
   }
 
   .book-grid {

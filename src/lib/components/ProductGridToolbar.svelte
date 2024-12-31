@@ -7,17 +7,21 @@
   import { sizeOptions, sortOptions, type EnhancedFilter } from './filter/shopifyFilters'
   import type { TProducts } from './ProductsGrid.gql'
   import Toggle from './Toggle.svelte'
+  import MobileFilter from './filter/MobileFilter.svelte'
 
   interface $$Props extends HTMLAttributes<HTMLDivElement> {
-    count: number
     products: TProducts
     requestSubmit: () => void
+    filters: EnhancedFilter[]
+    formId: string
   }
 
   let className: $$Props['class'] = undefined
   export { className as class }
   export let products: $$Props['products']
   export let requestSubmit: $$Props['requestSubmit']
+  export let filters: $$Props['filters'] = []
+  export let formId: $$Props['formId']
 
   $: ({ pageInfo, pageSize, pageSort } = products)
 </script>
@@ -81,8 +85,11 @@
     </Button>
   </div>
   <div class="flex flex-1 justify-end">
-    <div class="js-only">
+    <div class="js-only hidden sm:block">
       <Toggle name="filters">Urvalsfilter</Toggle>
+    </div>
+    <div class="js-only sm:hidden">
+      <MobileFilter {filters} {formId} {requestSubmit} />
     </div>
     <noscript>
       <Button type="submit" name="reset" value="filters" variant="default">Rensa urval</Button>

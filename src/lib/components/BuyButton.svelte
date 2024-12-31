@@ -4,10 +4,13 @@
   import type { SubmitFunction } from '@sveltejs/kit'
   import type { Size } from './Button.svelte'
   import Icons from './Icons.svelte'
-  import { Button } from './ui/button'
   import { goto, invalidateAll } from '$app/navigation'
   import { cart } from '$lib/stores/cartStore'
   import { toast } from 'svelte-sonner'
+  import { cn } from '$lib/utils'
+  import ShoppingCart from 'lucide-svelte/icons/shopping-cart'
+  import Plus from 'lucide-svelte/icons/plus'
+  import Button from './Button.svelte'
 
   export let variantId: string
   export let size: Size = undefined
@@ -41,7 +44,7 @@
   method="POST"
   action="/cart?/cartAdd"
   use:enhance={submitFunction}
-  class="col-start-1 row-start-1 -mb-3 -mr-4 self-end justify-self-end"
+  class={size ? '' : 'col-start-1 row-start-1 -mb-3 -mr-4 self-end justify-self-end'}
 >
   {#if size}
     <Button
@@ -57,7 +60,7 @@
       {#if loading}
         <Icons class="flex-0 h-5 w-5" type="loading" />
       {:else}
-        <Icons class="flex-0 h-5 w-5" type="cart-add" />
+        <ShoppingCart />
       {/if}
     </Button>
   {:else}
@@ -68,7 +71,7 @@
       aria-label="Lägg i varukorg"
       {variant}
       size="icon"
-      class="group items-center hover:w-auto hover:bg-primary focus:w-auto focus:bg-primary"
+      class="group items-center hover:w-auto hover:bg-primary hover:opacity-100 focus:w-auto focus:bg-primary focus:opacity-100"
     >
       <div class="hidden flex-1 whitespace-nowrap px-2 group-hover:block group-focus:block">
         Lägg i varukorg
@@ -76,7 +79,10 @@
       {#if loading}
         <Icons class="flex-0 h-5 w-5" type="loading" />
       {:else}
-        <Icons class="flex-0 h-5 w-5" type="cart-add" />
+        <!-- <div class="grid justify-items-center align-middle"> -->
+        <!-- <ShoppingCart class="flex-0  col-start-1 row-start-1 h-5 w-5" /> -->
+        <Plus class="col-start-1 row-start-1 h-5 w-5 self-center" />
+        <!-- </div> -->
       {/if}
     </Button>
   {/if}

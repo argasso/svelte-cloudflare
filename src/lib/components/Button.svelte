@@ -13,13 +13,13 @@
         ghost: 'hover:bg-accent hover:text-accent-foreground border-transparent',
         header: 'bg-transparent hover:bg-white/10 hover:text-white border-transparent',
         link: 'text-primary underline-offset-4 hover:underline border-transparent',
-        buy: 'bg-primary/70 text-primary-foreground shadow rounded-full p-2 text-xs',
+        buy: 'bg-primary/50 text-primary-foreground shadow rounded-full p-2 text-xs',
       },
       size: {
         default: 'h-9 px-4 py-2',
         sm: 'h-8 rounded-md px-3 text-xs gap-1',
         lg: 'h-12 rounded-full px-8 text-lg gap-3',
-        icon: 'h-9 w-9 p-1',
+        icon: 'h-9 w-9',
       },
     },
     defaultVariants: {

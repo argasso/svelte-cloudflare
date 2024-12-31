@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Breadcrumbs from '$lib/components/Breadcrumbs.svelte'
   import Button from '$lib/components/Button.svelte'
   import CartForm from '$lib/components/CartForm.svelte'
   import Icons from '$lib/components/Icons.svelte'
@@ -6,9 +7,21 @@
 
   export let data
   export let form
+
+  const crumbs = [
+    {
+      name: 'Startsida',
+      href: '/',
+    },
+    {
+      name: 'Varukorg',
+    },
+  ]
 </script>
 
 <div class="container pb-20">
+  <Breadcrumbs {crumbs} />
+
   {#if form?.success}
     <noscript>
       <div
@@ -65,6 +78,7 @@
       </div>
     </noscript>
   {/if}
+
   <h1>Varukorg</h1>
   <CartForm showTotal={true} cart={data.cart} />
 </div>

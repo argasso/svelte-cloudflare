@@ -17,6 +17,16 @@ export function authorUrl(handle: string) {
   return `${AUTHORS_URL}/${handle}`
 }
 
+type SearchTypename = introspection_types['SearchResultItem']['possibleTypes']
+
+export const isSearchType =
+  <T extends SearchTypename>(typename: T) =>
+  <N extends { __typename?: SearchTypename }>(
+    node: N | null | undefined,
+  ): node is Extract<N, { __typename?: T }> => {
+    return node?.__typename === typename
+  }
+
 type Typename = introspection_types['MetafieldReference']['possibleTypes']
 
 export const isType =

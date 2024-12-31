@@ -1,6 +1,8 @@
 <script lang="ts">
-  import Sun from '$lib/components/icons/Sun.svelte'
-  import Moon from '$lib/components/icons/Moon.svelte'
+  // import Sun from '$lib/components/icons/Sun.svelte'
+  // import Moon from '$lib/components/icons/Moon.svelte'
+  import Sun from 'lucide-svelte/icons/sun'
+  import Moon from 'lucide-svelte/icons/moon'
   import { toggleMode } from 'mode-watcher'
   import Button from './Button.svelte'
 </script>

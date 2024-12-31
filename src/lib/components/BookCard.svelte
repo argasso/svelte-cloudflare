@@ -49,10 +49,10 @@
     transform: scale(0.99);
   } */
 
-  .book:hover {
+  /* .book:hover {
     -webkit-backface-visibility: hidden;
     transform: scale(1.02);
-  }
+  } */
 
   /* .book img {
     transform: scale(1.01);

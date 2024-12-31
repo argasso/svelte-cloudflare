@@ -1,6 +1,6 @@
 import { isNonNil, isType } from '$lib'
 import type { ResultOf } from '../graphql'
-import type { mainMenuQuery } from './components/NavMenu.svelte'
+import type { mainMenuQuery } from './components/NavMenu.gql'
 
 type ShopifyMenuItem = ResultOf<typeof mainMenuQuery>['menu']
 
@@ -50,6 +50,23 @@ export function findMenuItem(menu: MenuItem | undefined, path: string): MenuItem
     }
     for (const item of menu.children) {
       const match = findMenuItem(item, path)
+      if (match) {
+        return match
+      }
+    }
+  }
+}
+
+export function findMenuItemByHandle(
+  menu: MenuItem | undefined,
+  handle: string,
+): MenuItem | undefined {
+  if (menu) {
+    if (menu.href.endsWith(handle)) {
+      return menu
+    }
+    for (const item of menu.children) {
+      const match = findMenuItemByHandle(item, handle)
       if (match) {
         return match
       }

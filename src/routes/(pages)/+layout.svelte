@@ -28,7 +28,7 @@
           {@html html}
         {/if}
         {#if links}
-          <div class="flex gap-2">
+          <div class="flex flex-wrap gap-2">
             {#each links as link}
               <Button variant="secondary" href={link.href}>{link.name}</Button>
             {/each}

@@ -20,103 +20,105 @@
 </script>
 
 {#if cart && items.length > 0}
-  {#each items as item, i (i)}
-    {#if i > 0}
-      <hr />
-    {/if}
+  <div class="max-w-xl">
+    {#each items as item, i (i)}
+      {#if i > 0}
+        <hr />
+      {/if}
 
-    <div class="flex w-full gap-4 py-5">
-      <div class="self-start">
-        <BookImage width={64} image={item.node.merchandise.product.images.edges[0]?.node} />
-      </div>
-      <div class="flex flex-1 flex-col justify-between">
-        <div class="flex-1">
-          <Authors book={item.node.merchandise.product}></Authors>
-          <h3 class="m-0 text-base font-semibold">
-            {item.node.merchandise.product.title}
-            <span class="text-xs font-normal text-muted-foreground"
-              >- {item.node.merchandise.binding?.value}, {item.node.merchandise.barcode}
-            </span>
-          </h3>
-
-          {#if item.node.merchandise.title !== 'Default Title'}
-            <p class="m-0 text-sm">{item.node.merchandise.title}</p>
-          {/if}
+      <div class="flex w-full gap-4 py-5">
+        <div class="self-start">
+          <BookImage width={64} image={item.node.merchandise.product.images.edges[0]?.node} />
         </div>
-        <form
-          name={item.node.id}
-          method="POST"
-          action={'/cart?/cartUpdate'}
-          use:enhance={cartSubmitFunction}
-        >
-          <div class="flex-0 flex items-center gap-2">
-            <input type="hidden" name="variantId" value={item.node.merchandise.id} />
-            <input type="hidden" name="lineId" value={item.node.id} />
-            <div class="flex items-stretch">
-              <Button
-                type="submit"
-                size="icon"
-                variant="outline"
-                name="quantity"
-                value={Math.max(item.node.quantity - 1, 0)}
-                class="h-8 w-8 rounded-r-none shadow-none"
-              >
-                <Minus class="h-5 w-5" />
-              </Button>
-              <div class="flex min-w-14 items-center border-y border-input px-3 text-sm">
-                {item.node.quantity} st
+        <div class="flex flex-1 flex-col justify-between">
+          <div class="flex-1">
+            <Authors book={item.node.merchandise.product}></Authors>
+            <h3 class="m-0 text-base font-semibold">
+              {item.node.merchandise.product.title}
+              <span class="text-xs font-normal text-muted-foreground"
+                >- {item.node.merchandise.binding?.value}, {item.node.merchandise.barcode}
+              </span>
+            </h3>
+
+            {#if item.node.merchandise.title !== 'Default Title'}
+              <p class="m-0 text-sm">{item.node.merchandise.title}</p>
+            {/if}
+          </div>
+          <form
+            name={item.node.id}
+            method="POST"
+            action={'/cart?/cartUpdate'}
+            use:enhance={cartSubmitFunction}
+          >
+            <div class="flex-0 flex items-center gap-2">
+              <input type="hidden" name="variantId" value={item.node.merchandise.id} />
+              <input type="hidden" name="lineId" value={item.node.id} />
+              <div class="flex items-stretch">
+                <Button
+                  type="submit"
+                  size="icon"
+                  variant="outline"
+                  name="quantity"
+                  value={Math.max(item.node.quantity - 1, 0)}
+                  class="h-8 w-8 rounded-r-none shadow-none"
+                >
+                  <Minus class="h-5 w-5" />
+                </Button>
+                <div class="flex min-w-14 items-center border-y border-input px-3 text-sm">
+                  {item.node.quantity} st
+                </div>
+                <Button
+                  type="submit"
+                  size="icon"
+                  variant="outline"
+                  name="quantity"
+                  value={item.node.quantity + 1}
+                  class="h-8 w-8 rounded-l-none shadow-none"
+                >
+                  <Plus class="h-5 w-5" />
+                </Button>
               </div>
               <Button
                 type="submit"
                 size="icon"
-                variant="outline"
+                variant="ghost"
                 name="quantity"
-                value={item.node.quantity + 1}
-                class="h-8 w-8 rounded-l-none shadow-none"
+                value="0"
+                class="h-8 w-8"
               >
-                <Plus class="h-5 w-5" />
+                <Trash class="h-5 w-5" />
               </Button>
+              <div class="ml-auto">
+                <Price class="m-0 font-bold" price={item.node.cost.totalAmount}></Price>
+              </div>
             </div>
-            <Button
-              type="submit"
-              size="icon"
-              variant="ghost"
-              name="quantity"
-              value="0"
-              class="h-8 w-8"
-            >
-              <Trash class="h-5 w-5" />
-            </Button>
-            <div class="ml-auto">
-              <Price class="m-0 font-bold" price={item.node.cost.totalAmount}></Price>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
+    {/each}
+    {#if showTotal}
+      <hr />
+      <div class="my-4 flex flex-row justify-between text-right">
+        <h2 class="m-0 text-base">Delsumma inkl. moms</h2>
+        <Price class="font-bold" price={cart?.cost.totalAmount} />
+      </div>
+      <p class="text-xs italic">
+        Fraktkostnad beräknas i nästa steg. Alltid gratis frakt över 600 kr.
+      </p>
+    {/if}
+    <div class="flex flex-col justify-end gap-3 py-10 sm:flex-row">
+      <Button
+        on:click={() => {
+          window.history.back()
+        }}
+        variant="outline"
+        size="lg">Fortsätt handla</Button
+      >
+      <Button href={cart.checkoutUrl} target="_self" size="lg">
+        <span> Till betalning </span>
+        <Icons type="cart-checkout" class="ml-3" />
+      </Button>
     </div>
-  {/each}
-  {#if showTotal}
-    <hr />
-    <div class="my-4 flex flex-row justify-between text-right">
-      <h2 class="m-0 text-base">Delsumma inkl. moms</h2>
-      <Price class="font-bold" price={cart?.cost.totalAmount} />
-    </div>
-    <p class="text-xs italic">
-      Fraktkostnad beräknas i nästa steg. Alltid gratis frakt över 600 kr.
-    </p>
-  {/if}
-  <div class="flex flex-col justify-end gap-3 py-10 sm:flex-row">
-    <Button
-      on:click={() => {
-        window.history.back()
-      }}
-      variant="outline"
-      size="lg">Fortsätt handla</Button
-    >
-    <Button href={cart.checkoutUrl} target="_self" size="lg">
-      <span> Till betalning </span>
-      <Icons type="cart-checkout" class="ml-3" />
-    </Button>
   </div>
 {:else}
   <div class="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">

@@ -53,7 +53,7 @@
               </clipPath>
             </defs>
           </svg>
-          {section.filename}
+          {section.filename?.value}
         </span>
         <span class="flex gap-2 text-xs font-normal">
           {#if file?.originalFileSize}

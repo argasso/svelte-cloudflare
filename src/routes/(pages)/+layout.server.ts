@@ -1,3 +1,5 @@
+import { getByType, isType } from '$lib'
+import { filtersQuery } from '$lib/components/filter/Filters.gql.js'
 import {
   DEFAULT_PAGE_SIZE,
   defaultSortKey,
@@ -6,20 +8,15 @@ import {
   getEnhancedFilter,
   shortGID,
   sortOptions,
-  type ProductFilter,
 } from '$lib/components/filter/shopifyFilters.js'
 import { productsQuery, type TProductsQuery } from '$lib/components/ProductsGrid.gql'
-import { error, redirect } from '@sveltejs/kit'
+import type { sectionDownloadFragment } from '$lib/components/section/SectionDownload.gql'
 import { pageQuery } from '$lib/gql/page.gql.js'
 import { findMenuItem, getPathToItem } from '$lib/menu'
+import { error } from '@sveltejs/kit'
 import { client } from '../../client'
-import { filtersQuery } from '$lib/components/filter/Filters.gql.js'
-import type { FragmentOf, ResultOf, VariablesOf } from '../../graphql'
-import { getByType, isType } from '$lib'
+import type { FragmentOf, VariablesOf } from '../../graphql'
 import type { FileInfoType } from '../api/files/[handle]/info/+server'
-import type { sectionDownloadFragment } from '$lib/components/section/SectionDownload.gql'
-// import type { ResultOf, VariablesOf } from '../../../graphql'
-// import type { TProductsQuery } from '../../ProductsGrid.gql'
 
 export const load = async (event) => {
   const { parent, url, fetch } = event

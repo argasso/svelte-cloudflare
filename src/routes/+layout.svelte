@@ -20,6 +20,7 @@
   import { Toaster } from 'svelte-sonner'
   import MobileNav from '$lib/components/MobileNav.svelte'
   import Search from '$lib/components/search/Search.svelte'
+  import { enhance } from '$app/forms'
 
   export let data
 

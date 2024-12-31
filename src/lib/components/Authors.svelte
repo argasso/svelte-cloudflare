@@ -6,6 +6,7 @@
   export { className as class }
   export let book: TAuthors
   export let one = false
+  export let noLink = false
 
   $: authors = book.authors?.references?.nodes.filter(isType('Metaobject')) ?? []
   $: numAuthors = authors?.length ?? 0
@@ -18,9 +19,13 @@
         {#if index > 0}
           &nbsp;&middot;
         {/if}
-        <a href={authorUrl(author.handle)}>
+        {#if noLink}
           {author.name?.value}
-        </a>
+        {:else}
+          <a href={authorUrl(author.handle)}>
+            {author.name?.value}
+          </a>
+        {/if}
       {/if}
     {/each}
     {#if one && authors.length > 1}

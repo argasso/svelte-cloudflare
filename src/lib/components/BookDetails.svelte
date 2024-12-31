@@ -3,11 +3,18 @@
   import Pill from './Pill.svelte'
   import ReadingLevel from './ReadingLevel.svelte'
 
-  export let details: {
+  type DetailsItem = {
     key: string
     label: string
-    value: string
-  }[] = []
+    value:
+      | {
+          text: string
+          href?: string | undefined
+        }[]
+      | undefined
+  }
+
+  export let details: DetailsItem[] = []
 </script>
 
 <Card.Root>
@@ -22,10 +29,16 @@
             {item.label}
           </dt>
           <dd class="col-span-2 text-sm">
-            {#if item.key === 'reading_level'}
-              <ReadingLevel level={parseInt(item.value)} />
-            {:else}
-              {item.value}
+            {#if item.value}
+              {#each item.value as { text, href }}
+                {#if item.key === 'reading_level'}
+                  <ReadingLevel level={parseInt(text)} />
+                {:else if href}
+                  <Pill {href} name={text} />
+                {:else}
+                  {text}
+                {/if}
+              {/each}
             {/if}
           </dd>
         </div>

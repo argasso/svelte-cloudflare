@@ -7,7 +7,7 @@
 
   export let formId: string
   export let filters: EnhancedFilter[] = []
-  export let requestSubmit
+  export let requestSubmit: () => void
 </script>
 
 {#each filters as filter (filter.id)}
