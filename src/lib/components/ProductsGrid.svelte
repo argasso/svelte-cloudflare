@@ -9,10 +9,11 @@
   import ProductGridToolbar from './ProductGridToolbar.svelte'
   import type { TProducts } from './ProductsGrid.gql'
   import Filters from './filter/Filters.svelte'
+  import ProductsGridForm from './grid/ProductsGridForm.svelte'
 
   export let products: TProducts
 
-  $: ({ filters, nodes: books, totalCount, pageSize } = products)
+  $: ({ filters, nodes: books, totalCount, pageSize, pageInfo } = products)
   $: count = books.length
   $: appliedFilters = filters
     .flatMap(({ values }) => values.flatMap(getDecendants))
@@ -42,31 +43,32 @@
           {/if}
         </div>
 
-        <form bind:this={form} data-sveltekit-keepfocus data-sveltekit-noscroll id={formId}>
-          <ProductGridToolbar {products} {filters} {formId} {requestSubmit} />
-          <div class="js-only flex min-h-10 flex-wrap items-center gap-2">
+        <ProductGridToolbar {products} />
+
+        <ProductsGridForm>
+          <div class="my-6 flex min-h-10 flex-wrap items-center gap-3">
             {#each appliedFilters as filter (filter.id)}
               <AppliedFilterButton {filter}></AppliedFilterButton>
             {/each}
             {#if appliedFilters.length > 0}
               <Button
+                class="h-6"
                 variant="link"
-                size="sm"
+                size="default"
                 type="submit"
                 name="reset"
                 value="filters"
-                form={formId}
               >
                 Rensa urvalsfilter
               </Button>
             {/if}
           </div>
-        </form>
+        </ProductsGridForm>
       </div>
 
-      <div class="filters col-start-2 row-span-2 row-start-2 overscroll-contain">
+      <div class="filters col-start-2 row-span-2 row-start-2 hidden overscroll-contain md:block">
         <div class=" w-64" inert={!$isFilterOpen}>
-          <Filters {filters} {formId} {requestSubmit} />
+          <Filters {products} />
         </div>
       </div>
 
@@ -85,6 +87,10 @@
         {/if}
       </div>
     </div>
+    <noscript>
+      <h2 id="urval">Urval</h2>
+      <Filters {products} />
+    </noscript>
   </Section>
 {/if}
 
@@ -93,21 +99,22 @@
     grid-template-columns: 1fr 0px;
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .filtered-grid.filtering,
     .filters:focus-within {
       grid-template-columns: 1fr 256px;
-      gap: 0 2rem;
+      gap: 1rem 2rem;
     }
     .filters {
       overflow-x: hidden;
     }
   }
 
-  @media (max-width: 640px) {
-    .filters {
+  @media (max-width: 768px) {
+    /* .filters {
       display: none;
-    }
+    } */
+
     /* .filters {
       position: fixed;
       bottom: 0;
@@ -123,8 +130,8 @@
 
   .book-grid {
     display: grid;
-    grid-column-end: 2;
-    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    /* grid-column-end: 2; */
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
     /* This is better for small screens, once min() is better supported */
     /* grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr)); */
     /* gap: 1rem; */
@@ -132,7 +139,12 @@
     row-gap: 3.5rem;
     justify-items: start;
   }
+  @media (min-width: 1024px) {
+    .book-grid {
+      grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    }
+  }
   .book-grid.filtering {
-    grid-column-end: 1;
+    /* grid-column-end: 1; */
   }
 </style>

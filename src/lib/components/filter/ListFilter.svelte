@@ -4,8 +4,6 @@
   import Button from '../Button.svelte'
 
   export let filter: EnhancedFilter
-  export let formId: string
-  export let requestSubmit
 
   let size = 10
   let value = ''
@@ -25,8 +23,6 @@
         class={visible.includes(getShortValue(item)) ? '' : 'hidden'}
         key={filter.key}
         {item}
-        {formId}
-        {requestSubmit}
       />
     {/each}
   </ul>
@@ -46,6 +42,6 @@
 {/if}
 <noscript>
   <div class="w-full p-1 py-3">
-    <Button form={formId} type="submit" class="w-full">Gör urval</Button>
+    <Button type="submit" class="w-full">Gör urval</Button>
   </div>
 </noscript>

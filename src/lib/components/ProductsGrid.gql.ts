@@ -84,8 +84,16 @@ export type TProductsQuery = typeof productsQuery
 export type TProductsServerResult = NonNullable<ResultOf<TProductsQuery>['collection']>['products']
 
 export type TProducts = Omit<TProductsServerResult, 'filters'> & {
+  queryParams: {
+    after?: string
+    before?: string
+    size?: string
+    sort?: string
+  }
   pageSort: string
   pageSize: number
   totalCount: number
   filters: EnhancedFilter[]
 }
+
+export type TPageInfo = ResultOf<typeof pageInfoFragment>['pageInfo']

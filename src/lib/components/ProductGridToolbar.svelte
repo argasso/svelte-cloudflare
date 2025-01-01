@@ -8,22 +8,19 @@
   import type { TProducts } from './ProductsGrid.gql'
   import Toggle from './Toggle.svelte'
   import MobileFilter from './filter/MobileFilter.svelte'
+  import Logo from './logo/Logo.svelte'
+  import ProductsGridForm from './grid/ProductsGridForm.svelte'
 
   interface $$Props extends HTMLAttributes<HTMLDivElement> {
     products: TProducts
-    requestSubmit: () => void
-    filters: EnhancedFilter[]
-    formId: string
   }
 
   let className: $$Props['class'] = undefined
   export { className as class }
   export let products: $$Props['products']
-  export let requestSubmit: $$Props['requestSubmit']
-  export let filters: $$Props['filters'] = []
-  export let formId: $$Props['formId']
 
-  $: ({ pageInfo, pageSize, pageSort } = products)
+  $: ({ filters, pageSize, pageSort, pageInfo, queryParams } = products)
+  $: ({ after, before, size, sort } = queryParams)
 </script>
 
 <div class={cn('flex flex-wrap items-center gap-2 text-sm font-light text-foreground', className)}>
@@ -37,29 +34,31 @@
     {/if}
   </div> -->
 
-  <select
-    class="hidden bg-background px-4 py-2 pr-8 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5 md:block"
-    name="sort"
-    value={pageSort}
-    on:change={requestSubmit}
-  >
-    {#each sortOptions as { value, label }}
-      <option {value} selected={value === pageSort}>{label}</option>
-    {/each}
-  </select>
+  <ProductsGridForm {filters} {after} {before} class="gap-2 sm:flex">
+    <select
+      class="bg-background px-4 py-2 pr-8 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5"
+      name="sort"
+      value={pageSort}
+      on:change={(e) => e.currentTarget.form?.requestSubmit()}
+    >
+      {#each sortOptions as { value, label }}
+        <option {value} selected={value === pageSort}>{label}</option>
+      {/each}
+    </select>
 
-  <select
-    class="hidden bg-background px-4 py-2 pr-8 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5 md:block"
-    name="size"
-    value={pageSize}
-    on:change={requestSubmit}
-  >
-    {#each sizeOptions as size}
-      <option value={size} selected={size == pageSize}>{size} per sida</option>
-    {/each}
-  </select>
+    <select
+      class="bg-background px-4 py-2 pr-8 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5"
+      name="size"
+      value={pageSize}
+      on:change={(e) => e.currentTarget.form?.requestSubmit()}
+    >
+      {#each sizeOptions as size}
+        <option value={size} selected={size == pageSize}>{size} per sida</option>
+      {/each}
+    </select>
+  </ProductsGridForm>
 
-  <div class="flex gap-2">
+  <ProductsGridForm {filters} {size} {sort} class="flex gap-2">
     <Button
       class="font-light"
       variant="outline"
@@ -69,7 +68,8 @@
       disabled={!pageInfo.hasPreviousPage}
     >
       <ChevronLeft class="h-4 w-4" />
-      <span class="hidden lg:inline-block">Föregående sida</span>
+      <span class="hidden md:inline-block">Föregående</span>
+      <span class="hidden lg:inline-block">sida</span>
     </Button>
 
     <Button
@@ -80,16 +80,16 @@
       value={pageInfo.endCursor}
       disabled={!pageInfo.hasNextPage}
     >
-      <span class="hidden lg:inline-block">Nästa sida</span>
+      <span class="hidden md:inline-block">Nästa</span>
+      <span class="hidden lg:inline-block">sida</span>
       <ChevronRight class="h-4 w-4" />
     </Button>
-  </div>
+  </ProductsGridForm>
+
   <div class="flex flex-1 justify-end">
-    <div class="js-only hidden sm:block">
-      <Toggle name="filters">Urvalsfilter</Toggle>
-    </div>
-    <div class="js-only sm:hidden">
-      <MobileFilter {filters} {formId} {requestSubmit} />
+    <Toggle class="js-only hidden md:block" name="filters">Urvalsfilter</Toggle>
+    <div class="js-only md:hidden">
+      <MobileFilter {products} />
     </div>
     <noscript>
       <Button type="submit" name="reset" value="filters" variant="default">Rensa urval</Button>

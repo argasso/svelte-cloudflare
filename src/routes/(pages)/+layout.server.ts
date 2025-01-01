@@ -122,6 +122,12 @@ export const load = async (event) => {
     productsData && currentFilters
       ? {
           ...productsData,
+          queryParams: {
+            after,
+            before,
+            size,
+            sort,
+          },
           pageSize,
           pageSort,
           totalCount,

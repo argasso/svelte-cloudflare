@@ -3,21 +3,21 @@
   import { type EnhancedFilter } from './shopifyFilters'
 
   export let filter: EnhancedFilter
-  export let formId: string
-  export let requestSubmit: () => void
+  //export let requestSubmit: () => void
 
   $: [rangeMin, rangeMax, min, max] = filter.values[0].value.split(' ').map((v) => parseInt(v, 10))
 
   $: range = [rangeMin, rangeMax]
 
   $: unset = range[0] === min && range[1] === max
-  $: range && debouncedQuery()
 
   let timer: NodeJS.Timeout
 
-  function debouncedQuery() {
+  function debounce(callback: ((submitter?: HTMLElement | null | undefined) => void) | undefined) {
     clearTimeout(timer)
-    timer = setTimeout(requestSubmit, 500)
+    if (callback) {
+      timer = setTimeout(callback, 500)
+    }
   }
 </script>
 
@@ -34,8 +34,8 @@
         type="number"
         name="price"
         id={`${filter.id}-min`}
-        form={formId}
         bind:value={range[0]}
+        on:change={(e) => debounce(e.currentTarget.form?.requestSubmit)}
       />
     </div>
     <div class="w-20">
@@ -46,8 +46,8 @@
         type="number"
         name="price"
         id={`${filter.id}-max`}
-        form={formId}
         bind:value={range[1]}
+        on:change={(e) => debounce(e.currentTarget.form?.requestSubmit)}
       />
     </div>
   </div>

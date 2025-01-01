@@ -1,22 +1,19 @@
 <script lang="ts">
   import { Button } from '$lib/components/ui/button/index.js'
-  import Filters from './Filters.svelte'
-  import ScrollArea from '../ui/scroll-area/scroll-area.svelte'
-  import type { EnhancedFilter } from './shopifyFilters'
-  import { stringify } from 'postcss'
   import Icons from '../Icons.svelte'
+  import ScrollArea from '../ui/scroll-area/scroll-area.svelte'
+  import Filters from './Filters.svelte'
   // import Skeleton from '../ui/skeleton/skeleton.svelte'
   import Filter from 'lucide-svelte/icons/filter'
   import { Drawer } from 'vaul-svelte'
+  import type { TProducts } from '../ProductsGrid.gql'
 
   let className = ''
   export { className as class }
-  export let filters: EnhancedFilter[]
-  export let formId: string
-  export let requestSubmit: () => void
+  export let products: TProducts
   export let loading = false
-  // $: console.log('filters updated', filters)
 
+  $: ({ filters = [], pageInfo } = products)
   $: totalCount =
     filters
       ?.find((f) => f.id === 'filter.v.availability')
@@ -36,7 +33,7 @@
   </Drawer.Trigger>
   <Drawer.Portal>
     <Drawer.Content
-      class="fixed bottom-0 left-0 right-0 z-50 mx-auto h-[90%] w-full max-w-lg flex-col overflow-hidden rounded-t-[10px] bg-popover after:data-[vaul-drawer]:bg-background sm:bg-transparent sm:after:data-[vaul-drawer]:data-[vaul-drawer-direction=bottom]:bg-transparent"
+      class="fixed bottom-0 left-0 right-0 z-50 mx-auto h-[90%] w-full max-w-lg flex-col overflow-hidden rounded-t-[10px] bg-popover after:data-[vaul-drawer]:bg-background md:bg-transparent md:after:data-[vaul-drawer]:data-[vaul-drawer-direction=bottom]:bg-transparent"
     >
       <div
         class="absolute left-1/2 top-0 my-2 h-1.5 w-12 flex-shrink-0 -translate-x-6 rounded-full bg-zinc-300 sm:hidden"
@@ -55,7 +52,7 @@
       {/if}
       <!-- </Drawer.Header> -->
       <ScrollArea class="h-full flex-1 px-8">
-        <Filters {filters} {formId} {requestSubmit}></Filters>
+        <Filters {products}></Filters>
       </ScrollArea>
 
       <!-- Workaround for closing on outside click when showing as dialog style. Overlay not clickable below dialog. -->

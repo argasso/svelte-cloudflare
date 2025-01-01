@@ -7,8 +7,6 @@
   export { className as class }
   export let key: string
   export let item: EnhancedFilterItem
-  export let requestSubmit
-  export let formId: string
 
   $: ({ label, value, count, active: checked, children = [] } = item)
 </script>
@@ -16,12 +14,11 @@
 <li class={className}>
   <label class="flex items-center text-sm">
     <input
-      form={formId}
       type="checkbox"
       name={key}
       {value}
       {checked}
-      on:change={requestSubmit}
+      on:change={(e) => e.currentTarget.form?.requestSubmit()}
       class="m-1 mr-2 h-6 w-6 rounded-sm text-argasso-500"
     />
     {#if key === 'reading_level'}
@@ -40,7 +37,7 @@
   {#if checked && children.length > 0}
     <ul class="mb-0 ml-4 list-none border-l-2 border-primary pl-2" transition:slide>
       {#each children as child}
-        <svelte:self {key} item={child} {formId} {requestSubmit} />
+        <svelte:self {key} item={child} />
       {/each}
     </ul>
   {/if}

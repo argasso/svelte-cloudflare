@@ -59,10 +59,15 @@
           placeholder="namn@exempel.se"
         />
       </label>
+
+      <div class="block">
+        <span>Verifiera att du inte är en robot</span>
+        <Turnstile siteKey="0x4AAAAAAA4AVzp7D1Cwe4K-" on:callback={activate} theme={$mode} />
+      </div>
+
       <p>
         <Button size="lg" type="submit" {disabled}>Beställ</Button>
       </p>
-      <Turnstile siteKey="0x4AAAAAAA4AVzp7D1Cwe4K-" on:callback={activate} theme={$mode} />
     </div>
   </form>
 </Section>
