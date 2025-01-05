@@ -18,12 +18,6 @@
   $: appliedFilters = filters
     .flatMap(({ values }) => values.flatMap(getDecendants))
     .filter((v) => v.active)
-
-  let form: HTMLFormElement
-  function requestSubmit() {
-    form?.requestSubmit()
-  }
-  const formId = 'product-filter'
 </script>
 
 {#if books.length >= 0}

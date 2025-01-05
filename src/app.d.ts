@@ -5,6 +5,7 @@ declare global {
     interface Platform {
       env: {
         ARGASSO_FILES: R2Bucket
+        TURNSTILE_SECRET_KEY: string
       }
       cf: CfProperties
       ctx: ExecutionContext

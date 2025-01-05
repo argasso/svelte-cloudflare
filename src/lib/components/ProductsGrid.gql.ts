@@ -85,10 +85,10 @@ export type TProductsServerResult = NonNullable<ResultOf<TProductsQuery>['collec
 
 export type TProducts = Omit<TProductsServerResult, 'filters'> & {
   queryParams: {
-    after?: string
-    before?: string
-    size?: string
-    sort?: string
+    after: string | null
+    before: string | null
+    size: string | null
+    sort: string | null
   }
   pageSort: string
   pageSize: number

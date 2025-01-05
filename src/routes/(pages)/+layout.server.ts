@@ -11,18 +11,19 @@ import {
 } from '$lib/components/filter/shopifyFilters.js'
 import { productsQuery, type TProductsQuery } from '$lib/components/ProductsGrid.gql'
 import type { sectionDownloadFragment } from '$lib/components/section/SectionDownload.gql'
-import { pageQuery } from '$lib/gql/page.gql.js'
-import { findMenuItem, getPathToItem } from '$lib/menu'
+import { categoryProductsQuery, imageFragment, pageQuery } from '$lib/gql/page.gql.js'
+import { findMenuItem, getPathToItem, type MenuItem } from '$lib/menu'
 import { error } from '@sveltejs/kit'
 import { client } from '../../client'
-import type { FragmentOf, VariablesOf } from '../../graphql'
+import type { FragmentOf, ResultOf, VariablesOf } from '../../graphql'
 import type { FileInfoType } from '../api/files/[handle]/info/+server'
 
 export const load = async (event) => {
   const { parent, url, fetch } = event
   const { menu } = await parent()
   // const path = url.pathname.split('/').slice(0, -1).join('/')
-  const crumbs = getPathToItem(findMenuItem(menu, url.pathname))
+  const menuItem = findMenuItem(menu, url.pathname)
+  const crumbs = getPathToItem(menuItem)
 
   // Page
   const handle = url.pathname.split('/').at(-1) ?? ''
@@ -52,7 +53,7 @@ export const load = async (event) => {
   })
 
   // Links
-  const links = findMenuItem(menu, url.pathname)?.children
+  const links = await decorateCategoryImages(menuItem?.children)
 
   // Filter
   const filterResponse = await client.query(filtersQuery, {}, { fetch })
@@ -139,7 +140,6 @@ export const load = async (event) => {
     crumbs,
     page,
     links,
-    initialFilters,
     products,
   }
 }
@@ -183,4 +183,34 @@ function decorateSectionDownload(node: TSectionDownload, info: FileInfoType) {
       },
     }
   }
+}
+
+type DecoratedMenuItem = MenuItem & {
+  images?: (FragmentOf<typeof imageFragment> | null)[]
+}
+async function decorateCategoryImages(
+  links?: MenuItem[],
+): Promise<DecoratedMenuItem[] | undefined> {
+  if (links && links.length > 0) {
+    const variables = Object.fromEntries(
+      links.map(({ id }, i) => [`c${i}`, id]) ?? [],
+    ) satisfies VariablesOf<typeof categoryProductsQuery>
+
+    const response = await client.query(categoryProductsQuery, variables, { fetch })
+
+    const imageMap = new Map(
+      Object.entries(response.data?.collection ?? {})
+        .filter(([k, v]) => k.startsWith('c') && v.nodes.length > 0)
+        .map(([k, v]) => {
+          const key = variables[k]
+          const val = v.nodes.map((v) => v.image)
+          return [key, val]
+        }),
+    )
+    return links.map((link) => ({
+      ...link,
+      images: imageMap.get(link.id),
+    }))
+  }
+  return links
 }
