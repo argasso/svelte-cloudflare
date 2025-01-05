@@ -41,8 +41,12 @@ export const actions = {
 
     if (outcome && outcome.success) {
       console.log('TODO: send email')
-      return { success: true }
+      return { success: true, message: 'Tack! Beställning av katalogen är mottagen.' }
     }
-    return { sucess: false }
+    return {
+      sucess: false,
+      message:
+        'Tyvärr, beställningen kunde inte slutföras. Vi kan inte verifiera att du inte är en robot.',
+    }
   },
 } satisfies Actions

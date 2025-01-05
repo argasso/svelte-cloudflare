@@ -1,5 +1,5 @@
 import { toast } from 'svelte-sonner'
-import type { SubmitFunction } from '../routes/(default)/cart/$types'
+import type { SubmitFunction } from '../routes/cart/$types'
 import { applyAction } from '$app/forms'
 import { goto, invalidateAll } from '$app/navigation'
 import { cart } from './stores/cartStore'
