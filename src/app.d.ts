@@ -6,6 +6,7 @@ declare global {
       env: {
         ARGASSO_FILES: R2Bucket
         TURNSTILE_SECRET_KEY: string
+        TURNSTILE_SITE_KEY: string
       }
       cf: CfProperties
       ctx: ExecutionContext

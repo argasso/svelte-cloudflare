@@ -30,3 +30,9 @@
     <slot />
   </div>
 </section>
+
+<style>
+  section:last-of-type {
+    padding-bottom: 6rem;
+  }
+</style>

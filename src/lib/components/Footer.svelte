@@ -12,9 +12,9 @@
         <h2>Kontaktuppgifter</h2>
         <ul class="list-none p-0 text-red-100">
           <li class="mb-2">
-            Lasarettsgatan 12
+            Villagatan 34
             <br />
-            89133 Örnsköldsvik
+            891 37 Örnsköldsvik
           </li>
           <li class="mb-2">0660 - 27 36 40</li>
           <li class="mb-2">info@argasso.se</li>

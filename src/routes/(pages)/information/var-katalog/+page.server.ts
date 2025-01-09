@@ -1,5 +1,6 @@
-export const load = async (event) => {
-  return
+export const load = async ({ platform }) => {
+  const TURNSTILE_SITE_KEY = platform?.env.TURNSTILE_SITE_KEY
+  return { TURNSTILE_SITE_KEY }
 }
 
 import { error } from '@sveltejs/kit'
@@ -19,16 +20,16 @@ export const actions = {
     if (!token) {
       error(400, 'Missing token (cf-turnstile-response)')
     }
-    if (!ip) {
-      error(400, 'Missing IP (CF-Connecting-IP)')
-    }
+    // if (!ip) {
+    //   error(400, 'Missing IP (CF-Connecting-IP)')
+    // }
 
     // Validate the token by calling the
     // "/siteverify" API endpoint.
     let formData = new FormData()
     formData.append('secret', platform.env.TURNSTILE_SECRET_KEY)
     formData.append('response', token)
-    formData.append('remoteip', ip)
+    formData.append('remoteip', ip ?? '')
 
     const url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
     const result = await fetch(url, {

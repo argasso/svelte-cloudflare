@@ -117,10 +117,6 @@
           </div>
           <h1 class="my-0 text-2xl font-medium lg:text-3xl xl:text-4xl">
             {product?.title}
-
-            <span class="text-xs font-light uppercase sm:text-sm lg:text-lg">
-              - {selectedVariant.metafields.find((m) => m?.key === 'binding')?.value}
-            </span>
           </h1>
         </div>
         <div class="col-span-2 col-start-1 row-start-3 sm:col-span-1 sm:col-start-2 sm:row-start-2">
@@ -129,7 +125,7 @@
         <div class="col-start-2 row-start-2 sm:col-start-2 sm:row-start-3">
           {#if selectedVariant.discontinued?.value === 'true'}
             <div
-              class="border-argasso2-500 text-argasso2-700 rounded-r-lg border-l-4 bg-argasso-50 p-4"
+              class="rounded-r-lg border-l-4 border-primary bg-muted p-4 text-argasso-500"
               role="alert"
             >
               <p class="font-bold">Utgått</p>

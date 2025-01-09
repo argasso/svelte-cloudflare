@@ -3,6 +3,7 @@
   import type { MenuItem } from '$lib/menu'
   import SectionComponent from './section/SectionComponent.svelte'
   import SectionDownload from './section/SectionDownload.svelte'
+  import SectionNews from './section/SectionNews.svelte'
   // import SectionNews, { sectionNewsFragment } from './section/SectionNews.svelte'
   import SektionBokgalleri from './section/SektionBokgalleri.svelte'
   import type { TSectionsFragment } from './Sections.gql'
