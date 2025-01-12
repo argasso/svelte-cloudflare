@@ -34,23 +34,25 @@ export const load = async (event) => {
   }
   const page = pageResponse.data?.page
 
-  page?.sections?.references?.nodes.forEach(async (node) => {
-    if (isType('Metaobject')(node)) {
-      if (node.type === 'section_download') {
-        const filename = node.filename?.value
-        if (filename) {
-          const rsp = await fetch(`/api/files/${filename}/info`)
-          if (rsp.ok) {
-            const info = (await rsp.json()) as FileInfoType
-            console.log(info)
-            decorateSectionDownload(node, info)
-          } else {
-            console.warn('Failed to fetch file for section download. ', rsp.statusText)
+  await Promise.all(
+    page?.sections?.references?.nodes.forEach(async (node) => {
+      if (isType('Metaobject')(node)) {
+        if (node.type === 'section_download') {
+          const filename = node.filename?.value
+          if (filename) {
+            const rsp = await fetch(`/api/files/${filename}/info`)
+            if (rsp.ok) {
+              const info = (await rsp.json()) as FileInfoType
+              console.log(info)
+              decorateSectionDownload(node, info)
+            } else {
+              console.warn('Failed to fetch file for section download. ', rsp.statusText)
+            }
           }
         }
       }
-    }
-  })
+    }) ?? [],
+  )
 
   // Links
   const links = await decorateCategoryImages(menuItem?.children)
