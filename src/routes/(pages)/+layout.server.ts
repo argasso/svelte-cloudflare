@@ -13,7 +13,7 @@ import { productsQuery, type TProductsQuery } from '$lib/components/ProductsGrid
 import type { sectionDownloadFragment } from '$lib/components/section/SectionDownload.gql'
 import { categoryProductsQuery, imageFragment, pageQuery } from '$lib/gql/page.gql.js'
 import { findMenuItem, getPathToItem, type MenuItem } from '$lib/menu'
-import { error } from '@sveltejs/kit'
+import { error, type ServerLoadEvent } from '@sveltejs/kit'
 import { client } from '../../client'
 import type { FragmentOf, VariablesOf } from '../../graphql'
 import type { FileInfoType } from '../api/files/[handle]/info/+server'
@@ -119,25 +119,13 @@ export const load = async (event) => {
       : undefined
 
   const decoratedSections = page?.sections?.references?.nodes.map(async (node) => {
-    if (isType('Metaobject')(node)) {
-      if (node.type === 'section_download') {
-        const filename = node.filename?.value
-        if (filename) {
-          const rsp = await fetch(`/api/files/${filename}/info`)
-          if (rsp.ok) {
-            const info = (await rsp.json()) as FileInfoType
-            console.log(info)
-            return decorateSectionDownload(node, info)
-          } else {
-            console.warn('Failed to fetch file for section download. ', rsp.statusText)
-          }
-        }
-      }
+    if (isType('Metaobject')(node) && node.type === 'section_download') {
+      return decorateDownload(node, event)
     }
     return node
   })
 
-  const nodes = decoratedSections ? await Promise.all(decoratedSections) : undefined
+  const nodes = decoratedSections ? await Promise.all(decoratedSections) : []
 
   return {
     crumbs,
@@ -167,35 +155,47 @@ async function getProducts(variables: NonNullable<VariablesOf<TProductsQuery>>) 
 }
 
 type TSectionDownload = FragmentOf<typeof sectionDownloadFragment>
-function decorateSectionDownload(node: TSectionDownload, info: FileInfoType) {
-  const file = node.file
+async function decorateDownload(
+  node: TSectionDownload,
+  event: ServerLoadEvent,
+): Promise<TSectionDownload> {
+  const { fetch } = event
   const filename = node.filename?.value
-  if (file) {
-    return {
-      ...node,
-      filename: {
-        value: getByType('GenericFile', file.reference)?.url?.split('/').at(-1) ?? null,
-      },
-    }
-  } else if (filename) {
-    return {
-      ...node,
-      file: {
-        reference: {
-          __typename: 'GenericFile',
-          id: info.key,
-          alt: 'Cloudflare file',
-          originalFileSize: info.size,
-          mimeType: info.httpMetadata?.contentType ?? null,
-          url: `/api/files/${filename}`,
-          previewImage: {
-            url: '',
-            height: null,
-            width: null,
+  if (filename) {
+    const rsp = await fetch(`/api/files/${filename}/info`)
+    if (rsp.ok) {
+      const info = (await rsp.json()) as FileInfoType
+      return {
+        ...node,
+        file: {
+          reference: {
+            __typename: 'GenericFile',
+            id: info.key,
+            alt: 'Cloudflare file',
+            originalFileSize: info.size,
+            mimeType: info.httpMetadata?.contentType ?? null,
+            url: `/api/files/${filename}`,
+            previewImage: {
+              url: '',
+              height: null,
+              width: null,
+            },
           },
         },
-      },
+      }
+    } else {
+      console.warn('Failed to fetch file for section download. ', rsp.statusText)
     }
+  }
+
+  const value = node.file?.reference
+    ? (getByType('GenericFile', node.file.reference)?.url?.split('/').at(-1) ?? null)
+    : (node.filename?.value ?? null)
+  return {
+    ...node,
+    filename: {
+      value,
+    },
   }
 }
 
