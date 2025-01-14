@@ -15,7 +15,7 @@ import { categoryProductsQuery, imageFragment, pageQuery } from '$lib/gql/page.g
 import { findMenuItem, getPathToItem, type MenuItem } from '$lib/menu'
 import { error } from '@sveltejs/kit'
 import { client } from '../../client'
-import type { FragmentOf, ResultOf, VariablesOf } from '../../graphql'
+import type { FragmentOf, VariablesOf } from '../../graphql'
 import type { FileInfoType } from '../api/files/[handle]/info/+server'
 
 export const load = async (event) => {
@@ -33,26 +33,6 @@ export const load = async (event) => {
     error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
   }
   const page = pageResponse.data?.page
-
-  await Promise.all(
-    page?.sections?.references?.nodes.forEach(async (node) => {
-      if (isType('Metaobject')(node)) {
-        if (node.type === 'section_download') {
-          const filename = node.filename?.value
-          if (filename) {
-            const rsp = await fetch(`/api/files/${filename}/info`)
-            if (rsp.ok) {
-              const info = (await rsp.json()) as FileInfoType
-              console.log(info)
-              decorateSectionDownload(node, info)
-            } else {
-              console.warn('Failed to fetch file for section download. ', rsp.statusText)
-            }
-          }
-        }
-      }
-    }) ?? [],
-  )
 
   // Links
   const links = await decorateCategoryImages(menuItem?.children)
@@ -138,9 +118,35 @@ export const load = async (event) => {
         }
       : undefined
 
+  const decoratedSections = page?.sections?.references?.nodes.map(async (node) => {
+    if (isType('Metaobject')(node)) {
+      if (node.type === 'section_download') {
+        const filename = node.filename?.value
+        if (filename) {
+          const rsp = await fetch(`/api/files/${filename}/info`)
+          if (rsp.ok) {
+            const info = (await rsp.json()) as FileInfoType
+            console.log(info)
+            return decorateSectionDownload(node, info)
+          } else {
+            console.warn('Failed to fetch file for section download. ', rsp.statusText)
+          }
+        }
+      }
+    }
+    return node
+  })
+
+  const nodes = decoratedSections ? await Promise.all(decoratedSections) : undefined
+
   return {
     crumbs,
-    page,
+    page: {
+      ...page,
+      sections: {
+        references: { nodes },
+      },
+    },
     links,
     products,
   }
@@ -165,22 +171,28 @@ function decorateSectionDownload(node: TSectionDownload, info: FileInfoType) {
   const file = node.file
   const filename = node.filename?.value
   if (file) {
-    node.filename = {
-      value: getByType('GenericFile', file.reference)?.url?.split('/').at(-1) ?? null,
+    return {
+      ...node,
+      filename: {
+        value: getByType('GenericFile', file.reference)?.url?.split('/').at(-1) ?? null,
+      },
     }
   } else if (filename) {
-    node.file = {
-      reference: {
-        __typename: 'GenericFile',
-        id: info.key,
-        alt: 'Cloudflare file',
-        originalFileSize: info.size,
-        mimeType: info.httpMetadata?.contentType ?? null,
-        url: `/api/files/${filename}`,
-        previewImage: {
-          url: '',
-          height: null,
-          width: null,
+    return {
+      ...node,
+      file: {
+        reference: {
+          __typename: 'GenericFile',
+          id: info.key,
+          alt: 'Cloudflare file',
+          originalFileSize: info.size,
+          mimeType: info.httpMetadata?.contentType ?? null,
+          url: `/api/files/${filename}`,
+          previewImage: {
+            url: '',
+            height: null,
+            width: null,
+          },
         },
       },
     }

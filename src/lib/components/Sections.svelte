@@ -1,14 +1,14 @@
 <script lang="ts">
   import { isType } from '$lib'
   import type { MenuItem } from '$lib/menu'
+  import type { ResultOf } from 'gql.tada'
   import SectionComponent from './section/SectionComponent.svelte'
   import SectionDownload from './section/SectionDownload.svelte'
-  import SectionNews from './section/SectionNews.svelte'
   // import SectionNews, { sectionNewsFragment } from './section/SectionNews.svelte'
+  import type { pageQuery } from '$lib/gql/page.gql'
   import SektionBokgalleri from './section/SektionBokgalleri.svelte'
-  import type { TSectionsFragment } from './Sections.gql'
 
-  export let page: TSectionsFragment | null | undefined
+  export let page: ResultOf<typeof pageQuery>['page']
   export let menu: MenuItem | undefined
 
   $: sections = page?.sections?.references?.nodes.filter(isType('Metaobject')) ?? []
