@@ -32,7 +32,7 @@ export const load = async (event) => {
     console.error('Page query failed', pageResponse.error)
     error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
   }
-  const page = pageResponse.data?.page
+  const pageData = pageResponse.data?.page
 
   // Links
   const links = await decorateCategoryImages(menuItem?.children)
@@ -118,7 +118,7 @@ export const load = async (event) => {
         }
       : undefined
 
-  const decoratedSections = page?.sections?.references?.nodes.map(async (node) => {
+  const decoratedSections = pageData?.sections?.references?.nodes.map(async (node) => {
     if (isType('Metaobject')(node) && node.type === 'section_download') {
       return decorateDownload(node, event)
     }
@@ -127,14 +127,18 @@ export const load = async (event) => {
 
   const nodes = decoratedSections ? await Promise.all(decoratedSections) : []
 
+  const page = pageData
+    ? {
+        ...pageData,
+        sections: {
+          references: { nodes },
+        },
+      }
+    : undefined
+
   return {
     crumbs,
-    page: {
-      ...page,
-      sections: {
-        references: { nodes },
-      },
-    },
+    page,
     links,
     products,
   }

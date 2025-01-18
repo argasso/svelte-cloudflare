@@ -1,10 +1,10 @@
 import { error } from '@sveltejs/kit'
-import { client } from '../../../client'
-import { productQuery } from './page.gql'
+import { client } from '../../../../client'
+import { productQuery } from '../page.gql'
 
 const metafields = [
   book('category', 'Kategori'),
-  book('binding', 'Bindning'),
+  book('binding', 'Format'),
   book('edited_by', 'Redigering'),
   book('illustrations_by', 'Illustrationer'),
   book('age', 'Rekommenderad ålder'),
@@ -34,8 +34,8 @@ function audio(key: string, label: string) {
 
 const metafieldIds = metafields.map(({ key, namespace }) => ({ key, namespace }))
 
-export async function load({ fetch, url }) {
-  const handle = url.pathname.split('/').at(-1) ?? ''
+export async function load({ fetch, url, params }) {
+  const { handle, sku } = params
   const variables = {
     handle,
     metafieldIds,
@@ -46,11 +46,26 @@ export async function load({ fetch, url }) {
     error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
   }
 
-  const product = response.data?.product
+  if (!response.data?.product) {
+    error(404, 'Hittar inte boken')
+  }
+
+  const recommendations = response.data.productRecommendations
+
+  const { variants, ...product } = response.data.product
+  const variant = sku ? variants?.nodes.find((v) => v.sku == sku) : variants?.nodes.at(0)
+  const otherVariants = variants?.nodes.filter((v) => v.sku != variant?.sku) ?? []
+
+  if (!variant) {
+    error(404, 'Hittar inte boken')
+  }
 
   return {
     maxage: 3600,
     product,
+    variant,
+    otherVariants,
     metafieldLabels,
+    recommendations,
   }
 }

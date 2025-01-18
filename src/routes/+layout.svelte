@@ -68,7 +68,7 @@
     </div>
   </header>
 
-  <main class="-mb-20 flex-1">
+  <main class="flex-1">
     <slot />
   </main>
 

@@ -248,6 +248,11 @@ button.button-sm {
 
 main {
   background-color: hsl(var(--background));
+  margin-bottom: -5rem;
+}
+
+main > *:last-child {
+  padding-bottom: 5rem;
 }
 
 main a {

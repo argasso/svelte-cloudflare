@@ -6,6 +6,31 @@ import { graphql } from '../../../graphql'
 export const productQuery = graphql(
   `
     query Product($handle: String!, $metafieldIds: [HasMetafieldsIdentifier!]!) {
+      productRecommendations(productHandle: $handle) {
+        id
+        title
+        handle
+        images(first: 1) {
+          nodes {
+            url
+            altText
+            height
+            width
+          }
+        }
+        ...AuthorsFragment
+        variants(first: 3) {
+          nodes {
+            id
+            price {
+              ...PriceFragment
+            }
+            discontinued: metafield(namespace: "book", key: "discontinued") {
+              value
+            }
+          }
+        }
+      }
       product(handle: $handle) {
         id
         title
@@ -56,6 +81,9 @@ export const productQuery = graphql(
               width
             }
             discontinued: metafield(namespace: "book", key: "discontinued") {
+              value
+            }
+            bokfynd: metafield(namespace: "book", key: "bokfynd") {
               value
             }
             metafields(identifiers: $metafieldIds) {
