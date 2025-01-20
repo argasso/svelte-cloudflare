@@ -8,6 +8,7 @@ export const bookPromo = graphql(
       id
       title
       handle
+      description(truncateAt: 160)
       descriptionHtml
       images(first: 1) {
         nodes {

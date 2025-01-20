@@ -13,7 +13,7 @@
 
 <details
   {name}
-  class="cursor-pointer p-1 transition-all [&_.left]:open:-rotate-45 [&_.right]:open:rotate-45"
+  class="cursor-pointer py-1 transition-all [&_.left]:open:-rotate-45 [&_.right]:open:rotate-45"
 >
   <summary
     class={cn(

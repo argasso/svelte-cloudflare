@@ -50,7 +50,7 @@ export async function load({ fetch, url, params }) {
     error(404, 'Hittar inte boken')
   }
 
-  const recommendations = response.data.productRecommendations
+  const recommendations = response.data.productRecommendations?.slice(0, 6)
 
   const { variants, ...product } = response.data.product
   const variant = sku ? variants?.nodes.find((v) => v.sku == sku) : variants?.nodes.at(0)

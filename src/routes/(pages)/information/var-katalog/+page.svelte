@@ -18,7 +18,7 @@
   }
 </script>
 
-<Section title="Beställ katalog" level={2} class="bg-card pb-20">
+<Section title="Beställ katalog" level={2} class="bg-card">
   <form class="mt-8 max-w-md text-sm" name="katalog" method="POST" use:enhance>
     <div class="grid grid-cols-1 gap-6">
       <label class="block">

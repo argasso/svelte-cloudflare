@@ -19,7 +19,7 @@
   ]
 </script>
 
-<div class="container pb-20">
+<div class="container">
   <Breadcrumbs {crumbs} />
 
   {#if form?.success}

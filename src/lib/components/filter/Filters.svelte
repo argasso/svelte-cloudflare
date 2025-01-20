@@ -14,7 +14,6 @@
 
 <ProductsGridForm {after} {before} {size} {sort}>
   {#each filters as filter (filter.id)}
-    <hr />
     <Accordion name="filter">
       <div slot="title" class="flex items-center gap-1 text-sm">
         {filter.label}
@@ -28,5 +27,6 @@
         <ListFilter {filter} />
       {/if}
     </Accordion>
+    <hr />
   {/each}
 </ProductsGridForm>

@@ -22,7 +22,7 @@
 </script>
 
 <div class="pb-2">
-  <div class:unset class="p-2">
+  <div class:unset class="p-2 px-3">
     <Slider bind:value={range} {min} {max} step={1} />
   </div>
   <div class="flex justify-between">

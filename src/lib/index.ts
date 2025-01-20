@@ -29,6 +29,15 @@ export const isSearchType =
 
 type Typename = introspection_types['MetafieldReference']['possibleTypes']
 
+export function getBySearchType<
+  T extends SearchTypename,
+  N extends { __typename?: SearchTypename },
+>(typename: T, node: N | null | undefined) {
+  return (isSearchType(typename)(node) ? node : undefined) as
+    | Extract<N, { __typename?: T }>
+    | undefined
+}
+
 export const isType =
   <T extends Typename>(typename: T) =>
   <N extends { __typename?: Typename }>(

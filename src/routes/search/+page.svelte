@@ -1,75 +1,39 @@
 <script lang="ts">
+  import { getByType, isSearchType, isType, getBySearchType } from '$lib'
+  import Authors from '$lib/components/Authors.svelte'
+  import Breadcrumbs from '$lib/components/Breadcrumbs.svelte'
   import Button from '$lib/components/Button.svelte'
   import CartForm from '$lib/components/CartForm.svelte'
   import Icons from '$lib/components/Icons.svelte'
+  import BookImage from '$lib/components/image/BookImage.svelte'
   import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
+  import Search from 'lucide-svelte/icons/search'
 
   export let data
 
-  $: ({ products } = data)
-  $: console.log(data.products)
+  $: ({ search, variables } = data)
+  $: products = search?.nodes.filter(isSearchType('Product'))
+  $: pageInfo = search?.pageInfo
+  $: totalCount = search?.totalCount
+  $: query = variables?.query
+  $: console.log(products)
+
+  const crumbs = [
+    {
+      name: 'Startsida',
+      href: '/',
+    },
+    {
+      name: 'Sök',
+    },
+  ]
 </script>
 
 <div class="container pb-20">
-  <!-- {#if form?.success}
-    <noscript>
-      <div
-        id="alert-additional-content-5"
-        class="rounded-lg border border-gray-300 bg-gray-50 p-4 dark:border-gray-600 dark:bg-gray-800"
-        role="alert"
-      >
-        <div class="flex items-center">
-          <svg
-            class="me-2 h-4 w-4 flex-shrink-0 dark:text-gray-300"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
-            />
-          </svg>
-          <span class="sr-only">Info</span>
-          <h3 class="text-lg font-medium text-gray-800 dark:text-gray-300">{form.message}</h3>
-        </div>
-        <div class="mb-4 mt-2 flex text-sm text-gray-800 dark:text-gray-300">
-          <ShopifyImage image={form.merchandise?.product.images.edges[0].node} width={40} />
-          <p>{form.merchandise?.product.title}</p>
-        </div>
-        <div class="flex">
-          <button
-            type="button"
-            class="me-2 inline-flex items-center rounded-lg bg-gray-700 px-3 py-1.5 text-center text-xs font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:ring-gray-800"
-          >
-            <svg
-              class="me-2 h-3 w-3 dark:text-gray-300"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 20 14"
-            >
-              <path
-                d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"
-              />
-            </svg>
-            View more
-          </button>
-          <button
-            type="button"
-            class="rounded-lg border border-gray-700 bg-transparent px-3 py-1.5 text-center text-xs font-medium text-gray-800 hover:bg-gray-800 hover:text-white focus:outline-none focus:ring-4 focus:ring-gray-300 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-800"
-            data-dismiss-target="#alert-additional-content-5"
-            aria-label="Close"
-          >
-            Dismiss
-          </button>
-        </div>
-      </div>
-    </noscript>
-  {/if} -->
-  <h1>Sök</h1>
+  <Breadcrumbs {crumbs} />
 
-  <form class="mx-auto max-w-md">
+  <h1>Sök bland våra titlar</h1>
+  <form class="my-5 max-w-md">
     <label for="default-search" class="sr-only mb-2 text-sm font-medium text-muted-foreground"
       >Search</label
     >
@@ -94,6 +58,7 @@
       <input
         type="search"
         name="query"
+        value={query}
         id="default-search"
         class="block w-full rounded-lg bg-muted p-4 ps-10 text-sm text-muted-foreground"
         placeholder="Sök bland våra böcker..."
@@ -107,12 +72,39 @@
       >
     </div>
   </form>
-  {#if products}
-    {#each products as product}
-      <div class="flex">
-        <ShopifyImage width={120} image={product.images.nodes.at(0)} />
-        <div>{product.title}</div>
+
+  {#if products && products.length > 0}
+    <h2>{totalCount} träffar</h2>
+    <p>Din sökning på <b>"{query}"</b> matchar följade böcker</p>
+    <div class="max-w-xl">
+      {#each products as product, i (i)}
+        {#if i > 0}
+          <hr />
+        {/if}
+
+        <div class="flex w-full gap-4 py-5">
+          <div class="self-start">
+            <BookImage width={64} image={product.images.nodes[0]} />
+          </div>
+          <div class="flex flex-1 flex-col justify-between">
+            <div class="flex-1">
+              <Authors book={product}></Authors>
+              <h3 class="m-0 text-base font-semibold">
+                {product.title}
+              </h3>
+            </div>
+          </div>
+        </div>
+      {/each}
+    </div>
+  {:else if query}
+    <div class="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
+      <div
+        class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-4xl text-gray-500"
+      >
+        <Search />
       </div>
-    {/each}
+      <h3 class="mt-6 text-center text-2xl">Hittar inget som matchar <b>{query}</b>.</h3>
+    </div>
   {/if}
 </div>

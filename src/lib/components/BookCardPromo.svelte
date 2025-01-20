@@ -22,20 +22,23 @@
 <div class="my-5 md:my-0">
   <div class="flex flex-col items-start gap-6 xs:flex-row">
     <BookImage href={bookUrl(book.handle)} image={book.images.nodes[0]} width={128} />
-    <div class="flex-0 flex flex-col items-start justify-center">
-      <p class="my-1">
-        <Authors {book}></Authors>
-      </p>
+    <div class="flex flex-col items-start justify-center">
+      <Authors {book}></Authors>
 
-      <h3 class="my-1 text-lg font-semibold leading-6">
+      <h3 class=" text-lg font-semibold leading-6">
         <a class="text-foreground" href={bookUrl(book.handle)}>{book.title}</a>
       </h3>
 
-      <p class="my-1 line-clamp-5 text-sm leading-normal text-muted-foreground">
-        {@html book.descriptionHtml}
+      <p class=" text-sm leading-normal text-muted-foreground">
+        {book.description}
       </p>
+      <!-- <div class="js-only">
+        <p class="my-1 line-clamp-5 text-sm leading-normal text-muted-foreground">
+          {@html book.descriptionHtml}
+        </p>
+      </div> -->
       {#if month}
-        <p class="my-1 text-xs text-gray-500"><i>- {month}</i></p>
+        <p class=" text-xs text-gray-500"><i>- {month}</i></p>
       {/if}
     </div>
   </div>

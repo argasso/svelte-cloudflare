@@ -23,7 +23,12 @@
   $: ({ after, before, size, sort } = queryParams)
 </script>
 
-<div class={cn('flex flex-wrap items-center gap-2 text-sm font-light text-foreground', className)}>
+<div
+  class={cn(
+    'flex flex-wrap items-stretch justify-stretch gap-2 text-sm font-light text-foreground',
+    className,
+  )}
+>
   <!-- <div class="mr-2">
     {#if totalCount > pageSize}
       Visar {count} av {totalCount} st
@@ -34,9 +39,14 @@
     {/if}
   </div> -->
 
-  <ProductsGridForm {filters} {after} {before} class="gap-2 sm:flex">
+  <ProductsGridForm
+    {filters}
+    {after}
+    {before}
+    class="flex flex-grow flex-wrap items-stretch gap-2 sm:flex-grow-0"
+  >
     <select
-      class="bg-background px-4 py-2 pr-8 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5"
+      class="flex-grow bg-background px-3 py-2 pr-7 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5 sm:pl-4 sm:pr-8"
       name="sort"
       value={pageSort}
       on:change={(e) => e.currentTarget.form?.requestSubmit()}
@@ -47,7 +57,7 @@
     </select>
 
     <select
-      class="bg-background px-4 py-2 pr-8 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5"
+      class="flex-grow bg-background px-3 py-2 pr-7 text-sm leading-tight hover:border-argasso-500 hover:bg-argasso-500/5 sm:pl-4 sm:pr-8"
       name="size"
       value={pageSize}
       on:change={(e) => e.currentTarget.form?.requestSubmit()}
@@ -58,9 +68,14 @@
     </select>
   </ProductsGridForm>
 
-  <ProductsGridForm {filters} {size} {sort} class="flex gap-2">
+  <ProductsGridForm
+    {filters}
+    {size}
+    {sort}
+    class="flex flex-grow items-stretch gap-2 sm:flex-grow-0"
+  >
     <Button
-      class="font-light"
+      class="flex-grow px-2 font-light md:px-4"
       variant="outline"
       type="submit"
       name="before"
@@ -73,7 +88,7 @@
     </Button>
 
     <Button
-      class="font-light"
+      class="flex-grow px-2 font-light md:px-4"
       variant="outline"
       type="submit"
       name="after"
@@ -86,13 +101,11 @@
     </Button>
   </ProductsGridForm>
 
-  <div class="flex flex-1 justify-end">
-    <Toggle class="js-only hidden md:block" name="filters">Urvalsfilter</Toggle>
-    <div class="js-only md:hidden">
-      <MobileFilter {products} />
-    </div>
-    <noscript>
-      <Button type="submit" name="reset" value="filters" variant="default">Rensa urval</Button>
-    </noscript>
+  <div class="js-only flex flex-grow md:hidden">
+    <MobileFilter class="flex-grow" {products} />
+  </div>
+
+  <div class="js-only hidden flex-1 items-center justify-end md:flex">
+    <Toggle class="hidden md:block" name="filters">Urvalsfilter</Toggle>
   </div>
 </div>

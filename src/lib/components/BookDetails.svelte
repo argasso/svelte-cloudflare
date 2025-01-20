@@ -40,7 +40,7 @@
   <Card.Content class="p-0">
     <dl>
       {#each details as item, index}
-        <div class:odd={index % 2 === 0} class="grid grid-cols-3 gap-4 p-6 py-2">
+        <div class:even={index % 2 !== 0} class="grid grid-cols-3 gap-4 p-6 py-2">
           <dt class="overflow-hidden text-ellipsis text-sm font-medium">
             {#if typeof item.label === 'string'}
               {item.label}
@@ -68,7 +68,7 @@
 </Card.Root>
 
 <style lang="postcss">
-  .odd {
-    background-color: hsl(var(--background) / 50%);
+  .even {
+    background-color: hsl(var(--accent) / 30%);
   }
 </style>

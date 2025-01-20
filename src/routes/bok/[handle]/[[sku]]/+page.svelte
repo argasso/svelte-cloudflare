@@ -80,7 +80,7 @@
   pageDescription={product?.description}
 />
 
-<div class="container pb-20">
+<div class="container">
   <Breadcrumb {crumbs} />
   <section class="py-12">
     <div
