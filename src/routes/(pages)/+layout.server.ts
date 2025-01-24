@@ -35,7 +35,9 @@ export const load = async (event) => {
   const pageData = pageResponse.data?.page
 
   // Links
-  const links = await decorateCategoryImages(menuItem?.children)
+  const links = (await decorateCategoryImages(menuItem?.children))?.filter(
+    (i) => !url.pathname.startsWith('/bocker') || (i.images?.length ?? 0) > 0,
+  )
 
   // Filter
   const filterResponse = await client.query(filtersQuery, {}, { fetch })
