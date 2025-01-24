@@ -18,7 +18,7 @@
 
 <div class:loading class="mt-auto w-40 opacity-100">
   <div class="book relative grid w-36">
-    <ShopifyImage class="col-start-1 row-start-1 rounded-r-sm bg-gray-100" {image} {width} />
+    <ShopifyImage class="col-start-1 row-start-1 rounded-r-sm bg-muted" {image} {width} />
     <a {href} class="book-overlay col-start-1 row-start-1" aria-label="Visa bok"></a>
     {#if discontinued}
       <div
@@ -34,7 +34,7 @@
   <div class="h-28 pt-3">
     <Authors book={bookThumb} one />
     <a {href} class="text-foreground hover:underline">
-      <h3 class="my-0 text-base font-semibold leading-6">{title}</h3>
+      <h3 class="my-0 font-sans text-base font-semibold leading-6">{title}</h3>
     </a>
   </div>
 </div>

@@ -6,13 +6,14 @@ import {
   getActiveShopifyFilters,
   getCategoryFilterAsTree,
   getEnhancedFilter,
+  longGID,
   shortGID,
   sortOptions,
 } from '$lib/components/filter/shopifyFilters.js'
 import { productsQuery, type TProductsQuery } from '$lib/components/ProductsGrid.gql'
 import type { sectionDownloadFragment } from '$lib/components/section/SectionDownload.gql'
 import { categoryProductsQuery, imageFragment, pageQuery } from '$lib/gql/page.gql.js'
-import { findMenuItem, getPathToItem, type MenuItem } from '$lib/menu'
+import { findMenuItem, findMenuItemById, flatten, getPathToItem, type MenuItem } from '$lib/menu'
 import { error, type ServerLoadEvent } from '@sveltejs/kit'
 import { client } from '../../client'
 import type { FragmentOf, VariablesOf } from '../../graphql'
@@ -62,11 +63,17 @@ export const load = async (event) => {
       .filter((v) => v.id === reset || 'filters' === reset)
       .forEach((v) => {
         if (v.filterType === 'PRICE_RANGE') {
-          const values = v.value.split(' ')
-          searchParams.delete(v.key, values[0])
-          searchParams.delete(v.key, values[1])
+          searchParams.delete(v.key)
         } else {
           searchParams.delete(v.key, v.value)
+
+          // Special handling for category tree
+          const categoryItem = findMenuItemById(menu, longGID(v.value))
+          if (categoryItem) {
+            flatten(categoryItem).forEach((item) => {
+              searchParams.delete(v.key, shortGID(item.id))
+            })
+          }
         }
       })
   }

@@ -12,3 +12,5 @@ export const noScroll = derived(
   [isOverlayOpen, isMenuOpen, isCartOpen],
   ([a$, b$, c$]) => a$ || b$ || c$,
 )
+
+export const isProductsLoading = writable(false)

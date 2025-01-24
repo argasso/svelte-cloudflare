@@ -1,22 +1,17 @@
 <script lang="ts">
-  import { getByType, isSearchType, isType, getBySearchType } from '$lib'
+  import { isSearchType } from '$lib'
   import Authors from '$lib/components/Authors.svelte'
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte'
   import Button from '$lib/components/Button.svelte'
-  import CartForm from '$lib/components/CartForm.svelte'
-  import Icons from '$lib/components/Icons.svelte'
   import BookImage from '$lib/components/image/BookImage.svelte'
-  import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
   import Search from 'lucide-svelte/icons/search'
 
   export let data
 
   $: ({ search, variables } = data)
   $: products = search?.nodes.filter(isSearchType('Product'))
-  $: pageInfo = search?.pageInfo
   $: totalCount = search?.totalCount
   $: query = variables?.query
-  $: console.log(products)
 
   const crumbs = [
     {

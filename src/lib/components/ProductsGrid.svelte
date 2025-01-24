@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { enhance } from '$app/forms'
   import BookCard from '$lib/components/BookCard.svelte'
   import Section from '$lib/components/Section.svelte'
   import AppliedFilterButton from '$lib/components/filter/AppliedFilterButton.svelte'
   import { getDecendants } from '$lib/components/filter/shopifyFilters'
-  import { isFilterOpen } from '$lib/stores/store'
+  import { isFilterOpen, isProductsLoading } from '$lib/stores/store'
   import Button from './Button.svelte'
   import ProductGridToolbar from './ProductGridToolbar.svelte'
   import type { TProducts } from './ProductsGrid.gql'
@@ -13,7 +12,9 @@
 
   export let products: TProducts
 
-  $: ({ filters, nodes: books, totalCount, pageSize, pageInfo } = products)
+  $: ({ filters, nodes: books, totalCount, pageSize, queryParams } = products)
+  $: ({ after, before, size, sort } = queryParams)
+
   $: count = books.length
   $: appliedFilters = filters
     .flatMap(({ values }) => values.flatMap(getDecendants))
@@ -39,7 +40,7 @@
 
         <ProductGridToolbar {products} />
 
-        <ProductsGridForm>
+        <ProductsGridForm {filters} {sort} {size} {before} {after}>
           <div class="my-6 flex min-h-10 flex-wrap items-center gap-3">
             {#each appliedFilters as filter (filter.id)}
               <AppliedFilterButton {filter}></AppliedFilterButton>
@@ -61,16 +62,16 @@
       </div>
 
       <div class="filters col-start-2 row-span-2 row-start-2 hidden overscroll-contain md:block">
-        <div class=" w-64" inert={!$isFilterOpen}>
+        <div class="w-64" inert={!$isFilterOpen}>
           <Filters {products} />
         </div>
       </div>
 
       <div class:filtering={$isFilterOpen} class="book-grid col-start-1 row-start-2">
         {#if books.length > 0}
-          {#each books as book}
+          {#each books as book (book.id)}
             <div class="self-end">
-              <BookCard bookThumb={book} />
+              <BookCard bookThumb={book} loading={$isProductsLoading} />
             </div>
           {/each}
         {:else}

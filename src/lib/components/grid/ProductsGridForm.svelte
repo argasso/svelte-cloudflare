@@ -1,6 +1,9 @@
 <script lang="ts">
   import type { HTMLAttributes } from 'svelte/elements'
   import type { TProducts } from '../ProductsGrid.gql'
+  import { afterNavigate } from '$app/navigation'
+  import { isProductsLoading } from '$lib/stores/store'
+  import { getDecendants } from '../filter/shopifyFilters'
 
   interface $$Props extends HTMLAttributes<HTMLFormElement> {
     filters?: TProducts['filters']
@@ -18,21 +21,20 @@
   export let size: $$Props['size'] = undefined
   export let sort: $$Props['sort'] = undefined
 
+  afterNavigate(() => {
+    $isProductsLoading = false
+  })
+
+  function handleSubmit() {
+    $isProductsLoading = true
+  }
+
   $: activeFilters = filters
-    ?.flatMap((f) => f.values)
+    ?.flatMap(({ values }) => values.flatMap(getDecendants))
     .filter((v) => v.active)
-    .map(({ key, value }) => ({ key, value }))
-  $: console.log(
-    'setting default form values',
-    { activeFilters },
-    { after },
-    { before },
-    { size },
-    { sort },
-  )
 </script>
 
-<form data-sveltekit-keepfocus data-sveltekit-noscroll class={className}>
+<form data-sveltekit-keepfocus data-sveltekit-noscroll class={className} on:submit={handleSubmit}>
   {#if after}
     <input type="hidden" name="after" value={after} />
   {/if}
@@ -46,8 +48,13 @@
     <input type="hidden" name="sort" value={sort} />
   {/if}
   {#if activeFilters}
-    {#each activeFilters as { key, value }}
-      <input type="hidden" name={key} {value} />
+    {#each activeFilters as { key, value, filterType }}
+      {#if filterType === 'PRICE_RANGE'}
+        <input type="hidden" name={key} value={value.split(' ').at(0)} />
+        <input type="hidden" name={key} value={value.split(' ').at(1)} />
+      {:else}
+        <input type="hidden" name={key} {value} />
+      {/if}
     {/each}
   {/if}
   <slot />

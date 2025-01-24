@@ -315,9 +315,9 @@ export function shortGID<T extends string | null | undefined>(longGid: T): T {
   return longGid?.replace(METAOBJECT_PREFIX, '') as T
 }
 
-// export function longGID(shortGid?: string) {
-// 	return `${METAOBJECT_PREFIX}${shortGid}`;
-// }
+export function longGID(shortGid?: string) {
+  return `${METAOBJECT_PREFIX}${shortGid}`
+}
 
 // export type StructuredFilterItem = Filter['values'][number] & {
 // 	children?: StructuredFilterItem[]

@@ -18,7 +18,7 @@
         aria-label="Meny - {name}"
         variant="header"
         size="icon"
-        popovertarget={id}
+        popovertarget={name}
         class="self-center transition-transform [&:has(+:popover-open)_.left]:-rotate-45 [&:has(+:popover-open)_.right]:rotate-45"
       >
         <div class="flex h-6 w-6">
@@ -40,9 +40,9 @@
           </div>
         </div>
       </Button>
-      <dialog
+      <div
         popover="auto"
-        {id}
+        id={name}
         class="container absolute inset-y-auto top-[var(--header-height)] w-full bg-transparent drop-shadow-md"
       >
         <div class="flex grow items-stretch gap-2 rounded-lg bg-muted p-2 text-primary">
@@ -56,7 +56,7 @@
             </ul>
           {/each}
         </div>
-      </dialog>
+      </div>
     {/if}
   </div>
 {/each}

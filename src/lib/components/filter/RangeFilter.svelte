@@ -11,6 +11,7 @@
 
   $: unset = range[0] === min && range[1] === max
 
+  let ref: HTMLInputElement | undefined = undefined
   let timer: NodeJS.Timeout
 
   function debounce(callback: ((submitter?: HTMLElement | null | undefined) => void) | undefined) {
@@ -19,11 +20,19 @@
       timer = setTimeout(callback, 500)
     }
   }
+
+  function requestSubmit() {
+    ref?.form?.requestSubmit()
+  }
+
+  function onChange() {
+    debounce(requestSubmit)
+  }
 </script>
 
 <div class="pb-2">
   <div class:unset class="p-2 px-3">
-    <Slider bind:value={range} {min} {max} step={1} />
+    <Slider bind:value={range} {min} {max} step={1} onValueChange={onChange} />
   </div>
   <div class="flex justify-between">
     <div class="w-20">
@@ -34,8 +43,9 @@
         type="number"
         name="price"
         id={`${filter.id}-min`}
+        on:change={onChange}
         bind:value={range[0]}
-        on:change={(e) => debounce(e.currentTarget.form?.requestSubmit)}
+        bind:this={ref}
       />
     </div>
     <div class="w-20">
@@ -46,8 +56,8 @@
         type="number"
         name="price"
         id={`${filter.id}-max`}
+        on:change={onChange}
         bind:value={range[1]}
-        on:change={(e) => debounce(e.currentTarget.form?.requestSubmit)}
       />
     </div>
   </div>

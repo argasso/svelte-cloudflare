@@ -74,6 +74,20 @@ export function findMenuItemByHandle(
   }
 }
 
+export function findMenuItemById(menu: MenuItem | undefined, id: string): MenuItem | undefined {
+  if (menu) {
+    if (menu.id === id) {
+      return menu
+    }
+    for (const item of menu.children) {
+      const match = findMenuItemById(item, id)
+      if (match) {
+        return match
+      }
+    }
+  }
+}
+
 export function getPathToItem(item: MenuItem | undefined): MenuItem[] {
   if (item?.parent) {
     return [...getPathToItem(item.parent), item]

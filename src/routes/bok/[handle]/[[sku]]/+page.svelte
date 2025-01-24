@@ -84,7 +84,7 @@
   <Breadcrumb {crumbs} />
   <section class="py-12">
     <div
-      class="grid grid-cols-[1fr_2fr] grid-rows-[auto_1fr_auto_auto] gap-10 sm:grid-rows-[auto_auto_auto_1fr] lg:grid-cols-[1fr_1fr_1fr]"
+      class="grid grid-cols-[1fr_2fr] grid-rows-[auto_1fr_auto_auto] gap-10 gap-y-6 sm:grid-rows-[auto_auto_auto_1fr] lg:grid-cols-[1fr_1fr_1fr]"
     >
       <div class="row-span-2 h-full sm:row-span-4">
         <div class="book grid">
@@ -122,7 +122,7 @@
               </a>
             </div> -->
         </div>
-        <h1 class="my-0 text-2xl font-medium lg:text-3xl xl:text-4xl">
+        <h1 class="my-2 text-2xl font-medium lg:text-3xl xl:text-4xl">
           {product?.title}
         </h1>
       </div>
