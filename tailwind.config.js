@@ -17,9 +17,15 @@ const config = {
         sm: '2rem',
         md: '2rem',
         lg: '2rem',
-        xl: '2rem',
+        xl: '4rem',
         // '2xl': '2rem',
       },
+    },
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
     },
     extend: {
       screens: {

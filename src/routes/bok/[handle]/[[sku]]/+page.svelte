@@ -84,7 +84,7 @@
   <Breadcrumb {crumbs} />
   <section class="py-12">
     <div
-      class="grid grid-cols-[1fr_2fr] grid-rows-[auto_1fr_auto_auto] gap-10 sm:grid-rows-[auto_auto_auto_1fr]"
+      class="grid grid-cols-[1fr_2fr] grid-rows-[auto_1fr_auto_auto] gap-10 sm:grid-rows-[auto_auto_auto_1fr] lg:grid-cols-[1fr_1fr_1fr]"
     >
       <div class="row-span-2 h-full sm:row-span-4">
         <div class="book grid">
@@ -129,7 +129,9 @@
       <div class="col-span-2 col-start-1 row-start-3 sm:col-span-1 sm:col-start-2 sm:row-start-2">
         {@html product?.descriptionHtml}
       </div>
-      <div class="col-start-2 row-start-2 sm:col-start-2 sm:row-start-3">
+      <div
+        class="col-start-2 row-start-2 sm:col-start-2 sm:row-start-3 lg:col-span-2 lg:col-start-2 lg:row-start-3"
+      >
         {#if variant.discontinued?.value === 'true'}
           <div
             class="rounded-r-lg border-l-4 border-primary bg-muted p-4 text-argasso-500"
@@ -151,8 +153,10 @@
           </div>
         {/if}
       </div>
-      <div class="col-span-2 row-start-4 sm:col-span-1 sm:col-start-2 sm:row-start-4">
-        <BookDetails class="my-3" title="Detaljer" {details} />
+      <div
+        class="col-span-2 row-start-4 sm:col-span-1 sm:col-start-2 sm:row-start-4 lg:col-start-3 lg:row-span-1 lg:row-start-2"
+      >
+        <BookDetails class="my-3" title="Bokfakta" {details} />
         {#if otherDetails.length > 0}
           <BookDetails class="my-3" title="Fler format" details={otherDetails} />
         {/if}

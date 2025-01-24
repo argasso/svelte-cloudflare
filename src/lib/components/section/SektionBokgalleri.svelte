@@ -14,7 +14,7 @@
 </script>
 
 <Section title={section.rubrik?.value || ''} level={2} class={className}>
-  <div class="flex flex-col justify-stretch md:flex-row">
+  <div class="flex flex-col justify-stretch lg:flex-row">
     {#each products ?? [] as book, index}
       {#if index > 0}
         <div class="hidden self-stretch px-8 md:flex">

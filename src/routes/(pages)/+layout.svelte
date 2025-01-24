@@ -39,30 +39,26 @@
       <Section class="pt-0">
         <div class="flex gap-5">
           {#each links as link}
-            <div
+            <a
               class="w-44 flex-shrink-0 rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800"
+              href={link.href}
             >
-              <div class="h-16 overflow-hidden bg-accent pb-5">
-                {#if link.images}
+              {#if link.images}
+                <div class="h-16 overflow-hidden bg-accent pb-5">
                   <div class="flex-0 flex overflow-hidden rounded-t-lg">
                     {#each link.images.reverse() as image, i}
-                      <!-- <div
-                      class="col-start-1 row-start-1"
-                      style="margin-left: {i * 105 - 50}px; margin-top: {i * top - 20}px"
-                    > -->
                       <ShopifyImage {image} width={60} />
-                      <!-- </div> -->
                     {/each}
                   </div>
-                {/if}
-              </div>
+                </div>
+              {/if}
               <div class="p-3">
                 <p class="m-0 text-xs uppercase text-muted-foreground">Underkategori</p>
-                <a href={link.href}>
-                  <h5 class="font-bold tracking-tight text-foreground">
-                    {link.name}
-                  </h5>
-                  <!-- <Button variant="secondary" href={link.href}
+                <!-- <a href={link.href}> -->
+                <h5 class="font-bold tracking-tight text-foreground">
+                  {link.name}
+                </h5>
+                <!-- <Button variant="secondary" href={link.href}
                     >{link.name}
                     <svg
                       class="ms-2 h-3.5 w-3.5 rtl:rotate-180"
@@ -80,9 +76,9 @@
                       />
                     </svg>
                   </Button> -->
-                </a>
+                <!-- </a> -->
               </div>
-            </div>
+            </a>
           {/each}
         </div>
       </Section>

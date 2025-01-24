@@ -20,7 +20,7 @@
 </script>
 
 <div class="my-5 md:my-0">
-  <div class="flex flex-col items-start gap-6 xs:flex-row">
+  <div class="flex flex-col items-start gap-6 sm:flex-row">
     <BookImage href={bookUrl(book.handle)} image={book.images.nodes[0]} width={128} />
     <div class="flex flex-col items-start justify-center">
       <Authors {book}></Authors>
@@ -29,7 +29,7 @@
         <a class="text-foreground" href={bookUrl(book.handle)}>{book.title}</a>
       </h3>
 
-      <p class=" text-sm leading-normal text-muted-foreground">
+      <p class="text-sm leading-normal text-muted-foreground">
         {book.description}
       </p>
       <!-- <div class="js-only">
