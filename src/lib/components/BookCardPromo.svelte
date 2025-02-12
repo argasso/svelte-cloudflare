@@ -25,7 +25,7 @@
     <div class="flex flex-col items-start justify-center">
       <Authors {book}></Authors>
 
-      <h3 class=" text-lg font-semibold leading-6">
+      <h3 class="font-sans text-lg font-semibold leading-6">
         <a class="text-foreground" href={bookUrl(book.handle)}>{book.title}</a>
       </h3>
 

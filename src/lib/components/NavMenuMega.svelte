@@ -10,7 +10,7 @@
   export let menuItems: MenuItem[]
 </script>
 
-{#each menuItems as { href, name, children, id }}
+{#each menuItems as { href, name, children }}
   <div class="flex gap-1 {className}">
     <NavLink {href}>{name}</NavLink>
     {#if children?.length > 0}
@@ -51,7 +51,7 @@
               <NavMenuMegaItem
                 class="text-base font-bold"
                 menuItem={child}
-                on:click={() => document.getElementById(id)?.hidePopover()}
+                on:click={() => document.getElementById(name)?.hidePopover()}
               />
             </ul>
           {/each}

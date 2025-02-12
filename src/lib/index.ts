@@ -5,8 +5,8 @@ const BOOK_URL = '/bok'
 const BOOKS_URL = '/bocker'
 const AUTHORS_URL = '/information/forfattare'
 
-export function bookUrl(handle: string) {
-  return `${BOOK_URL}/${handle}`
+export function bookUrl(handle: string, sku?: string | null) {
+  return [BOOK_URL, handle, sku].filter(isNonNil).join('/')
 }
 
 export function booksUrl(handle: string) {

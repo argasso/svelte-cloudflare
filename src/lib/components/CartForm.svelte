@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms'
+  import { bookUrl } from '$lib'
   import { cartSubmitFunction } from '$lib/cartClient'
   import type { cartFragment } from '$lib/cartService'
   import type { FragmentOf } from '../../graphql'
@@ -28,13 +29,20 @@
 
       <div class="flex w-full gap-4 py-5">
         <div class="self-start">
-          <BookImage width={64} image={item.node.merchandise.product.images.edges[0]?.node} />
+          <a href={bookUrl(item.node.merchandise.product.handle, item.node.merchandise.sku)}>
+            <BookImage width={64} image={item.node.merchandise.product.images.edges[0]?.node} />
+          </a>
         </div>
         <div class="flex flex-1 flex-col justify-between">
           <div class="flex-1">
             <Authors book={item.node.merchandise.product}></Authors>
-            <h3 class="m-0 text-base font-semibold">
-              {item.node.merchandise.product.title}
+            <h3 class="m-0 font-sans text-base font-semibold">
+              <a
+                class="text-foreground"
+                href={bookUrl(item.node.merchandise.product.handle, item.node.merchandise.sku)}
+              >
+                {item.node.merchandise.product.title}
+              </a>
               <span class="text-xs font-normal text-muted-foreground"
                 >- {item.node.merchandise.binding?.value}, {item.node.merchandise.barcode}
               </span>

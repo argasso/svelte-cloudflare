@@ -42,6 +42,7 @@ export const cartFragment = graphql(
                 barcode
                 sku
                 product {
+                  handle
                   images(first: 1) {
                     edges {
                       node {
