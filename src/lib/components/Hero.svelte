@@ -16,7 +16,7 @@
 <div class="text-white">
   <div class="container flex flex-col flex-wrap items-center md:flex-row">
     <div
-      class="flex w-full flex-col items-center justify-center text-center md:w-3/5 md:items-start md:pr-10"
+      class="flex w-full flex-col items-center justify-center text-center md:items-start md:pr-10"
     >
       <h1 class="text-center font-sans text-3xl font-semibold text-white md:text-left md:text-5xl">
         {#each titleParts as part, index}

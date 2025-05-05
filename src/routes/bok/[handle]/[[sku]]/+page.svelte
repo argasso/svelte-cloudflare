@@ -26,7 +26,7 @@
           .filter(isType('Metaobject'))
           .map((m) =>
             m?.title?.value
-              ? item(m.title.value, findMenuItemByHandle(menu, m.handle)?.href)
+              ? item(m?.name?.value ?? m.title.value, findMenuItemByHandle(menu, m.handle)?.href)
               : undefined,
           )
           .filter(isNonNil)

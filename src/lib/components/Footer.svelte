@@ -10,7 +10,7 @@
     <div class="order-first flex flex-wrap text-center md:text-left">
       <nav class="mb-10 w-full md:w-1/2 lg:w-1/3">
         <h2>Kontaktuppgifter</h2>
-        <ul class="list-none p-0 text-red-100">
+        <ul class="list-none p-0">
           <li class="mb-2">
             Villagatan 34
             <br />
@@ -22,17 +22,12 @@
       </nav>
       <nav class="mb-10 w-full md:w-1/2 lg:w-1/3">
         <h2>Villkor</h2>
-        <ul class="list-none p-0 text-red-100">
+        <ul class="list-none p-0">
           <li class="mb-2">
-            <a href="/integritetspolicy" class="mb-2 text-red-100">
-              Försäljnings och leveransvilkor
-            </a>
+            <a href="/forsaljningsvillkor" class="mb-2">Försäljnings och leveransvilkor</a>
           </li>
           <li class="mb-2">
-            <a href="/integritetspolicy" class="mb-2 text-red-100">Policy för cookies</a>
-          </li>
-          <li class="mb-2">
-            <a href="/integritetspolicy" class="mb-2 text-red-100">Integritetspolicy</a>
+            <a href="/integritetspolicy" class="mb-2">Integritetspolicy</a>
           </li>
         </ul>
       </nav>
@@ -67,20 +62,20 @@
           </div>
         </div>
       </div>
-      <div class="w-full border-t border-red-300 text-gray-100 opacity-50">
+      <div class="w-full border-t border-red-300 text-gray-100 opacity-75">
         <div class="flex items-center">
           <a
             href="/"
-            class="title-font flex items-center justify-center font-medium text-red-200 md:justify-start"
+            class="title-font flex items-center justify-center font-medium md:justify-start"
           >
             <Logo class="h-16 w-32" />
           </a>
-          <div class="mt-4 text-sm text-red-200 sm:ml-6 sm:mt-0">
+          <div class="mt-4 text-sm sm:ml-6 sm:mt-0">
             © 2020 Argasso —
             <a
               href="https://twitter.com/ArgassoBok"
               rel="noopener noreferrer"
-              class="ml-1 text-red-200"
+              class="ml-1"
               target="_blank"
             >
               @ArgassoBok
@@ -90,7 +85,7 @@
             <a
               href="https://www.facebook.com/ArgassoBok"
               aria-label="Read more about Argasso on Facebook"
-              class="text-red-200"
+              class="ml-3"
             >
               <svg
                 fill="currentColor"
@@ -106,7 +101,7 @@
             <a
               href="https://instagram.com/ArgassoBok"
               aria-label="Read more about Argasso on Instagram"
-              class="ml-3 text-red-200"
+              class="ml-3"
             >
               <svg
                 fill="none"
@@ -119,27 +114,6 @@
               >
                 <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
                 <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01" />
-              </svg>
-            </a>
-            <a
-              href="https://www.youtube.com/channel/UCjJNoRtTFannXnJ9SrYGUAA"
-              aria-label="More about Argasso on YouTube"
-              class="ml-3 text-red-200"
-            >
-              <svg
-                fill="currentColor"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="0"
-                class="h-5 w-5"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="none"
-                  d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"
-                />
-                <circle cx="4" cy="4" r="2" stroke="none" />
               </svg>
             </a>
           </span>

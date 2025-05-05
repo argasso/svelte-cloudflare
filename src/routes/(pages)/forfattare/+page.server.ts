@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit'
-import { client } from '../../../../client.js'
+import { client } from '../../../client.js'
 import { graphql } from 'gql.tada'
 
 const authorsQuery = graphql(`

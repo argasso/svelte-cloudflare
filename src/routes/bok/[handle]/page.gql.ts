@@ -97,6 +97,9 @@ export const productQuery = graphql(
                     title: field(key: "title") {
                       value
                     }
+                    name: field(key: "name") {
+                      value
+                    }
                   }
                 }
               }

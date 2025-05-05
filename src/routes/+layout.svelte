@@ -49,7 +49,7 @@
     bind:this={headerEl}
   >
     <div class="container flex h-[var(--header-height)] justify-between">
-      <nav class="flex items-stretch gap-4">
+      <nav class="flex items-stretch gap-6">
         {#if menu}
           <div class="flex items-center md:hidden">
             <MobileNav {menu} />
