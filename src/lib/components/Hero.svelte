@@ -32,7 +32,7 @@
       <Button
         href="/bocker"
         size="lg"
-        class="hover my-4 bg-red-50 text-gray-800 hover:bg-white hover:text-black hover:no-underline"
+        class="hover my-4 mb-0 bg-red-50 text-gray-800 hover:bg-white hover:text-black hover:no-underline"
         >Se alla våra böcker</Button
       >
     </div>
