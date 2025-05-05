@@ -3,7 +3,7 @@ import type { introspection_types } from '../graphql-env'
 // place files you want to import through the `$lib` alias in this folder.
 const BOOK_URL = '/bok'
 const BOOKS_URL = '/bocker'
-const AUTHORS_URL = '/information/forfattare'
+const AUTHORS_URL = '/forfattare'
 
 export function bookUrl(handle: string, sku?: string | null) {
   return [BOOK_URL, handle, sku].filter(isNonNil).join('/')
