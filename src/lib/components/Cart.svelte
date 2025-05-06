@@ -15,6 +15,7 @@
 </script>
 
 <Button
+  aria-label="Varukorg"
   href="/cart"
   variant="header"
   size="icon"

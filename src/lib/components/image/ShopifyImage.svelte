@@ -22,18 +22,20 @@
   }
 
   $: ({ image, width, height, ...rest } = $$restProps)
-  $: props = imageProps(image, width, height)
+  $: props = imageProps(image, width, height, rest.alt)
 
   function imageProps(
     image: ImageProp,
     scaleWidth?: number,
     scaleHeight?: number,
+    altDefault: string = '',
   ): ImageProps | undefined {
     if (!image) {
       return
     }
     const layout = 'constrained'
-    const { url: src, altText: alt = '' } = image
+    const { url: src, altText } = image
+    const alt = altText ? altText : altDefault
     if (image.width && image.height) {
       if (scaleWidth && !scaleHeight) {
         const height = Math.floor((scaleWidth / image.width) * image.height)

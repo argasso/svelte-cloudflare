@@ -91,7 +91,7 @@
 <div class="js-only">
   <Drawer.Root shouldScaleBackground={true} bind:open>
     <Drawer.Trigger asChild let:builder>
-      <UiButton builders={[builder]} variant="header" size="icon">
+      <UiButton aria-label="Sök" builders={[builder]} variant="header" size="icon">
         <Icons type="search" />
       </UiButton>
     </Drawer.Trigger>

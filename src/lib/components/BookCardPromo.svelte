@@ -21,7 +21,12 @@
 
 <div class="my-5 md:my-0">
   <div class="flex flex-col items-start gap-6 sm:flex-row">
-    <BookImage href={bookUrl(book.handle)} image={book.images.nodes[0]} width={128} />
+    <BookImage
+      href={bookUrl(book.handle)}
+      image={book.images.nodes[0]}
+      width={128}
+      alt={`Bokomslag för ${book.title}`}
+    />
     <div class="flex flex-col items-start justify-center">
       <Authors {book}></Authors>
 
@@ -38,7 +43,7 @@
         </p>
       </div> -->
       {#if month}
-        <p class=" text-xs text-gray-500"><i>- {month}</i></p>
+        <p class=" text-xs text-muted-foreground"><i>- {month}</i></p>
       {/if}
     </div>
   </div>
