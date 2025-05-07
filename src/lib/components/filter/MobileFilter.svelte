@@ -11,7 +11,6 @@
   let className = ''
   export { className as class }
   export let products: TProducts
-  export let loading = false
 
   $: ({ filters = [] } = products)
   $: totalCount =

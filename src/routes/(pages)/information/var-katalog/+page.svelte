@@ -7,7 +7,6 @@
   import CircleAlert from 'lucide-svelte/icons/circle-alert'
 
   export let data
-  export let form
 
   $: siteKey = data.TURNSTILE_SITE_KEY ?? '2x00000000000000000000AB' // Default value is blocking
 
