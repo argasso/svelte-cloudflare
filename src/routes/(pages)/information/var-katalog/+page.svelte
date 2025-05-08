@@ -1,23 +1,23 @@
 <script>
-  import Button from '$lib/components/Button.svelte'
-  import Section from '$lib/components/Section.svelte'
-  import { Turnstile } from 'svelte-turnstile'
-  import { mode } from 'mode-watcher'
-  import { enhance } from '$app/forms'
-  import CircleAlert from 'lucide-svelte/icons/circle-alert'
+  // import Button from '$lib/components/Button.svelte'
+  // import Section from '$lib/components/Section.svelte'
+  // import { Turnstile } from 'svelte-turnstile'
+  // import { mode } from 'mode-watcher'
+  // import { enhance } from '$app/forms'
+  // import CircleAlert from 'lucide-svelte/icons/circle-alert'
 
-  export let data
+  // export let data
 
-  $: siteKey = data.TURNSTILE_SITE_KEY ?? '2x00000000000000000000AB' // Default value is blocking
+  // $: siteKey = data.TURNSTILE_SITE_KEY ?? '2x00000000000000000000AB' // Default value is blocking
 
-  let disabled = true
+  // let disabled = true
 
-  function activate() {
-    disabled = false
-  }
+  // function activate() {
+  //   disabled = false
+  // }
 </script>
 
-<Section title="Beställ katalog" level={2} class="bg-card">
+<!-- <Section title="Beställ katalog" level={2} class="bg-card">
   <form class="mt-8 max-w-md text-sm" name="katalog" method="POST" use:enhance>
     <div class="grid grid-cols-1 gap-6">
       <label class="block">
@@ -86,4 +86,4 @@
       </p>
     </div>
   </form>
-</Section>
+</Section> -->

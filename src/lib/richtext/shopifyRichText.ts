@@ -72,13 +72,15 @@ export function buildLink(el) {
 }
 
 export function buildText(el) {
-  if (el?.bold) {
-    return `<strong>${el?.value}</strong>`
+  const { value = '', bold = false, italic = false } = el
+  const text = value.replaceAll('\n', '<br>')
+  if (bold) {
+    return `<strong>${text}</strong>`
   }
-  if (el?.italic) {
-    return `<em>${el?.value}</em>`
+  if (italic) {
+    return `<em>${text}</em>`
   }
-  return el?.value
+  return text
 }
 
 type Element = {

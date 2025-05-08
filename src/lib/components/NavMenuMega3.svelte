@@ -1,7 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores'
   import type { MenuItem } from '$lib/menu'
-  import ChevronDown from 'lucide-svelte/icons/chevron-down'
   import NavMenuMegaItem from './NavMenuMegaItem.svelte'
   import Accordion from './Accordion.svelte'
 

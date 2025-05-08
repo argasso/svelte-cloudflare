@@ -17,7 +17,7 @@
       <Button
         aria-label="Meny - {name}"
         variant="header"
-        size="icon"
+        size="iconSm"
         popovertarget={name}
         class="self-center transition-transform [&:has(+:popover-open)_.left]:-rotate-45 [&:has(+:popover-open)_.right]:rotate-45"
       >

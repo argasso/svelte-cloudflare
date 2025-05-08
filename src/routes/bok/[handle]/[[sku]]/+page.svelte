@@ -10,6 +10,7 @@
   import Price from '$lib/components/Price.svelte'
   import Seo from '$lib/components/Seo.svelte'
   import { findMenuItemByHandle } from '$lib/menu.js'
+  import Download from 'lucide-svelte/icons/download'
 
   export let data
 
@@ -86,16 +87,29 @@
     <div
       class="grid grid-cols-[1fr_2fr] grid-rows-[auto_1fr_auto_auto] gap-10 gap-y-6 sm:grid-rows-[auto_auto_auto_1fr] lg:grid-cols-[1fr_1fr_1fr]"
     >
-      <div class="row-span-2 h-full sm:row-span-4">
-        <div class="book grid">
-          <ShopifyImage
-            class="col-start-1 row-start-1 rounded-r-sm sm:top-16"
-            image={variant.image}
-            alt={`Omslag för ${product?.title} - ${variant.selectedOptions.map((o) => `${o.name}: ${o.value}`).join(', ')}`}
-          />
-          <div class="book-overlay col-start-1 row-start-1"></div>
+      <a
+        class="group row-span-2 h-full sm:row-span-4"
+        href={variant.image?.url}
+        aria-label="Klicka för att ladda ned omslag i full skala"
+      >
+        <div class="group">
+          <div class="book gr grid">
+            <ShopifyImage
+              class="col-start-1 row-start-1 rounded-r-sm sm:top-16"
+              image={variant.image}
+              alt={`Omslag för ${product?.title} - ${variant.selectedOptions.map((o) => `${o.name}: ${o.value}`).join(', ')}`}
+            />
+            <div class="book-overlay col-start-1 row-start-1"></div>
+            <div class="invisible col-start-1 row-start-1 flex justify-end p-2 group-hover:visible">
+              <div
+                class="flex items-end justify-end gap-2 self-end rounded bg-foreground p-3 text-sm text-background"
+              >
+                <Download size="20" /> Ladda ned omslaget i full skala
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </a>
       <div class="">
         <div class="flex items-center justify-between">
           <h2

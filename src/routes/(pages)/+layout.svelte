@@ -23,9 +23,11 @@
       <h1 class="mb-8 mt-0 w-full text-center md:text-left">
         {title}
       </h1>
-      {#if html}
-        {@html html}
-      {/if}
+      <div class="prose lg:prose-xl prose-headings:font-normal">
+        {#if html}
+          {@html html}
+        {/if}
+      </div>
     </div>
     <!-- <aside class="flex-0 hidden w-64 min-w-64 md:block">
         <LinkList class="mb-3 w-full shadow-sm lg:w-64" title="Underavdelningar" {links} />

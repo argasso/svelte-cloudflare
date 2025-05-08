@@ -21,6 +21,7 @@ const buttonVariants = tv({
       sm: 'h-8 rounded-md px-3 text-xs gap-1',
       lg: 'h-12 rounded-full px-8 text-lg gap-3',
       icon: 'h-9 w-9',
+      iconSm: 'h-9 w-7',
     },
   },
   defaultVariants: {
