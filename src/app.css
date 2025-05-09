@@ -147,8 +147,8 @@
   }
   body {
     font-family: system-ui;
-    font-size: 1.125rem;
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.5;
 
     @apply bg-background text-foreground;
   }
@@ -164,7 +164,7 @@ h6 {
 }
 
 h1 {
-  @apply mb-3 mt-8 text-5xl;
+  @apply mb-3 mt-0 text-4xl;
 }
 
 h2 {
@@ -172,11 +172,11 @@ h2 {
 }
 
 h3 {
-  @apply mb-1 mt-3 text-2xl;
+  @apply mb-1 mt-3 text-xl;
 }
 
 h4 {
-  @apply mt-3 text-xl;
+  @apply mt-3 text-base;
 }
 
 p {

@@ -34,9 +34,15 @@ export const load = async (event) => {
   }
 
   const { title, body } = response.data.shop.privacyPolicy
-  const engine = new Liquid()
-  const tpl = engine.parse(body)
-  const page: string = await engine.render(tpl, {})
+
+  let page: string
+  try {
+    const engine = new Liquid()
+    const tpl = engine.parse(body)
+    page = await engine.render(tpl, {})
+  } catch (e) {
+    error(500, 'Oj, vi kan inte visa sidan. Error: ' + e)
+  }
 
   return {
     title,

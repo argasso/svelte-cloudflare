@@ -13,21 +13,23 @@
   $: html = page?.content?.value ? convertSchemaToHtml(JSON.parse(page?.content.value)) : undefined
 </script>
 
-<div class="container">
-  <Breadcrumbs {crumbs} />
-</div>
+{#if crumbs && crumbs.length > 0}
+  <div class="container">
+    <Breadcrumbs {crumbs} />
+  </div>
+{/if}
 
 {#if page}
   <Section>
-    <div class="flex-0">
-      <h1 class="mb-8 mt-0 w-full text-center md:text-left">
+    <div class="flex-0 prose dark:prose-invert prose-headings:mb-3 prose-headings:font-normal">
+      <h1 class="w-full text-center md:text-left">
         {title}
       </h1>
-      <div class="prose lg:prose-xl prose-headings:font-normal">
-        {#if html}
+      {#if html}
+        <div class="">
           {@html html}
-        {/if}
-      </div>
+        </div>
+      {/if}
     </div>
     <!-- <aside class="flex-0 hidden w-64 min-w-64 md:block">
         <LinkList class="mb-3 w-full shadow-sm lg:w-64" title="Underavdelningar" {links} />
