@@ -85,17 +85,7 @@
           >
             <Logo class="h-16 w-32" />
           </a>
-          <div class="mt-4 text-sm sm:ml-6 sm:mt-0">
-            © 2020 Argasso —
-            <a
-              href="https://twitter.com/ArgassoBok"
-              rel="noopener noreferrer"
-              class="ml-1"
-              target="_blank"
-            >
-              @ArgassoBok
-            </a>
-          </div>
+          <div class="mt-4 text-sm sm:ml-6 sm:mt-0">© 2025 Argasso bokförlag AB</div>
           <span class="mt-4 inline-flex justify-center sm:ml-auto sm:mt-0 sm:justify-start">
             <a
               href="https://www.facebook.com/ArgassoBok"
