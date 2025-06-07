@@ -11,9 +11,11 @@ export async function load({ fetch }) {
   }
 
   const menu = makeMenu(mainMenuResponse.data?.menu)
+  const informationMenu = makeMenu(mainMenuResponse.data?.informationMenu)
 
   return {
     // maxage: 3600,
     menu,
+    informationMenu,
   }
 }

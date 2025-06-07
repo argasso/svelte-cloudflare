@@ -1,15 +1,18 @@
 <script lang="ts">
   import Logo from '$lib/components/logo/Logo.svelte'
+  import type { MenuItem } from '$lib/menu'
   import Button from './Button.svelte'
   import Wave from './Wave.svelte'
+
+  export let informationMenu: MenuItem | undefined
 </script>
 
 <Wave class="gradient-inverted" inversed />
 <footer class="gradient text-gray-100">
   <div class="container">
     <div class="order-first flex flex-wrap text-center md:text-left">
-      <nav class="mb-10 w-full md:w-1/2 lg:w-1/3">
-        <h2>Kontaktuppgifter</h2>
+      <nav class="mb-10 w-full md:w-1/2 lg:w-1/4">
+        <h3 class="mb-3">Kontaktuppgifter</h3>
         <ul class="list-none p-0">
           <li class="mb-2">
             Villagatan 34
@@ -20,8 +23,20 @@
           <li class="mb-2">info@argasso.se</li>
         </ul>
       </nav>
-      <nav class="mb-10 w-full md:w-1/2 lg:w-1/3">
-        <h2>Villkor</h2>
+      {#if informationMenu}
+        <nav class="mb-10 w-full md:w-1/2 lg:w-1/4">
+          <h3 class="mb-3">{informationMenu.name}</h3>
+          <ul class="list-none p-0">
+            {#each informationMenu.children as { href, name }}
+              <li class="mb-2">
+                <a {href} class="mb-2">{name}</a>
+              </li>
+            {/each}
+          </ul>
+        </nav>
+      {/if}
+      <nav class="mb-10 w-full md:w-1/2 lg:w-1/4">
+        <h3 class="mb-3">Villkor</h3>
         <ul class="list-none p-0">
           <li class="mb-2">
             <a href="/forsaljningsvillkor" class="mb-2">Försäljnings och leveransvilkor</a>
@@ -31,8 +46,8 @@
           </li>
         </ul>
       </nav>
-      <div class="mb-10 w-full md:w-1/2 lg:w-1/3">
-        <h2><label for="mce-EMAIL">Nyhetsbrev</label></h2>
+      <div class="mb-10 w-full md:w-1/2 lg:w-1/4">
+        <h3 class="mb-3"><label for="mce-EMAIL">Nyhetsbrev</label></h3>
         <div
           class="flex flex-wrap items-end justify-center md:flex-nowrap md:justify-start lg:flex-wrap xl:flex-nowrap"
         >

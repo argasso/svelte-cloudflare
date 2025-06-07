@@ -14,6 +14,7 @@ const logExchange = mapExchange({
 export const client = new Client({
   url: 'https://argasso.myshopify.com/api/2024-10/graphql',
   exchanges: [logExchange, cacheExchange, fetchExchange],
+  requestPolicy: 'network-only',
   fetchOptions: () => {
     return {
       headers: {

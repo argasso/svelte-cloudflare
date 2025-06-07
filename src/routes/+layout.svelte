@@ -37,7 +37,7 @@
     prevY = headerEl.offsetTop
   })
 
-  $: ({ menu } = data)
+  $: ({ menu, informationMenu } = data)
   $: menuItems = menu?.children ?? []
 </script>
 
@@ -72,7 +72,7 @@
     <slot />
   </main>
 
-  <Footer />
+  <Footer {informationMenu} />
 </div>
 
 <Toaster />

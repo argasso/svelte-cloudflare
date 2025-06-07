@@ -46,6 +46,18 @@ export const mainMenuQuery = graphql(
           }
         }
       }
+      informationMenu: metaobject(handle: { handle: "information", type: "page" }) {
+        ...MenuFragment
+        children: field(key: "sub_pages") {
+          references(first: 10) {
+            nodes {
+              ... on Metaobject {
+                ...MenuFragment
+              }
+            }
+          }
+        }
+      }
     }
   `,
   [menuFragment],
