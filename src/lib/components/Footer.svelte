@@ -39,7 +39,7 @@
         <h3 class="mb-3">Villkor</h3>
         <ul class="list-none p-0">
           <li class="mb-2">
-            <a href="/forsaljningsvillkor" class="mb-2">Försäljnings och leveransvilkor</a>
+            <a href="/forsaljningsvillkor" class="mb-2">Försäljnings- och leveransvilkor</a>
           </li>
           <li class="mb-2">
             <a href="/integritetspolicy" class="mb-2">Integritetspolicy</a>
