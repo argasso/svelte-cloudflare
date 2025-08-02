@@ -86,6 +86,9 @@ export const productQuery = graphql(
             bokfynd: metafield(namespace: "book", key: "bokfynd") {
               value
             }
+            category: metafield(namespace: "book", key: "category") {
+              value
+            }
             metafields(identifiers: $metafieldIds) {
               key
               value

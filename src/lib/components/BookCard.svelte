@@ -4,14 +4,15 @@
   import Authors from './Authors.svelte'
   import BuyButton from './BuyButton.svelte'
   import Price from './Price.svelte'
+  import type { TProducts } from './ProductsGrid.gql'
 
-  export let bookThumb: any
+  export let bookThumb: TProducts['nodes'][number]
   export let width: number = 160
   export let loading = false
 
   $: ({ title, handle, variants } = bookThumb)
-  $: href = bookUrl(handle)
-  $: image = bookThumb.images.nodes?.[0]
+  $: href = bookUrl(handle, variants.nodes[0].sku)
+  $: image = variants.nodes[0].image ?? bookThumb.images.nodes?.[0]
   $: discontinued = variants.nodes[0].discontinued?.value === 'true'
   $: ({ id: variantId, price } = variants.nodes[0])
 </script>

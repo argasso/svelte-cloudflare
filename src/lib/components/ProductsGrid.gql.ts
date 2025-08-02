@@ -51,8 +51,18 @@ export const productsQuery = graphql(
             variants(first: 3) {
               nodes {
                 id
+                sku
                 price {
                   ...PriceFragment
+                }
+                image {
+                  url
+                  altText
+                  height
+                  width
+                }
+                category: metafield(namespace: "book", key: "category") {
+                  value
                 }
                 discontinued: metafield(namespace: "book", key: "discontinued") {
                   value

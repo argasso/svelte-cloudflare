@@ -164,7 +164,27 @@ async function getProducts(variables: NonNullable<VariablesOf<TProductsQuery>>) 
     error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
   }
 
-  return productsResponse.data?.collection?.products
+  const categories =
+    variables.filters
+      ?.filter(
+        (f) => f.variantMetafield?.namespace === 'book' && f.variantMetafield.key === 'category',
+      )
+      .map((f) => f.variantMetafield?.value ?? '') ?? []
+
+  const products = productsResponse.data?.collection?.products
+
+  products?.nodes.forEach((product) => {
+    if (categories) {
+      const variantNodes = product.variants.nodes.filter((v) =>
+        categories.some((c) => v.category?.value.includes(c)),
+      )
+      if (variantNodes.length > 0) {
+        product.variants.nodes = variantNodes
+      }
+    }
+  })
+
+  return products
 }
 
 type TSectionDownload = FragmentOf<typeof sectionDownloadFragment>

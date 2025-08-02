@@ -14,6 +14,11 @@
 
   export let data
 
+  const physicalShopCategories = [
+    'gid://shopify/Metaobject/82501730639',
+    'gid://shopify/Metaobject/82501763407',
+  ]
+
   $: ({ product, variant, otherVariants, metafieldLabels, menu, recommendations } = data)
   //   $: variants = product?.variants.nodes ?? []
   //   $: selectedVariant = product?.variants.nodes.at(0)
@@ -159,6 +164,11 @@
             <Button href={`https://www.bokfynd.nu/${variant.sku}`} target="_blank" size="lg">
               Köp via Bokfynd
             </Button>
+          </div>
+        {:else if physicalShopCategories.some((c) => variant.category?.value.includes(c))}
+          <div class="rounded-r-lg border-l-4 border-primary bg-muted p-4" role="alert">
+            <p class="font-bold">Inte tillgänglig här</p>
+            <p>Besök bokhandel eller bibliotek för köp eller lån av denna titel.</p>
           </div>
         {:else}
           <div class="flex flex-col items-center justify-end gap-4 sm:flex-row">
