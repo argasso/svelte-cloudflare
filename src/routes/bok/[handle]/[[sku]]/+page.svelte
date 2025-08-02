@@ -9,7 +9,7 @@
   import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
   import Price from '$lib/components/Price.svelte'
   import Seo from '$lib/components/Seo.svelte'
-  import { findMenuItemByHandle } from '$lib/menu.js'
+  import { findMenuItemByHandle, findMenuItemById } from '$lib/menu.js'
   import Download from 'lucide-svelte/icons/download'
 
   export let data
@@ -55,15 +55,27 @@
     label: { text: v.selectedOptions.at(0)?.value ?? '', href: `/bok/${product.handle}/${v.sku}` },
     value: [item(`${v.barcode}, utgiven ${getPublishMonth(v)}`)],
   }))
+  $: gids = (variant.category?.value ? JSON.parse(variant.category.value) : []) as string[]
+  $: bookCrumbs = gids
+    .map((id) => findMenuItemById(menu, id))
+    .filter(isNonNil)
+    .toSorted((a, b) => (a.parent?.id === b.id ? 1 : b.parent?.id === a.id ? -1 : 0))
+    .map(({ id, name, href }) => ({
+      name,
+      href,
+    }))
   $: crumbs = [
     {
       name: 'Startsida',
       href: '/',
     },
+    ...bookCrumbs,
     {
       name: product?.title ?? '',
     },
   ]
+
+  $: console.log(crumbs)
 
   let currentImageIndex = 0
 
