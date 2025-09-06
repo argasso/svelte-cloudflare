@@ -11,6 +11,7 @@
     before?: TProducts['queryParams']['before']
     size?: TProducts['queryParams']['size']
     sort?: TProducts['queryParams']['sort']
+    noScroll?: boolean
   }
 
   let className: $$Props['class'] = ''
@@ -20,6 +21,7 @@
   export let before: $$Props['before'] = undefined
   export let size: $$Props['size'] = undefined
   export let sort: $$Props['sort'] = undefined
+  export let noScroll: $$Props['noScroll'] = true
 
   afterNavigate(() => {
     $isProductsLoading = false
@@ -34,7 +36,13 @@
     .filter((v) => v.active)
 </script>
 
-<form data-sveltekit-keepfocus data-sveltekit-noscroll class={className} on:submit={handleSubmit}>
+<form
+  action="#book-section"
+  data-sveltekit-keepfocus
+  data-sveltekit-noscroll={noScroll}
+  class={className}
+  on:submit={handleSubmit}
+>
   {#if after}
     <input type="hidden" name="after" value={after} />
   {/if}

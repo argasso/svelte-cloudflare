@@ -4,11 +4,13 @@
   import AppliedFilterButton from '$lib/components/filter/AppliedFilterButton.svelte'
   import { getDecendants } from '$lib/components/filter/shopifyFilters'
   import { isFilterOpen, isProductsLoading } from '$lib/stores/store'
+  import ChevronLeft from 'lucide-svelte/icons/chevron-left'
   import Button from './Button.svelte'
   import ProductGridToolbar from './ProductGridToolbar.svelte'
   import type { TProducts } from './ProductsGrid.gql'
   import Filters from './filter/Filters.svelte'
   import ProductsGridForm from './grid/ProductsGridForm.svelte'
+  import ChevronRight from 'lucide-svelte/icons/chevron-right'
 
   export let products: TProducts
 
@@ -24,6 +26,7 @@
 {#if books.length >= 0}
   <Section class="bg-card">
     <div
+      id="book-section"
       class:filtering={$isFilterOpen}
       class="filtered-grid grid grid-rows-[auto_1fr] items-start gap-y-4 transition-all"
     >
@@ -82,6 +85,39 @@
         {/if}
       </div>
     </div>
+
+    <ProductsGridForm
+      {filters}
+      {size}
+      {sort}
+      noScroll={false}
+      class="mt-6 flex flex-grow justify-center gap-2"
+    >
+      <Button
+        class="px-4 font-light"
+        variant="outline"
+        type="submit"
+        name="before"
+        value={products.pageInfo.startCursor}
+        disabled={!products.pageInfo.hasPreviousPage}
+      >
+        <ChevronLeft class="h-4 w-4" />
+        <span class="hidden xs:inline-block">Föregående sida</span>
+      </Button>
+
+      <Button
+        class="px-2 font-light"
+        variant="outline"
+        type="submit"
+        name="after"
+        value={products.pageInfo.endCursor}
+        disabled={!products.pageInfo.hasNextPage}
+      >
+        <span class="hidden xs:inline-block">Nästa sida</span>
+        <ChevronRight class="h-4 w-4" />
+      </Button>
+    </ProductsGridForm>
+
     <noscript>
       <h2 id="urval">Urval</h2>
       <Filters {products} />
