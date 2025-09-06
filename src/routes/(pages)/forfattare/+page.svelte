@@ -10,6 +10,11 @@
       const letter = a.lastName[0].toUpperCase()
       if (acc.has(letter)) {
         acc.get(letter)?.push(a)
+        acc
+          .get(letter)
+          ?.sort((a, b) =>
+            a.name?.value && b.name?.value ? a.name.value.localeCompare(b.name.value) : 0,
+          )
       } else {
         acc.set(letter, [a])
       }
