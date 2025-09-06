@@ -4,7 +4,7 @@ import { graphql } from 'gql.tada'
 
 const authorsQuery = graphql(`
   query Authors {
-    metaobjects(first: 30, type: "Author") {
+    metaobjects(first: 200, type: "Author") {
       nodes {
         id
         handle
