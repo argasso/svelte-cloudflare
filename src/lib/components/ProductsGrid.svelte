@@ -91,7 +91,7 @@
       {size}
       {sort}
       noScroll={false}
-      class="mt-6 flex flex-grow justify-center gap-2"
+      class="my-6 flex flex-grow justify-center gap-2"
     >
       <Button
         class="px-4 font-light"
