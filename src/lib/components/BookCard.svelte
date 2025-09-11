@@ -19,8 +19,9 @@
 
 <div class:loading class="mt-auto w-40 opacity-100">
   <div class="book relative grid w-36">
-    <ShopifyImage class="col-start-1 row-start-1 rounded-r-sm bg-muted" {image} {width} />
-    <a {href} class="book-overlay col-start-1 row-start-1" aria-label="Visa bok"></a>
+    <a {href} class="book-overlay col-start-1 row-start-1" aria-label="Visa bok">
+      <ShopifyImage class="rounded-r-sm bg-muted" {image} {width} /></a
+    >
     {#if discontinued}
       <div
         class="ribbon col-start-1 row-start-1 -mb-2 -mr-1 self-end justify-self-end text-xs text-primary-foreground"

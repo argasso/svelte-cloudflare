@@ -86,6 +86,14 @@ export function parseJSON(input: string | null) {
   }
 }
 
+export function formatPriceHideZero(price: { amount: string; currencyCode: string }) {
+  const parsed = parseFloat(price.amount)
+  if (parsed == 0) {
+    return ''
+  }
+  return formatPrice(price)
+}
+
 export function formatPrice(price: { amount: string; currencyCode: string }) {
   const formattedAmount = parseFloat(price.amount).toFixed(2).replace('.00', '')
   switch (price.currencyCode) {

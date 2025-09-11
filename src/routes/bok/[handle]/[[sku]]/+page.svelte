@@ -179,7 +179,7 @@
           </div>
         {:else if physicalShopCategories.some((c) => variant.category?.value.includes(c))}
           <div class="rounded-r-lg border-l-4 border-primary bg-muted p-4" role="alert">
-            <p class="font-bold">Inte tillgänglig här</p>
+            <p class="font-bold">Den digitala boken inte tillgänglig här</p>
             <p>Besök bokhandel eller bibliotek för köp eller lån av denna titel.</p>
           </div>
         {:else}

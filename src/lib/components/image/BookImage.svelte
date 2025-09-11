@@ -8,9 +8,12 @@
 </script>
 
 <div class="book grid">
-  <ShopifyImage class="col-start-1 row-start-1 bg-gray-100" {image} {width} {alt} />
-  <div class="book-overlay col-start-1 row-start-1 h-full" style="width: {width}px"></div>
   {#if href}
-    <a {href} class="col-start-1 row-start-1" aria-label="Visa bok"></a>
+    <a {href} class="col-start-1 row-start-1" aria-label="Visa bok">
+      <ShopifyImage class="col-start-1 row-start-1 bg-gray-100" {image} {width} {alt} />
+    </a>
+  {:else}
+    <ShopifyImage class="col-start-1 row-start-1 bg-gray-100" {image} {width} {alt} />
   {/if}
+  <div class="book-overlay col-start-1 row-start-1 h-full" style="width: {width}px"></div>
 </div>

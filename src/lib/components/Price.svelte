@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { formatPrice } from '$lib'
+  import { formatPrice, formatPriceHideZero } from '$lib'
   import type { TPriceFragment } from './Price.graphql'
 
   let className = ''
@@ -7,4 +7,4 @@
   export let price: TPriceFragment
 </script>
 
-<span class={className}>{price ? formatPrice(price) : '-'}</span>
+<span class={className}>{price ? formatPriceHideZero(price) : '-'}</span>
