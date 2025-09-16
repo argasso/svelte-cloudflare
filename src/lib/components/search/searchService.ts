@@ -1,32 +1,7 @@
 import { error, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit'
 import { graphql } from '../../../graphql'
 import { client } from '../../../client'
-import { pageInfoFragment } from '../ProductsGrid.gql'
 import { authorsFragment } from '../Authors.graphql'
-
-export const searchQuery = graphql(`
-  query PredictiveSearch($query: String!) {
-    predictiveSearch(query: $query, limit: 10) {
-      products {
-        title
-        handle
-        images(first: 1) {
-          nodes {
-            url
-            height
-            width
-            altText
-          }
-        }
-      }
-      queries {
-        styledText
-        text
-        trackingParameters
-      }
-    }
-  }
-`)
 
 const pageInfo = graphql(`
   fragment PageInfo on SearchResultItemConnection @_unmask {
@@ -39,7 +14,7 @@ const pageInfo = graphql(`
   }
 `)
 
-const searchQuery2 = graphql(
+const searchQuery = graphql(
   `
     query searchProducts($query: String!, $first: Int) {
       search(query: $query, first: $first, types: PRODUCT) {
@@ -72,14 +47,13 @@ export const searchLoad = async (event: ServerLoadEvent | RequestEvent) => {
   const query = url.searchParams.get('query')
   if (query) {
     const variables = { query, first: 20 }
-    // const response = await client.query(searchQuery, { query }, { fetch })
-    const response = await client.query(searchQuery2, variables, { fetch })
+    const response = await client.query(searchQuery, variables, { fetch })
 
     if (response.error) {
-      console.error('Failed to do predictive search', response.error, 'query', query)
+      console.error('Failed to search', response.error, 'query', query)
       error(400, 'Misslyckades med sökningen :(')
     }
-    // const { products, queries } = response.data?.predictiveSearch ?? {}
+
     const search = response.data?.search
     return {
       search,

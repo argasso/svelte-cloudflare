@@ -15,12 +15,10 @@ export const client = new Client({
   url: 'https://argasso.myshopify.com/api/2024-10/graphql',
   exchanges: [logExchange, cacheExchange, fetchExchange],
   requestPolicy: 'network-only',
-  fetchOptions: () => {
-    return {
-      headers: {
-        'X-Shopify-Storefront-Access-Token': 'ff151810f966c1536e2d3b4fd437f38e',
-        // 'Shopify-Storefront-Buyer-IP': clientAddress,
-      },
-    }
+  fetchOptions: {
+    headers: {
+      'X-Shopify-Storefront-Access-Token': 'ff151810f966c1536e2d3b4fd437f38e',
+      // 'Shopify-Storefront-Buyer-IP': clientAddress,
+    },
   },
 })
