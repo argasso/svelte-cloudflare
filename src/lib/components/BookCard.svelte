@@ -3,6 +3,7 @@
   import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
   import Authors from './Authors.svelte'
   import BuyButton from './BuyButton.svelte'
+  import BookImage from './image/BookImage.svelte'
   import Price from './Price.svelte'
   import type { TProducts } from './ProductsGrid.gql'
 
@@ -19,9 +20,10 @@
 
 <div class:loading class="mt-auto w-40 opacity-100">
   <div class="book relative grid w-36">
-    <a {href} class="book-overlay col-start-1 row-start-1" aria-label="Visa bok">
-      <ShopifyImage class="rounded-r-sm bg-muted" {image} {width} /></a
-    >
+    <a {href} class="col-start-1 row-start-1 grid" aria-label="Visa bok">
+      <ShopifyImage class="col-start-1 row-start-1 bg-gray-100" {image} {width} />
+      <div class="book-overlay col-start-1 row-start-1" style="width: {width}px"></div>
+    </a>
     {#if discontinued}
       <div
         class="ribbon col-start-1 row-start-1 -mb-2 -mr-1 self-end justify-self-end text-xs text-primary-foreground"
