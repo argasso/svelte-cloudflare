@@ -74,6 +74,13 @@ const cartCreateErrorFragment = graphql(`
 `)
 
 export const cartLoad = async (event: ServerLoadEvent | RequestEvent) => {
+  const lineItems = event.params.variants?.split(',').map((v) => ({
+    merchandiseId: `gid://shopify/ProductVariant/${v.split(':').at(0)}`,
+    quantity: parseInt(v.split(':').at(1) ?? '0'),
+  }))
+
+  const variables = lineItems ? { lineItems } : {}
+
   const cartId = event.cookies.get('cartId')
 
   if (cartId) {
@@ -116,7 +123,7 @@ export const cartLoad = async (event: ServerLoadEvent | RequestEvent) => {
       `,
       [cartFragment, cartCreateErrorFragment],
     ),
-    {},
+    variables,
     { fetch },
   )
   if (cartCreateResponse.data?.cartCreate?.cart && !cartCreateResponse.error) {
