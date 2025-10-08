@@ -15,8 +15,8 @@ type SortOption = { label: string; value: string; sortKey: SortKey; reverse: boo
 export const defaultSortKey: SortOption = {
   label: 'Nyast först',
   value: '',
-  sortKey: 'CREATED',
-  reverse: true,
+  sortKey: 'MANUAL',
+  reverse: false,
 }
 
 export const sortOptions: SortOption[] = [
@@ -24,8 +24,8 @@ export const sortOptions: SortOption[] = [
   {
     label: 'Äldst först',
     value: 'aldst',
-    sortKey: 'CREATED',
-    reverse: false,
+    sortKey: 'MANUAL',
+    reverse: true,
   },
   {
     label: 'Titel A-Ö',

@@ -114,8 +114,8 @@ export const cartLoad = async (event: ServerLoadEvent | RequestEvent) => {
         { cartId, ...variables },
         { fetch },
       )
-      redirect(303, '/cart/')
       console.log('cart add error', response.error?.message)
+      redirect(303, '/cart/')
     }
 
     const cartResponse = await client.query(
