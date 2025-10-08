@@ -1,4 +1,10 @@
-import { error, type Action, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit'
+import {
+  error,
+  redirect,
+  type Action,
+  type RequestEvent,
+  type ServerLoadEvent,
+} from '@sveltejs/kit'
 import { client } from '../client'
 import { graphql } from '../graphql'
 import { priceFragment } from './components/Price.graphql'
@@ -74,16 +80,44 @@ const cartCreateErrorFragment = graphql(`
 `)
 
 export const cartLoad = async (event: ServerLoadEvent | RequestEvent) => {
-  const lineItems = event.params.variants?.split(',').map((v) => ({
-    merchandiseId: `gid://shopify/ProductVariant/${v.split(':').at(0)}`,
-    quantity: parseInt(v.split(':').at(1) ?? '0'),
-  }))
+  const lines = event.params.variants
+    ?.split(',')
+    .map((v) => v.split(':'))
+    .filter(([id, qty]) => id && id.length > 0 && qty && qty.length > 0)
+    .map(([id, qty]) => ({
+      merchandiseId: `gid://shopify/ProductVariant/${id}`,
+      quantity: parseInt(qty, 10),
+    }))
 
-  const variables = lineItems ? { lineItems } : {}
+  const variables = lines ? { lines } : {}
 
   const cartId = event.cookies.get('cartId')
 
   if (cartId) {
+    if (variables.lines && variables.lines.length > 0) {
+      const response = await client.mutation(
+        graphql(
+          `
+            mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) @_unmask {
+              cartLinesAdd(cartId: $cartId, lines: $lines) {
+                cart {
+                  ...CartFragment
+                }
+                userErrors {
+                  ...CartUserErrorFragment
+                }
+              }
+            }
+          `,
+          [cartFragment, cartCreateErrorFragment],
+        ),
+        { cartId, ...variables },
+        { fetch },
+      )
+      redirect(303, '/cart/')
+      console.log('cart add error', response.error?.message)
+    }
+
     const cartResponse = await client.query(
       graphql(
         `
@@ -110,8 +144,8 @@ export const cartLoad = async (event: ServerLoadEvent | RequestEvent) => {
   const cartCreateResponse = await client.mutation(
     graphql(
       `
-        mutation CartCreate($lineItems: [CartLineInput!]) {
-          cartCreate(input: { lines: $lineItems }) {
+        mutation CartCreate($lines: [CartLineInput!]) {
+          cartCreate(input: { lines: $lines }) {
             userErrors {
               ...CartUserErrorFragment
             }
