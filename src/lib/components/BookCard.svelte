@@ -15,14 +15,22 @@
   $: href = bookUrl(handle, variants.nodes[0].sku)
   $: image = variants.nodes[0].image ?? bookThumb.images.nodes?.[0]
   $: discontinued = variants.nodes[0].discontinued?.value === 'true'
+  $: bindning = variants.nodes[0].binding?.value
   $: ({ id: variantId, price } = variants.nodes[0])
 </script>
 
 <div class:loading class="mt-auto w-40 opacity-100">
   <div class="book relative grid w-36">
     <a {href} class="col-start-1 row-start-1 grid" aria-label="Visa bok">
-      <ShopifyImage class="col-start-1 row-start-1 bg-gray-100" {image} {width} />
-      <div class="book-overlay col-start-1 row-start-1" style="width: {width}px"></div>
+      <ShopifyImage
+        class="col-start-1 row-start-1 bg-gray-100"
+        style="width: {width}px"
+        {image}
+        {width}
+      />
+      {#if bindning === 'Mjukband' || bindning === 'Flexband'}
+        <div class="book-overlay col-start-1 row-start-1" style="width: {width}px"></div>
+      {/if}
     </a>
     {#if discontinued}
       <div

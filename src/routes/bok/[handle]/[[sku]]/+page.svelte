@@ -23,6 +23,7 @@
   //   $: variants = product?.variants.nodes ?? []
   //   $: selectedVariant = product?.variants.nodes.at(0)
   $: isbn = variant?.barcode ? [{ label: 'ISBN', key: 'isbn', value: [item(variant.barcode)] }] : []
+  $: bindning = variant.binding?.value
   $: metafields =
     variant?.metafields.filter(isNonNil).map((metafield) => {
       const { key, type, references } = metafield
@@ -75,10 +76,6 @@
     },
   ]
 
-  $: console.log(crumbs)
-
-  let currentImageIndex = 0
-
   function item(text: string, href?: string | undefined) {
     return { text, href }
   }
@@ -116,7 +113,9 @@
               image={variant.image}
               alt={`Omslag för ${product?.title} - ${variant.selectedOptions.map((o) => `${o.name}: ${o.value}`).join(', ')}`}
             />
-            <div class="book-overlay col-start-1 row-start-1"></div>
+            {#if bindning === 'Mjukband' || bindning === 'Flexband'}
+              <div class="book-overlay col-start-1 row-start-1"></div>
+            {/if}
             <div class="invisible col-start-1 row-start-1 flex justify-end p-2 group-hover:visible">
               <div
                 class="flex items-end justify-end gap-2 self-end rounded bg-foreground p-3 text-sm text-background"

@@ -11,7 +11,7 @@ export const sektionBokgalleri = graphql(
       visa: field(key: "visa_antal") {
         value
       }
-      bocker: field(key: "bocker") {
+      varianter: field(key: "variant") {
         references(first: 10) {
           nodes {
             ...BookPromo

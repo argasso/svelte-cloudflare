@@ -6,10 +6,9 @@
   import BookImage from './image/BookImage.svelte'
   import Pill from './Pill.svelte'
 
-  export let book: TBookPromo
+  export let variant: TBookPromo
   export let menu: MenuItem | undefined
 
-  $: variant = book?.variants.nodes?.[0]
   $: menuItems = flatten(menu)
   $: categories = variant.categories?.references?.nodes
     .filter(isType('Metaobject'))
@@ -22,20 +21,23 @@
 <div class="my-5 md:my-0">
   <div class="flex flex-col items-start gap-6 sm:flex-row">
     <BookImage
-      href={bookUrl(book.handle)}
-      image={book.images.nodes[0]}
+      href={bookUrl(variant.product.handle, variant.sku)}
+      image={variant.image ?? variant.product.images.nodes[0]}
       width={128}
-      alt={`Bokomslag för ${book.title}`}
+      alt={`Bokomslag för ${variant.title}`}
+      binding={variant.binding?.value}
     />
     <div class="flex flex-col items-start justify-center">
-      <Authors {book}></Authors>
+      <Authors book={variant.product}></Authors>
 
       <h3 class="font-sans text-lg font-semibold leading-6">
-        <a class="text-foreground" href={bookUrl(book.handle)}>{book.title}</a>
+        <a class="text-foreground" href={bookUrl(variant.product.handle, variant.sku)}
+          >{variant.title !== 'Default Title' ? variant.title : variant.product.title}</a
+        >
       </h3>
 
       <p class="text-sm leading-normal text-muted-foreground">
-        {book.description}
+        {variant.product.description}
       </p>
       <!-- <div class="js-only">
         <p class="my-1 line-clamp-5 text-sm leading-normal text-muted-foreground">

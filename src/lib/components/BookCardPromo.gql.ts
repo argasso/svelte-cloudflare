@@ -4,36 +4,45 @@ import { priceFragment } from './Price.graphql'
 
 export const bookPromo = graphql(
   `
-    fragment BookPromo on Product @_unmask {
+    fragment BookPromo on ProductVariant @_unmask {
       id
       title
-      handle
-      description(truncateAt: 160)
-      descriptionHtml
-      images(first: 1) {
-        nodes {
-          url
-          altText
-          height
-          width
+      sku
+      product {
+        title
+        handle
+        description(truncateAt: 160)
+        descriptionHtml
+        images(first: 1) {
+          nodes {
+            url
+            altText
+            height
+            width
+          }
         }
+        ...AuthorsFragment
       }
-      ...AuthorsFragment
-      variants(first: 1) {
-        nodes {
-          price {
-            ...PriceFragment
-          }
-          publishMonth: metafield(namespace: "book", key: "publish_month") {
-            value
-          }
-          categories: metafield(namespace: "book", key: "category") {
-            references(first: 5) {
-              nodes {
-                ... on Metaobject {
-                  id
-                }
-              }
+      image {
+        url
+        altText
+        height
+        width
+      }
+      price {
+        ...PriceFragment
+      }
+      binding: metafield(namespace: "book", key: "binding") {
+        value
+      }
+      publishMonth: metafield(namespace: "book", key: "publish_month") {
+        value
+      }
+      categories: metafield(namespace: "book", key: "category") {
+        references(first: 5) {
+          nodes {
+            ... on Metaobject {
+              id
             }
           }
         }

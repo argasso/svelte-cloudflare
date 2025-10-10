@@ -10,19 +10,19 @@
   export let section: TSektionBokgalleri
   export let menu: MenuItem | undefined
 
-  $: products = section.bocker?.references?.nodes.filter(isType('Product'))
+  $: variants = section.varianter?.references?.nodes.filter(isType('ProductVariant'))
 </script>
 
 <Section title={section.rubrik?.value || ''} level={2} class={className}>
   <div class="flex flex-col justify-stretch lg:flex-row">
-    {#each products ?? [] as book, index}
+    {#each variants ?? [] as variant, index}
       {#if index > 0}
         <div class="hidden self-stretch px-8 md:flex">
           <hr class="vertical" />
         </div>
       {/if}
       <div class="mb-5 flex-1 md:mb-0">
-        <BookCardPromo {book} {menu} />
+        <BookCardPromo {variant} {menu} />
       </div>
     {/each}
   </div>

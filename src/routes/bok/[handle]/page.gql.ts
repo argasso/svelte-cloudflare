@@ -28,6 +28,9 @@ export const productQuery = graphql(
             discontinued: metafield(namespace: "book", key: "discontinued") {
               value
             }
+            binding: metafield(namespace: "book", key: "binding") {
+              value
+            }
           }
         }
       }
@@ -87,6 +90,9 @@ export const productQuery = graphql(
               value
             }
             category: metafield(namespace: "book", key: "category") {
+              value
+            }
+            binding: metafield(namespace: "book", key: "binding") {
               value
             }
             metafields(identifiers: $metafieldIds) {
