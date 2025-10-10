@@ -47,11 +47,11 @@
       {/if}
     </div>
   </div>
-  <!-- {#if categories}
+  {#if categories}
     <div class="mt-3">
       {#each categories as category (category.href)}
         <Pill name={category.name} href={category.href} />
       {/each}
     </div>
-  {/if} -->
+  {/if}
 </div>
