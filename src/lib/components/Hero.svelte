@@ -5,12 +5,12 @@
 
   export let title: string | null = 'Upplev böcker från Argasso bokförlag'
   export let intro: string = 'Lättare att läsa för barn och ungdomar'
-  export let pageTop: THeroFragment['pageTop'] | null | undefined
+  // export let pageTop: THeroFragment['pageTop'] | null | undefined
 
   $: titleParts = title?.split('Argasso') ?? []
-  $: slides = getByType('Metaobject', pageTop?.reference)?.slides?.references?.nodes.filter(
-    isType('Metaobject'),
-  )
+  // $: slides = getByType('Metaobject', pageTop?.reference)?.slides?.references?.nodes.filter(
+  //   isType('Metaobject'),
+  // )
 </script>
 
 <div class="text-white">
@@ -18,7 +18,9 @@
     <div
       class="flex w-full flex-col items-center justify-center text-center md:items-start md:pr-10"
     >
-      <h1 class="text-center font-sans text-3xl font-semibold text-white md:text-left md:text-5xl">
+      <h1
+        class="mt-6 text-center font-sans text-3xl font-semibold text-white md:text-left md:text-5xl"
+      >
         {#each titleParts as part, index}
           {#if index > 0}
             <span class="bg-gradient-to-r from-pink-300 to-violet-300 bg-clip-text text-transparent"
@@ -32,13 +34,13 @@
       <Button
         href="/bocker"
         size="lg"
-        class="hover my-4 mb-0 bg-red-50 text-gray-800 hover:bg-white hover:text-black hover:no-underline"
+        class="hover mt-3 bg-red-50 text-gray-800 hover:bg-white hover:text-black hover:no-underline"
         >Se alla våra böcker</Button
       >
     </div>
-    {#if slides && slides.length > 0}
+    <!-- {#if slides && slides.length > 0}
       <div class="my-4 w-full md:my-0 md:w-2/5">
-        <!-- <Carousel.Root
+        <Carousel.Root
           opts={{
             align: 'start',
           }}
@@ -70,8 +72,8 @@
           </Carousel.Content>
           <Carousel.Previous class="hidden bg-primary text-white md:flex" />
           <Carousel.Next class="hidden bg-primary text-white md:flex" />
-        </Carousel.Root> -->
+        </Carousel.Root>
       </div>
-    {/if}
+    {/if} -->
   </div>
 </div>

@@ -12,7 +12,7 @@
   $: intro = page?.content?.value
     ? convertSchemaToText(page?.content?.value)
     : 'Lättare att läsa för barn och ungdomar'
-  $: pageTop = page?.pageTop
+  // $: pageTop = page?.pageTop
 </script>
 
 <Seo
@@ -23,9 +23,12 @@
 />
 
 <section class="gradient">
-  <Hero {title} {intro} {pageTop} />
+  <!-- <Hero {title} {intro} {pageTop} /> -->
+  <Hero {title} {intro} />
 </section>
 
 <Wave class="gradient" />
 
-<Sections {page} {menu} />
+{#if page}
+  <Sections {page} {menu} />
+{/if}

@@ -1,6 +1,9 @@
 <script lang="ts">
+  import { cn } from '$lib/utils'
+
   let className = ''
   export { className as class }
+  export let hClass: string | null | undefined = undefined
   export let title: string | null | undefined = undefined
   export let level: 1 | 2 | 3 = 1
 </script>
@@ -9,15 +12,15 @@
   <div class="container">
     {#if title}
       {#if level === 1}
-        <h1 class="mb-8 mt-0 w-full text-center md:text-left">
+        <h1 class={cn('mb-8 mt-0 w-full text-center md:text-left', hClass)}>
           {title}
         </h1>
       {:else if level === 2}
-        <h2 class="mb-8 mt-0 w-full text-center md:text-left">
+        <h2 class={cn('mb-8 mt-0 w-full text-center md:text-left', hClass)}>
           {title}
         </h2>
       {:else if level === 3}
-        <h3 class="mb-8 mt-0 w-full text-center md:text-left">
+        <h3 class={cn('mb-8 mt-0 w-full text-center md:text-left', hClass)}>
           {title}
         </h3>
       {/if}

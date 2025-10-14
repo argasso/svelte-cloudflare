@@ -7,6 +7,7 @@
   // import SectionNews, { sectionNewsFragment } from './section/SectionNews.svelte'
   import type { pageQuery } from '$lib/gql/page.gql'
   import SektionBokgalleri from './section/SektionBokgalleri.svelte'
+  import SektionStudiematerial from './section/SektionStudiematerial.svelte'
 
   export let page: ResultOf<typeof pageQuery>['page']
   export let menu: MenuItem | undefined
@@ -29,5 +30,8 @@
   {/if}
   {#if section.type === 'section_component'}
     <SectionComponent {section} class={index % 2 === 0 ? 'bg-background' : 'bg-card'} />
+  {/if}
+  {#if section.type === 'studiematerial'}
+    <SektionStudiematerial {section} {menu} class={index % 2 === 0 ? 'bg-background' : 'bg-card'} />
   {/if}
 {/each}

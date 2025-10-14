@@ -7,6 +7,7 @@
   export let book: TAuthors
   export let one = false
   export let noLink = false
+  export let prefix: string | undefined = undefined
 
   $: authors = book.authors?.references?.nodes.filter(isType('Metaobject')) ?? []
   $: numAuthors = authors?.length ?? 0
@@ -14,6 +15,9 @@
 
 {#if numAuthors > 0}
   <div class="{className} leading-4x text-sm">
+    {#if prefix}
+      {prefix}
+    {/if}
     {#each authors as author, index}
       {#if !one || index === 0}
         {#if index > 0}

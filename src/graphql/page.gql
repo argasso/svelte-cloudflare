@@ -13,7 +13,6 @@ query Page($handle: String!) {
         }
       }
     }
-    ...HeroFragment
     ...SectionsFragment
     ...SeoFragment
   }
