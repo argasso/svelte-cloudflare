@@ -1,9 +1,8 @@
 <script lang="ts">
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte'
-  import Button from '$lib/components/Button.svelte'
   import CartForm from '$lib/components/CartForm.svelte'
-  import Icons from '$lib/components/Icons.svelte'
   import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
+  import Section from '$lib/components/Section.svelte'
 
   export let data
   export let form
@@ -21,7 +20,9 @@
 
 <div class="container">
   <Breadcrumbs {crumbs} />
+</div>
 
+<Section>
   {#if form?.success}
     <noscript>
       <div
@@ -81,4 +82,4 @@
 
   <h1>Varukorg</h1>
   <CartForm showTotal={true} cart={data.cart} />
-</div>
+</Section>

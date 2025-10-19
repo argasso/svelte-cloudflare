@@ -6,7 +6,7 @@
   import type { FragmentOf } from '../../graphql'
   import Authors from './Authors.svelte'
   import Icons from './Icons.svelte'
-  import Cart from './icons/Cart.svelte'
+  import Cart from 'lucide-svelte/icons/shopping-cart'
   import Minus from './icons/Minus.svelte'
   import Plus from './icons/Plus.svelte'
   import Trash from './icons/Trash.svelte'
@@ -129,12 +129,14 @@
     </div>
   </div>
 {:else}
-  <div class="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
-    <div
-      class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-4xl text-gray-500"
+  <div class="my-10 flex w-full flex-col items-center justify-center overflow-hidden">
+    <Cart size="80" class="text-primary opacity-40" />
+    <h2 class="my-6 text-center text-3xl">Din varukorg är tom.</h2>
+    <p class="mx-auto w-80 text-center text-muted-foreground">
+      Det finns inga böcker i din varukorg. Hitta din nästa favorit bland alla våra böcker.
+    </p>
+    <Button href="/bocker" size="lg" class="my-6 bg-primary text-white hover:no-underline"
+      >Se alla våra böcker</Button
     >
-      <Cart />
-    </div>
-    <h3 class="mt-6 text-center text-2xl">Varukorgen är tom.</h3>
   </div>
 {/if}

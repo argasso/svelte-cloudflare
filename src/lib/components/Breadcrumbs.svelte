@@ -6,7 +6,7 @@
 </script>
 
 <nav class="flex py-3" aria-label="Breadcrumb">
-  <ol class="inline-flex items-center">
+  <ol class="inline-flex flex-wrap items-center">
     {#each crumbs as { href, name }, index}
       <li class="inline-flex items-center text-muted-foreground">
         {#if index < crumbs.length - 1}
