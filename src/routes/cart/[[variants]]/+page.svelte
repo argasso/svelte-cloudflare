@@ -80,6 +80,6 @@
     </noscript>
   {/if}
 
-  <h1>Varukorg</h1>
+  <h1 class="w-full text-center md:text-left">Varukorg</h1>
   <CartForm showTotal={true} cart={data.cart} />
 </Section>

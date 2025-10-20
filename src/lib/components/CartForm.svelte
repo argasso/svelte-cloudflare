@@ -131,7 +131,7 @@
 {:else}
   <div class="my-10 flex w-full flex-col items-center justify-center overflow-hidden">
     <Cart size="80" class="text-primary opacity-40" />
-    <h2 class="my-6 text-center text-3xl">Din varukorg är tom.</h2>
+    <h2 class="my-6 text-center text-2xl">Din varukorg är tom.</h2>
     <p class="mx-auto w-80 text-center text-muted-foreground">
       Det finns inga böcker i din varukorg. Hitta din nästa favorit bland alla våra böcker.
     </p>
