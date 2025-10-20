@@ -3,6 +3,7 @@
   import type { MenuItem } from '$lib/menu'
   import Button from './Button.svelte'
   import Wave from './Wave.svelte'
+  import Send from 'lucide-svelte/icons/send'
 
   export let informationMenu: MenuItem | undefined
 </script>
@@ -10,8 +11,8 @@
 <Wave class="gradient-inverted" inversed />
 <footer class="gradient text-gray-100">
   <div class="container">
-    <div class="order-first flex flex-wrap text-center md:text-left">
-      <nav class="mb-10 w-full md:w-1/2 lg:w-1/4">
+    <div class="grid grid-cols-4 gap-10 text-center md:text-left">
+      <nav class="col-span-4 sm:col-span-2 lg:col-span-1">
         <h3 class="mb-3">Kontaktuppgifter</h3>
         <ul class="list-none p-0">
           <li class="mb-2">
@@ -24,7 +25,7 @@
         </ul>
       </nav>
       {#if informationMenu}
-        <nav class="mb-10 w-full md:w-1/2 lg:w-1/4">
+        <nav class="col-span-4 sm:col-span-2 lg:col-span-1">
           <h3 class="mb-3">{informationMenu.name}</h3>
           <ul class="list-none p-0">
             {#each informationMenu.children as { href, name }}
@@ -35,7 +36,7 @@
           </ul>
         </nav>
       {/if}
-      <nav class="mb-10 w-full md:w-1/2 lg:w-1/4">
+      <nav class="col-span-4 sm:col-span-2 lg:col-span-1">
         <h3 class="mb-3">Villkor</h3>
         <ul class="list-none p-0">
           <li class="mb-2">
@@ -46,47 +47,42 @@
           </li>
         </ul>
       </nav>
-      <div class="mb-10 w-full md:w-1/2 lg:w-1/4">
+      <div class="col-span-4 sm:col-span-2 lg:col-span-1">
         <h3 class="mb-3"><label for="mce-EMAIL">Nyhetsbrev</label></h3>
         <div
-          class="flex flex-wrap items-end justify-center md:flex-nowrap md:justify-start lg:flex-wrap xl:flex-nowrap"
+          class="flex flex-wrap items-end justify-center md:justify-start lg:flex-wrap xl:flex-nowrap"
         >
-          <div class="relative mr-2 sm:mr-4 sm:w-auto lg:mr-0 xl:mr-4">
+          <div class="relative sm:w-auto lg:mr-0 xl:mr-4">
             <form
               id="mc-embedded-subscribe-form"
               action="https://argasso.us18.list-manage.com/subscribe/post?u=77df9b40f7b88d80d2730b6bb&amp;id=b391a49e94"
               method="post"
               name="mc-embedded-subscribe-form"
               target="_blank"
-              class="flex w-full max-w-sm items-center space-x-2"
+              class="flex w-full items-stretch"
             >
               <input
                 id="mce-EMAIL"
                 name="EMAIL"
                 type="email"
                 placeholder="Din e-postadress"
-                class="bg-white text-black"
+                class="w-full rounded-none rounded-l-md bg-background"
               />
               <Button
                 id="mc-embedded-subscribe"
                 name="subscribe"
                 type="submit"
-                class="drop-shadow-md">Prenumerera</Button
+                title="Prenumerera"
+                class="h-auto rounded-none rounded-r-md"><Send /></Button
               >
             </form>
           </div>
         </div>
       </div>
-      <div class="w-full border-t border-red-300 text-gray-100 opacity-75">
-        <div class="flex items-center">
-          <a
-            href="/"
-            class="title-font flex items-center justify-center font-medium md:justify-start"
-          >
-            <Logo class="h-16 w-32" />
-          </a>
-          <div class="mt-4 text-sm sm:ml-6 sm:mt-0">© 2025 Argasso bokförlag AB</div>
-          <span class="mt-4 inline-flex justify-center sm:ml-auto sm:mt-0 sm:justify-start">
+      <div class="col-span-4 border-t border-white/25 text-white/50">
+        <div class="flex items-center py-6">
+          <div class="text-sm">© 2025 Argasso bokförlag AB</div>
+          <span class="ml-auto inline-flex">
             <a
               href="https://www.facebook.com/ArgassoBok"
               aria-label="Read more about Argasso on Facebook"

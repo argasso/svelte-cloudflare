@@ -252,6 +252,10 @@ main a {
   color: hsl(var(--primary));
 }
 
+footer a {
+  text-decoration-line: underline;
+}
+
 a:hover {
   text-decoration-line: underline;
 }

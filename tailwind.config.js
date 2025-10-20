@@ -29,7 +29,7 @@ const config = {
     },
     extend: {
       screens: {
-        xs: '420px',
+        xs: '400px',
         // '2xl': '1700px'
       },
       colors: {

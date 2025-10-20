@@ -106,7 +106,7 @@
       </Button>
 
       <Button
-        class="px-2 font-light"
+        class="px-4 font-light"
         variant="outline"
         type="submit"
         name="after"
