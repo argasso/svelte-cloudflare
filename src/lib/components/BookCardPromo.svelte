@@ -19,7 +19,7 @@
 </script>
 
 <div class="my-5 md:my-0">
-  <div class="flex flex-col items-start gap-6 sm:flex-row">
+  <div class="flex flex-col items-start gap-6 xs:flex-row">
     <BookImage
       href={bookUrl(variant.product.handle, variant.sku)}
       image={variant.image ?? variant.product.images.nodes[0]}

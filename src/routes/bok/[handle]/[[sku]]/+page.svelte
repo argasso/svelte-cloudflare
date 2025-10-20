@@ -102,7 +102,7 @@
       class="grid grid-cols-[1fr_2fr] grid-rows-[auto_1fr_auto_auto] gap-10 gap-y-6 sm:grid-rows-[auto_auto_auto_1fr] lg:grid-cols-[1fr_1fr_1fr]"
     >
       <a
-        class="group row-span-2 h-full sm:row-span-4"
+        class="group row-span-1 h-full sm:row-span-4"
         href={variant.image?.url}
         aria-label="Klicka för att ladda ned omslag i full skala"
       >
@@ -160,7 +160,7 @@
         {@html product?.descriptionHtml}
       </div>
       <div
-        class="col-start-2 row-start-2 sm:col-start-2 sm:row-start-3 lg:col-span-2 lg:col-start-2 lg:row-start-3"
+        class="col-span-2 col-start-1 row-start-2 sm:col-span-1 sm:col-start-2 sm:row-start-3 lg:col-span-2 lg:col-start-2 lg:row-start-3"
       >
         {#if variant.discontinued?.value === 'true'}
           <div
@@ -191,9 +191,9 @@
       <div
         class="col-span-2 row-start-4 sm:col-span-1 sm:col-start-2 sm:row-start-4 lg:col-start-3 lg:row-span-1 lg:row-start-2"
       >
-        <BookDetails class="my-3" title="Bokfakta" {details} />
+        <BookDetails title="Bokfakta" {details} />
         {#if otherDetails.length > 0}
-          <BookDetails class="my-3" title="Fler format" details={otherDetails} />
+          <BookDetails class="mt-3" title="Fler format" details={otherDetails} />
         {/if}
       </div>
     </div>
