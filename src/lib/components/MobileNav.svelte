@@ -18,7 +18,7 @@
   </Drawer.Trigger>
   <Drawer.Portal>
     <Drawer.Content
-      class="fixed bottom-0 left-0 right-0 z-50 mx-auto h-[90%] w-full max-w-lg flex-col overflow-hidden rounded-t-[10px] bg-popover after:data-[vaul-drawer]:bg-background md:bg-transparent md:after:data-[vaul-drawer]:data-[vaul-drawer-direction=bottom]:bg-transparent"
+      class="fixed -bottom-24 left-0 right-0 z-50 mx-auto h-full w-full max-w-lg flex-col overflow-hidden rounded-t-[10px] bg-popover pb-24 after:data-[vaul-drawer]:bg-background md:bg-transparent md:after:data-[vaul-drawer]:data-[vaul-drawer-direction=bottom]:bg-transparent"
     >
       <div
         class="absolute left-1/2 top-0 my-2 h-1.5 w-12 flex-shrink-0 -translate-x-6 rounded-full bg-zinc-300 md:hidden"
