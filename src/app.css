@@ -150,7 +150,7 @@
     font-size: 1rem;
     line-height: 1.5;
 
-    @apply bg-primary text-foreground;
+    @apply bg-black text-foreground;
   }
 }
 
