@@ -10,7 +10,7 @@
   const direction = 'left'
 </script>
 
-<Drawer.Root shouldScaleBackground={true}>
+<Drawer.Root shouldScaleBackground={false}>
   <Drawer.Trigger asChild let:builder>
     <Button builders={[builder]} variant="header" size="icon">
       <Icons type="menu" />
