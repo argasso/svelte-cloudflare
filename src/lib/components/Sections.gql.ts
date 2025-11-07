@@ -9,7 +9,7 @@ export const sectionsFragment = graphql(
   `
     fragment SectionsFragment on Metaobject @_unmask {
       sections: field(key: "sektioner") {
-        references(first: 10) {
+        references(first: 100) {
           nodes {
             ... on Metaobject {
               type

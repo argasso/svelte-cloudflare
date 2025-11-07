@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { authorUrl, bookUrl, getByType } from '$lib'
+  import { getByType } from '$lib'
   import type { MenuItem } from '$lib/menu'
   import { convertSchemaToHtml } from '$lib/richtext/shopifyRichText'
   import Download from 'lucide-svelte/icons/download'
-  import Authors from '../Authors.svelte'
   import DownloadButton from '../DownloadButton.svelte'
   import ShopifyImage from '../image/ShopifyImage.svelte'
   import Section from './Section.svelte'
@@ -22,50 +21,38 @@
   $: html = section.content?.value
     ? convertSchemaToHtml(JSON.parse(section.content.value))
     : undefined
+  $: description = section.description?.value
+    ? convertSchemaToHtml(JSON.parse(section.description.value))
+    : undefined
   $: elevFile = getByType('GenericFile', section.elevmaterial?.reference)
   $: lararFile = getByType('GenericFile', section.lararmaterial?.reference)
-  $: product = getByType('Product', section.bok?.reference)
-  $: variant = product?.variants.nodes[0]
-  $: bindning = variant?.binding?.value
+  $: image = getByType('MediaImage', section.image?.reference)?.image
 </script>
 
-<Section class={className} hClass="mb-3">
-  {#if product}
+{#if description && image}
+  <Section class={className} hClass="mb-3">
     <div
       class="grid grid-cols-[1fr_2fr] grid-rows-[auto_1fr_auto_auto] gap-10 gap-y-6 sm:grid-rows-[auto_auto_auto_auto] lg:grid-cols-[1fr_2fr_2fr]"
     >
-      <a
-        class="group row-span-2 h-full sm:row-span-4"
-        href={product.images.nodes[0].url}
-        aria-label="Klicka för att ladda ned omslag i full skala"
-      >
-        <div class="group">
-          <div class="book gr grid">
-            <ShopifyImage
-              class="col-start-1 row-start-1 rounded-r-sm sm:top-16"
-              image={product.images.nodes[0]}
-              alt={`Omslag för ${product?.title}}`}
-            />
-            {#if bindning === 'Mjukband' || bindning === 'Flexband'}
-              <div class="book-overlay col-start-1 row-start-1"></div>
-            {/if}
-            <div class="invisible col-start-1 row-start-1 flex justify-end p-2 group-hover:visible">
-              <div
-                class="flex items-end justify-end gap-2 self-end rounded bg-foreground p-3 text-sm text-background"
-              >
-                <Download size="20" /> Ladda ned omslaget i full skala
-              </div>
+      <div class="group">
+        <div class="book gr grid">
+          <ShopifyImage
+            class="col-start-1 row-start-1 rounded-r-sm sm:top-16"
+            {image}
+            alt={`Omslag för ${section.title?.value}}`}
+          />
+          <div class="book-overlay col-start-1 row-start-1"></div>
+          <div class="invisible col-start-1 row-start-1 flex justify-end p-2 group-hover:visible">
+            <div
+              class="flex items-end justify-end gap-2 self-end rounded bg-foreground p-3 text-sm text-background"
+            >
+              <Download size="20" /> Ladda ned omslaget i full skala
             </div>
           </div>
         </div>
-      </a>
+      </div>
       <div class="">
         <div class="flex items-center justify-between">
-          <h2
-            class="title-font my-1 text-xs uppercase tracking-widest sm:text-sm md:text-base lg:text-lg"
-          >
-            <Authors book={product} />
-          </h2>
           <!-- <div class="ml-2 flex gap-2 border-l-2 border-gray-200 py-2 pl-2 text-lg sm:text-2xl">
           <a href="" class="text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
@@ -85,14 +72,16 @@
           </a>
         </div> -->
         </div>
-        <a href={bookUrl(product.handle)}>
-          <h1 class="my-2 text-2xl font-medium lg:text-3xl xl:text-4xl">
-            {product?.title}
-          </h1></a
-        >
-      </div>
-      <div class="col-span-2 col-start-1 row-start-3 sm:col-span-1 sm:col-start-2 sm:row-start-2">
-        {@html product?.descriptionHtml}
+        <h1 class="my-2 text-2xl font-medium lg:text-3xl xl:text-4xl">
+          {section.title?.value}
+        </h1>
+        {#if description}
+          <div
+            class="col-span-2 col-start-1 row-start-3 sm:col-span-1 sm:col-start-2 sm:row-start-2"
+          >
+            {@html description}
+          </div>
+        {/if}
       </div>
       <!-- {#if variant}
         <div
@@ -148,5 +137,5 @@
         </Card>
       </div>
     </div>
-  {/if}
-</Section>
+  </Section>
+{/if}
