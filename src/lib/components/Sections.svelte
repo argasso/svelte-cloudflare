@@ -29,7 +29,7 @@
     <SectionDownload {section} class={index % 2 === 0 ? 'bg-background' : 'bg-card'} />
   {/if}
   {#if section.type === 'section_component'}
-    <SectionComponent {section} class={index % 2 === 0 ? 'bg-background' : 'bg-card'} />
+    <!-- <SectionComponent {section} class={index % 2 === 0 ? 'bg-background' : 'bg-card'} /> -->
   {/if}
   {#if section.type === 'studiematerial'}
     <SektionStudiematerial {section} class={index % 2 === 0 ? 'bg-background' : 'bg-card'} />
