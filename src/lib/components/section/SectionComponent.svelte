@@ -17,7 +17,7 @@
     : undefined
 </script>
 
-<Section title={section.name?.value ?? ''} level={2} class={className}>
+<Section title={section.rubrik?.value ?? ''} level={2} class={className}>
   {#if html}
     <div>
       <p>{@html html}</p>

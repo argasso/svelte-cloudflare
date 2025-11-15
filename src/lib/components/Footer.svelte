@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Logo from '$lib/components/logo/Logo.svelte'
   import type { MenuItem } from '$lib/menu'
   import Button from './Button.svelte'
   import Wave from './Wave.svelte'
@@ -79,7 +78,7 @@
           </div>
         </div>
       </div>
-      <div class="col-span-4 border-t border-white/25 text-white/50">
+      <div class="col-span-4 border-t border-white/25 text-white/70">
         <div class="flex items-center py-6">
           <div class="text-sm">© 2025 Argasso bokförlag AB</div>
           <span class="ml-auto inline-flex">

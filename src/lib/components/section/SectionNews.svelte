@@ -12,7 +12,7 @@
   $: html = section.text?.value ? convertSchemaToHtml(JSON.parse(section.text.value)) : undefined
 </script>
 
-<Section title={section.title?.value ?? ''} level={2} class={className}>
+<Section title={section.rubrik?.value ?? ''} level={2} class={className}>
   <div class="flex justify-stretch gap-10">
     <div>
       <p>{@html html}</p>

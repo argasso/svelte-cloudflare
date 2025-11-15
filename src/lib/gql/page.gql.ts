@@ -11,6 +11,9 @@ export const pageQuery = graphql(
         content: field(key: "content") {
           value
         }
+        show_table_of_contents: field(key: "show_table_of_contents") {
+          value
+        }
         children: field(key: "sub_pages") {
           references(first: 10) {
             nodes {

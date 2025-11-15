@@ -1,13 +1,11 @@
 import { graphql, type FragmentOf } from '../../../graphql'
 import { bookPromo } from '../BookCardPromo.gql'
+import { sectionSharedFragment } from './SectionSharedFragment.gql'
 
 export const sektionBokgalleri = graphql(
   `
     fragment SektionBokgalleri on Metaobject @_unmask {
-      id
-      rubrik: field(key: "rubrik") {
-        value
-      }
+      ...SectionSharedFragment
       visa: field(key: "visa_antal") {
         value
       }
@@ -20,7 +18,7 @@ export const sektionBokgalleri = graphql(
       }
     }
   `,
-  [bookPromo],
+  [bookPromo, sectionSharedFragment],
 )
 
 let className = ''

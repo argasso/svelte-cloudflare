@@ -1,15 +1,27 @@
 import { graphql, type FragmentOf } from '../../../graphql'
 import { authorsFragment } from '../Authors.graphql'
-import { bookPromo } from '../BookCardPromo.gql'
 import { genericFileFragment } from '../DownloadButton.gql'
 import { priceFragment } from '../Price.graphql'
+import { sectionSharedFragment } from './SectionSharedFragment.gql'
 
 export const sektionStudiematerial = graphql(
   `
     fragment SektionStudiematerial on Metaobject @_unmask {
-      id
-      title: field(key: "title") {
+      ...SectionSharedFragment
+      description: field(key: "description") {
         value
+      }
+      image: field(key: "image") {
+        reference {
+          ... on MediaImage {
+            image {
+              altText
+              url
+              width
+              height
+            }
+          }
+        }
       }
       content: field(key: "content") {
         value
@@ -85,7 +97,7 @@ export const sektionStudiematerial = graphql(
       }
     }
   `,
-  [genericFileFragment, authorsFragment, priceFragment],
+  [genericFileFragment, authorsFragment, priceFragment, sectionSharedFragment],
 )
 
 let className = ''

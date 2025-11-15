@@ -12,7 +12,6 @@
   let className = ''
   export { className as class }
   export let section: TSektionStudiematerial
-  export let menu: MenuItem | undefined
 
   const physicalShopCategories = [
     'gid://shopify/Metaobject/82501730639',
@@ -39,7 +38,7 @@
           <ShopifyImage
             class="col-start-1 row-start-1 rounded-r-sm sm:top-16"
             {image}
-            alt={`Omslag för ${section.title?.value}}`}
+            alt={`Omslag för ${section.rubrik?.value}}`}
           />
           <div class="book-overlay col-start-1 row-start-1"></div>
           <div class="invisible col-start-1 row-start-1 flex justify-end p-2 group-hover:visible">
@@ -72,8 +71,8 @@
           </a>
         </div> -->
         </div>
-        <h1 class="my-2 text-2xl font-medium lg:text-3xl xl:text-4xl">
-          {section.title?.value}
+        <h1 id={section.handle} class="my-2 text-2xl font-medium lg:text-3xl xl:text-4xl">
+          {section.rubrik?.value}
         </h1>
         {#if description}
           <div

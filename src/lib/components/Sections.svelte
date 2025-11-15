@@ -32,6 +32,6 @@
     <SectionComponent {section} class={index % 2 === 0 ? 'bg-background' : 'bg-card'} />
   {/if}
   {#if section.type === 'studiematerial'}
-    <SektionStudiematerial {section} {menu} class={index % 2 === 0 ? 'bg-background' : 'bg-card'} />
+    <SektionStudiematerial {section} class={index % 2 === 0 ? 'bg-background' : 'bg-card'} />
   {/if}
 {/each}
