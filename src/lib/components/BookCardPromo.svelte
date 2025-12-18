@@ -32,7 +32,7 @@
 
       <h3 class="font-sans text-lg font-semibold leading-6">
         <a class="text-foreground" href={bookUrl(variant.product.handle, variant.sku)}
-          >{variant.title !== 'Default Title' ? variant.title : variant.product.title}</a
+          >{variant.product.title}</a
         >
       </h3>
 
