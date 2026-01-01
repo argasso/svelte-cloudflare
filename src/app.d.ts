@@ -22,4 +22,18 @@ declare global {
   }
 }
 
+declare global {
+  interface Window {
+    privacyBanner?: {
+      loadBanner(options: {
+        storefrontAccessToken: string
+        checkoutRootDomain: string
+        storefrontRootDomain: string
+        locale?: string
+        country?: string
+      }): Promise<void>
+    }
+  }
+}
+
 export {}

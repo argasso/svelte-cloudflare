@@ -25,6 +25,12 @@
 
   export let data
 
+  const STOREFRONT_DOMAIN = 'argasso.se'
+  const CHECKOUT_DOMAIN = 'shop.argasso.se'
+  const SF_API_TOKEN = 'ff151810f966c1536e2d3b4fd437f38e' // Obtained in the previous section
+  const LOCALE = 'se_SV'
+  const COUNTRY = 'se'
+
   let headerHeight = 0
   let scrollY = 0
   let prevY = 0
@@ -36,6 +42,36 @@
     // For header scrolling
     headerHeight = headerEl.clientHeight
     prevY = headerEl.offsetTop
+
+    // Shopify concent banner
+    const tryInit = () => {
+      if (!window.privacyBanner) return false
+
+      window.privacyBanner
+        .loadBanner({
+          storefrontAccessToken: SF_API_TOKEN,
+          checkoutRootDomain: CHECKOUT_DOMAIN,
+          storefrontRootDomain: STOREFRONT_DOMAIN,
+          // Optional
+          locale: LOCALE,
+          country: COUNTRY,
+        })
+        .then(() => {
+          console.log('Shopify cookie banner loaded')
+        })
+        .catch((err) => {
+          console.error('Error loading Shopify cookie banner', err)
+        })
+
+      return true
+    }
+
+    // script is async/defer; it might not be ready on first call
+    if (!tryInit()) {
+      const interval = setInterval(() => {
+        if (tryInit()) clearInterval(interval)
+      }, 200)
+    }
   })
 
   $: ({ menu, informationMenu } = data)
@@ -78,6 +114,6 @@
 
 <Toaster />
 
-<ModeWatcher />
+<!-- <ModeWatcher /> -->
 
 <!-- <CookieBanner /> -->
