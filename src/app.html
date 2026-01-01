@@ -20,6 +20,29 @@
         }
       </style>
     </noscript>
+    <script src="https://cdn.shopify.com/shopifycloud/privacy-banner/storefront-banner.js"></script>
+    <script>
+      // Change with your shop details
+      const STOREFRONT_DOMAIN = 'argasso.se'
+      const CHECKOUT_DOMAIN = 'shop.argasso.se'
+      const SF_API_TOKEN = 'ff151810f966c1536e2d3b4fd437f38e' // Obtained in the previous section
+      const LOCALE = 'se_SV'
+      const COUNTRY = 'se'
+
+      // Run banner if needed for the current visitor:
+      privacyBanner
+        .loadBanner({
+          storefrontAccessToken: SF_API_TOKEN,
+          checkoutRootDomain: CHECKOUT_DOMAIN,
+          storefrontRootDomain: STOREFRONT_DOMAIN,
+          // Optional
+          locale: LOCALE,
+          country: COUNTRY,
+        })
+        .then(() => {
+          console.log('loaded')
+        })
+    </script>
   </head>
   <body data-sveltekit-preload-data="hover">
     <div style="display: contents">%sveltekit.body%</div>

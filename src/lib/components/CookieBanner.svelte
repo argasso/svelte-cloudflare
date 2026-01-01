@@ -30,6 +30,8 @@
       if (visible) {
         // Initialize from current consent, so user can adjust rather than start from scratch
         const raw = await getCurrentConsent()
+        console.log('current concent', raw)
+
         marketing = raw.marketing === 'yes'
         analytics = raw.analytics === 'yes'
         preferences = raw.preferences === 'yes'

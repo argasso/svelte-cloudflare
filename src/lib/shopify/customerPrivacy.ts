@@ -59,6 +59,8 @@ export async function loadCustomerPrivacy(): Promise<ShopifyCustomerPrivacy> {
   }
 
   if (window.Shopify?.customerPrivacy) {
+    console.log('window.Shopify?.customerPrivacy available')
+
     return window.Shopify.customerPrivacy
   }
 
@@ -134,7 +136,7 @@ export async function setTrackingConsentForHeadless(consent: TrackingConsentInpu
         headlessStorefront: true,
         checkoutRootDomain: 'shop.argasso.se',
         storefrontRootDomain: 'argasso.se',
-        storefrontAccessToken: 'ff151810f966c1536e2d3b4fd437f38e',
+        storefrontAccessToken: '', // 'ff151810f966c1536e2d3b4fd437f38e',
       },
       (result?: { error?: string }) => {
         if (result?.error) {
