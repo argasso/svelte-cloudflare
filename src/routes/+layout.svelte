@@ -21,6 +21,7 @@
   import MobileNav from '$lib/components/MobileNav.svelte'
   import Search from '$lib/components/search/Search.svelte'
   import { enhance } from '$app/forms'
+  import CookieBanner from '$lib/components/CookieBanner.svelte'
 
   export let data
 
@@ -78,3 +79,5 @@
 <Toaster />
 
 <ModeWatcher />
+
+<CookieBanner />
