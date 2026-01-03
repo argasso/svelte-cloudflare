@@ -7,6 +7,8 @@ declare global {
         ARGASSO_FILES: R2Bucket
         TURNSTILE_SECRET_KEY: string
         TURNSTILE_SITE_KEY: string
+        PUBLIC_SHOPIFY_STOREFRONT_URL: string
+        PUBLIC_SHOPIFY_STOREFRONT_TOKEN: string
       }
       cf: CfProperties
       ctx: ExecutionContext
@@ -26,6 +28,13 @@ declare global {
   interface Window {
     privacyBanner?: {
       loadBanner(options: {
+        storefrontAccessToken: string
+        checkoutRootDomain: string
+        storefrontRootDomain: string
+        locale?: string
+        country?: string
+      }): Promise<void>
+      showPreferences(options?: {
         storefrontAccessToken: string
         checkoutRootDomain: string
         storefrontRootDomain: string

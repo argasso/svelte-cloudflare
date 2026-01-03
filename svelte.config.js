@@ -12,6 +12,24 @@ const config = {
     // If your environment is not supported, or you settled on a specific environment, switch out the adapter.
     // See https://kit.svelte.dev/docs/adapters for more information about adapters.
     adapter: adapter(),
+    csp: {
+        // Use 'auto' mode to dynamically handle nonces/hashes for SSR and prerendered pages
+        mode: 'auto',
+        directives: {
+          'default-src': ['self'], // Fallback for most unspecified directives
+          'script-src': ['self', 'https://cdn.shopify.com'],
+          'style-src': ['self', 'unsafe-inline'],
+          'img-src': ['self', 'data:', 'https://cdn.shopify.com'],
+          'font-src': ['self'],
+          'object-src': ['none'], // Disallow plugins
+          'base-uri': ['none'],   // Disallow dynamic <base> tags
+          'form-action': ['self'], // Restrict form submissions to same origin
+          'frame-ancestors': ['none'], // Prevent app from being embedded in iframes
+          'connect-src': ['self', 'https://shop.argasso.se']
+        },
+        // Use reportOnly initially to monitor violations
+        // reportOnly: { /* same directives as above */ } 
+    }
   },
 }
 

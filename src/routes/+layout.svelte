@@ -1,35 +1,20 @@
 <script lang="ts">
-  // import { browser } from '$app/environment'
   import Footer from '$lib/components/Footer.svelte'
   import LightSwitch from '$lib/components/LightSwitch.svelte'
-  // import MobileNav from '$lib/components/MobileNav.svelte'
   import NavLink from '$lib/components/NavLink.svelte'
   import NavMenuMega from '$lib/components/NavMenuMega.svelte'
   import Logo from '$lib/components/logo/Logo.svelte'
-  // import Cart from '$lib/components/Cart.svelte'
-  // import ShopifySearch from '$lib/components/shopify/ShopifySearch.svelte'
-  // import { Toaster } from 'svelte-sonner'
-  // import { initiateCart, refreshCart } from '$lib/shopify'
-  // import { getCart, isCartOpen, noScroll } from '$lib/stores/store'
-  import { ModeWatcher } from 'mode-watcher'
   import { onMount } from 'svelte'
 
-  import '../app.css'
-  import { getCart } from '$lib/stores/cartStore'
   import Cart from '$lib/components/Cart.svelte'
-  import { Toaster } from 'svelte-sonner'
   import MobileNav from '$lib/components/MobileNav.svelte'
   import Search from '$lib/components/search/Search.svelte'
-  import { enhance } from '$app/forms'
-  import CookieBanner from '$lib/components/CookieBanner.svelte'
+  import { tryInitConcentBanner } from '$lib/shopify'
+  import { getCart } from '$lib/stores/cartStore'
+  import { Toaster } from 'svelte-sonner'
+  import '../app.css'
 
   export let data
-
-  const STOREFRONT_DOMAIN = 'argasso.se'
-  const CHECKOUT_DOMAIN = 'shop.argasso.se'
-  const SF_API_TOKEN = 'ff151810f966c1536e2d3b4fd437f38e' // Obtained in the previous section
-  const LOCALE = 'se_SV'
-  const COUNTRY = 'se'
 
   let headerHeight = 0
   let scrollY = 0
@@ -44,32 +29,10 @@
     prevY = headerEl.offsetTop
 
     // Shopify concent banner
-    const tryInit = () => {
-      if (!window.privacyBanner) return false
-
-      window.privacyBanner
-        .loadBanner({
-          storefrontAccessToken: SF_API_TOKEN,
-          checkoutRootDomain: CHECKOUT_DOMAIN,
-          storefrontRootDomain: STOREFRONT_DOMAIN,
-          // Optional
-          locale: LOCALE,
-          country: COUNTRY,
-        })
-        .then(() => {
-          console.log('Shopify cookie banner loaded')
-        })
-        .catch((err) => {
-          console.error('Error loading Shopify cookie banner', err)
-        })
-
-      return true
-    }
-
     // script is async/defer; it might not be ready on first call
-    if (!tryInit()) {
+    if (!tryInitConcentBanner()) {
       const interval = setInterval(() => {
-        if (tryInit()) clearInterval(interval)
+        if (tryInitConcentBanner()) clearInterval(interval)
       }, 200)
     }
   })
