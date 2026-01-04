@@ -17,8 +17,8 @@ const config = {
         mode: 'auto',
         directives: {
           'default-src': ['self'], // Fallback for most unspecified directives
-          'script-src': ['self', 'https://cdn.shopify.com'],
-          'style-src': ['self', 'unsafe-inline'],
+          'script-src': ['self', 'unsafe-inline', 'https://cdn.shopify.com'], // TODO: Remove unsafe-inline
+          'style-src': ['self', 'unsafe-inline'],  // TODO: Remove unsafe-inline
           'img-src': ['self', 'data:', 'https://cdn.shopify.com'],
           'font-src': ['self'],
           'object-src': ['none'], // Disallow plugins

@@ -13,7 +13,8 @@
   import { getCart } from '$lib/stores/cartStore'
   import { Toaster } from 'svelte-sonner'
   import '../app.css'
-
+  import { ModeWatcher } from 'mode-watcher'
+  
   export let data
 
   let headerHeight = 0
@@ -77,6 +78,4 @@
 
 <Toaster />
 
-<!-- <ModeWatcher /> -->
-
-<!-- <CookieBanner /> -->
+<ModeWatcher />
