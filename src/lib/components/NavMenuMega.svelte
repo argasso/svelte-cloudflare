@@ -61,22 +61,3 @@
   </div>
 {/each}
 
-<style>
-  dialog {
-    opacity: 0;
-    transform: translateY(10px);
-    transition:
-      display 300ms,
-      opacity 300ms,
-      all 300ms;
-    transition-behavior: allow-discrete;
-  }
-  dialog:popover-open {
-    opacity: 1;
-    transform: translateY(0);
-    @starting-style {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-  }
-</style>

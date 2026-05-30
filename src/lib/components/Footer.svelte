@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { MenuItem } from '$lib/menu'
+  import { showCookiePreferences } from '$lib/shopify'
+  import Send from 'lucide-svelte/icons/send'
   import Button from './Button.svelte'
   import Wave from './Wave.svelte'
-  import Send from 'lucide-svelte/icons/send'
 
   export let informationMenu: MenuItem | undefined
 </script>
@@ -43,6 +44,9 @@
           </li>
           <li class="mb-2">
             <a href="/integritetspolicy" class="mb-2">Integritetspolicy</a>
+          </li>
+          <li class="mb-2">
+            <button class="text-gray-100 mb-2 p-0 h-auto text-base underline" on:click={() => showCookiePreferences()}>Inställningar för Cookies</button>
           </li>
         </ul>
       </nav>

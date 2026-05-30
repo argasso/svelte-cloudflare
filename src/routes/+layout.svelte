@@ -1,27 +1,20 @@
 <script lang="ts">
-  // import { browser } from '$app/environment'
   import Footer from '$lib/components/Footer.svelte'
   import LightSwitch from '$lib/components/LightSwitch.svelte'
-  // import MobileNav from '$lib/components/MobileNav.svelte'
   import NavLink from '$lib/components/NavLink.svelte'
   import NavMenuMega from '$lib/components/NavMenuMega.svelte'
   import Logo from '$lib/components/logo/Logo.svelte'
-  // import Cart from '$lib/components/Cart.svelte'
-  // import ShopifySearch from '$lib/components/shopify/ShopifySearch.svelte'
-  // import { Toaster } from 'svelte-sonner'
-  // import { initiateCart, refreshCart } from '$lib/shopify'
-  // import { getCart, isCartOpen, noScroll } from '$lib/stores/store'
-  import { ModeWatcher } from 'mode-watcher'
   import { onMount } from 'svelte'
 
-  import '../app.css'
-  import { getCart } from '$lib/stores/cartStore'
   import Cart from '$lib/components/Cart.svelte'
-  import { Toaster } from 'svelte-sonner'
   import MobileNav from '$lib/components/MobileNav.svelte'
   import Search from '$lib/components/search/Search.svelte'
-  import { enhance } from '$app/forms'
-
+  import { tryInitConcentBanner } from '$lib/shopify'
+  import { getCart } from '$lib/stores/cartStore'
+  import { Toaster } from 'svelte-sonner'
+  import '../app.css'
+  import { ModeWatcher } from 'mode-watcher'
+  
   export let data
 
   let headerHeight = 0
@@ -35,6 +28,14 @@
     // For header scrolling
     headerHeight = headerEl.clientHeight
     prevY = headerEl.offsetTop
+
+    // Shopify concent banner
+    // script is async/defer; it might not be ready on first call
+    if (!tryInitConcentBanner()) {
+      const interval = setInterval(() => {
+        if (tryInitConcentBanner()) clearInterval(interval)
+      }, 200)
+    }
   })
 
   $: ({ menu, informationMenu } = data)
