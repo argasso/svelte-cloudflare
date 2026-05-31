@@ -8,7 +8,7 @@
   $: pageTitle = page.title?.value
   $: pageDescription = page.content?.value ? convertSchemaToText(page.content?.value) : undefined
   $: seoTitle = page?.seo?.title?.value
-  $: seoDescription = page?.seo?.title?.value
+  $: seoDescription = page?.seo?.description?.value
 </script>
 
 <Seo {pageTitle} {pageDescription} {seoTitle} {seoDescription} />
