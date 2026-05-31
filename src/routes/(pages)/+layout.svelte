@@ -45,7 +45,7 @@
           '@type': 'ItemList',
           name: title,
           url: $svelteKitPage.url.href,
-          numberOfItems: products.totalCount,
+          numberOfItems: products.totalCount || products.nodes.length,
           itemListElement: products.nodes.slice(0, 10).map((p, i) => ({
             '@type': 'ListItem',
             position: i + 1,
