@@ -44,6 +44,8 @@
 </script>
 
 <svelte:head>
+  <link rel="alternate" hreflang="sv-SE" href={$page.url.href} />
+  <link rel="alternate" hreflang="sv-FI" href={$page.url.href} />
   <link rel="alternate" hreflang="sv" href={$page.url.href} />
   <link rel="alternate" hreflang="x-default" href={$page.url.href} />
 </svelte:head>

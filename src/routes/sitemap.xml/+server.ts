@@ -69,7 +69,6 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 
   const staticUrls: SitemapUrl[] = [
     { url: origin, changefreq: 'weekly', priority: '1.0' },
-    { url: `${origin}/forfattare`, changefreq: 'weekly', priority: '0.8' },
   ]
 
   const categoryUrls: SitemapUrl[] = allMenuItems
