@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { page as svelteKitPage } from '$app/stores'
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte'
+  import JsonLd from '$lib/components/JsonLd.svelte'
   import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
   import LinkList from '$lib/components/LinkList.svelte'
   import ProductsGrid from '$lib/components/ProductsGrid.svelte'
@@ -21,7 +23,25 @@
     href: `#${handle}`,
     name: rubrik?.value ?? '',
   }))
+
+  $: breadcrumbSchema =
+    crumbs && crumbs.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: crumbs.map((crumb, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            name: crumb.name,
+            ...(crumb.href ? { item: `${$svelteKitPage.url.origin}${crumb.href}` } : {}),
+          })),
+        }
+      : null
 </script>
+
+{#if breadcrumbSchema}
+  <JsonLd schema={breadcrumbSchema} />
+{/if}
 
 {#if crumbs && crumbs.length > 0}
   <div class="container">

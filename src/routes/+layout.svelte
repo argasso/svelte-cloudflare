@@ -11,6 +11,7 @@
   import Search from '$lib/components/search/Search.svelte'
   import { tryInitConcentBanner } from '$lib/shopify'
   import { getCart } from '$lib/stores/cartStore'
+  import { page } from '$app/stores'
   import { Toaster } from 'svelte-sonner'
   import '../app.css'
   import { ModeWatcher } from 'mode-watcher'
@@ -41,6 +42,11 @@
   $: ({ menu, informationMenu } = data)
   $: menuItems = menu?.children ?? []
 </script>
+
+<svelte:head>
+  <link rel="alternate" hreflang="sv" href={$page.url.href} />
+  <link rel="alternate" hreflang="x-default" href={$page.url.href} />
+</svelte:head>
 
 <div data-vaul-drawer-wrapper class="flex h-dvh flex-col">
   <header

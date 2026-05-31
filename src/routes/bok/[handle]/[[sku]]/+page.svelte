@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { page } from '$app/stores'
   import { isNonNil, isType, publishMonth } from '$lib'
   import Authors from '$lib/components/Authors.svelte'
   import BookCard from '$lib/components/BookCard.svelte'
@@ -6,6 +7,7 @@
   import Breadcrumb from '$lib/components/Breadcrumbs.svelte'
   import Button from '$lib/components/Button.svelte'
   import BuyButton from '$lib/components/BuyButton.svelte'
+  import JsonLd from '$lib/components/JsonLd.svelte'
   import ShopifyImage from '$lib/components/image/ShopifyImage.svelte'
   import Price from '$lib/components/Price.svelte'
   import Seo from '$lib/components/Seo.svelte'
@@ -82,17 +84,70 @@
   function getPublishMonth(v: (typeof otherVariants)[number]) {
     return publishMonth(v.metafields.find((m) => m?.key === 'publish_month')?.value)
   }
+
+  $: authorNodes = product.authors?.references?.nodes.filter(isType('Metaobject')) ?? []
+  $: canonicalUrl = `${$page.url.origin}/bok/${product.handle}/${variant.sku}`
+  $: ogImageData = variant.image
+    ? {
+        url: variant.image.url,
+        width: variant.image.width ?? undefined,
+        height: variant.image.height ?? undefined,
+        alt: variant.image.altText ?? undefined,
+      }
+    : undefined
+
+  $: bookSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Book',
+    name: product.title,
+    ...(product.description ? { description: product.description } : {}),
+    ...(variant.barcode ? { isbn: variant.barcode } : {}),
+    ...(authorNodes.length > 0
+      ? { author: authorNodes.map((a) => ({ '@type': 'Person', name: a.name?.value })) }
+      : {}),
+    publisher: {
+      '@type': 'Organization',
+      name: 'Argasso bokförlag',
+      url: $page.url.origin,
+    },
+    inLanguage: 'sv',
+    ...(variant.image?.url ? { image: variant.image.url } : {}),
+    offers: {
+      '@type': 'Offer',
+      price: variant.price.amount,
+      priceCurrency: variant.price.currencyCode,
+      availability:
+        variant.discontinued?.value === 'true'
+          ? 'https://schema.org/Discontinued'
+          : 'https://schema.org/InStock',
+      url: canonicalUrl,
+      seller: { '@type': 'Organization', name: 'Argasso bokförlag' },
+    },
+  }
+
+  $: breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((crumb, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: crumb.name,
+      ...('href' in crumb && crumb.href ? { item: `${$page.url.origin}${crumb.href}` } : {}),
+    })),
+  }
 </script>
 
-<svelte:head>
-  <title>{product?.title}</title>
-</svelte:head>
+<JsonLd schema={bookSchema} />
+<JsonLd schema={breadcrumbSchema} />
 
 <Seo
   seoTitle={product?.seo.title}
   seoDescription={product?.seo.description}
   pageTitle={product?.title}
   pageDescription={product?.description}
+  ogImage={ogImageData}
+  ogType="book"
+  canonical={canonicalUrl}
 />
 
 <div class="container">

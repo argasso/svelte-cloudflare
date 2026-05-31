@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { page } from '$app/stores'
   import Hero from '$lib/components/Hero.svelte'
+  import JsonLd from '$lib/components/JsonLd.svelte'
   import Sections from '$lib/components/Sections.svelte'
   import Seo from '$lib/components/Seo.svelte'
   import Wave from '$lib/components/Wave.svelte'
@@ -7,17 +9,41 @@
 
   export let data
 
-  $: ({ page, menu } = data)
-  $: title = page?.title?.value
-  $: intro = page?.content?.value
-    ? convertSchemaToText(page?.content?.value)
+  $: ({ page: shopifyPage, menu } = data)
+  $: title = shopifyPage?.title?.value
+  $: intro = shopifyPage?.content?.value
+    ? convertSchemaToText(shopifyPage?.content?.value)
     : 'Lättare att läsa för barn och ungdomar'
-  // $: pageTop = page?.pageTop
+
+  $: organizationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Argasso bokförlag',
+    url: $page.url.origin,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${$page.url.origin}/favicon.svg`,
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'SE',
+    },
+  }
+
+  $: websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Argasso bokförlag',
+    url: $page.url.origin,
+  }
 </script>
 
+<JsonLd schema={organizationSchema} />
+<JsonLd schema={websiteSchema} />
+
 <Seo
-  seoTitle={page?.seo?.title?.value}
-  seoDescription={page?.seo?.description?.value}
+  seoTitle={shopifyPage?.seo?.title?.value}
+  seoDescription={shopifyPage?.seo?.description?.value}
   pageTitle={title}
   pageDescription={intro}
 />
@@ -29,6 +55,6 @@
 
 <Wave class="gradient" />
 
-{#if page}
-  <Sections {page} {menu} />
+{#if shopifyPage}
+  <Sections page={shopifyPage} {menu} />
 {/if}
