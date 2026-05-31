@@ -37,10 +37,31 @@
           })),
         }
       : null
+
+  $: itemListSchema =
+    products && products.nodes.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          name: title,
+          url: $svelteKitPage.url.href,
+          numberOfItems: products.totalCount,
+          itemListElement: products.nodes.slice(0, 10).map((p, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            url: `${$svelteKitPage.url.origin}/bok/${p.handle}`,
+            name: p.title,
+          })),
+        }
+      : null
 </script>
 
 {#if breadcrumbSchema}
   <JsonLd schema={breadcrumbSchema} />
+{/if}
+
+{#if itemListSchema}
+  <JsonLd schema={itemListSchema} />
 {/if}
 
 {#if crumbs && crumbs.length > 0}

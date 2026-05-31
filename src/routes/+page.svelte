@@ -19,6 +19,7 @@
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Argasso bokförlag',
+    description: 'Lättlästa böcker för barn och ungdomar – barnböcker, ungdomsböcker och faktaböcker från Argasso bokförlag i Örnsköldsvik.',
     url: $page.url.origin,
     logo: {
       '@type': 'ImageObject',
@@ -26,7 +27,16 @@
     },
     address: {
       '@type': 'PostalAddress',
+      streetAddress: 'Villagatan 34',
+      addressLocality: 'Örnsköldsvik',
+      postalCode: '891 37',
       addressCountry: 'SE',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+46-660-273640',
+      contactType: 'customer service',
+      availableLanguage: 'Swedish',
     },
   }
 
