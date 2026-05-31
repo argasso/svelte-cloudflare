@@ -44,7 +44,13 @@ const AUTHOR_SLUG_OVERRIDES: Record<string, string> = {
   'nike-bengtzelius-christian-axelsson': 'nike-bengtzelius-christian-axelsson',
 }
 
-function getLegacyRedirect(path: string): string | null {
+function getLegacyRedirect(rawPath: string): string | null {
+  let path: string
+  try {
+    path = decodeURIComponent(rawPath)
+  } catch {
+    path = rawPath
+  }
   const p = path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path
 
   // 1. Exact category / information page matches
