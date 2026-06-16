@@ -96,6 +96,34 @@
       }
     : undefined
 
+  $: offerSchema = (() => {
+    if (variant.discontinued?.value === 'true') {
+      return {
+        '@type': 'Offer',
+        price: variant.price.amount,
+        priceCurrency: variant.price.currencyCode,
+        availability: 'https://schema.org/Discontinued',
+        url: canonicalUrl,
+        seller: { '@type': 'Organization', name: 'Argasso bokförlag' },
+      }
+    }
+    if (
+      parseFloat(variant.price.amount) <= 0 ||
+      variant.bokfynd?.value === 'true' ||
+      physicalShopCategories.some((c) => variant.category?.value?.includes(c))
+    ) {
+      return null
+    }
+    return {
+      '@type': 'Offer',
+      price: variant.price.amount,
+      priceCurrency: variant.price.currencyCode,
+      availability: 'https://schema.org/InStock',
+      url: canonicalUrl,
+      seller: { '@type': 'Organization', name: 'Argasso bokförlag' },
+    }
+  })()
+
   $: bookSchema = {
     '@context': 'https://schema.org',
     '@type': 'Book',
@@ -112,17 +140,7 @@
     },
     inLanguage: 'sv',
     ...(variant.image?.url ? { image: variant.image.url } : {}),
-    offers: {
-      '@type': 'Offer',
-      price: variant.price.amount,
-      priceCurrency: variant.price.currencyCode,
-      availability:
-        variant.discontinued?.value === 'true'
-          ? 'https://schema.org/Discontinued'
-          : 'https://schema.org/InStock',
-      url: canonicalUrl,
-      seller: { '@type': 'Organization', name: 'Argasso bokförlag' },
-    },
+    ...(offerSchema ? { offers: offerSchema } : {}),
   }
 
   $: breadcrumbSchema = {
