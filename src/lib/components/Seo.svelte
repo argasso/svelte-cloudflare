@@ -11,7 +11,9 @@
   export let ogType: 'website' | 'article' | 'book' = 'website'
   export let canonical: string | undefined = undefined
 
-  $: title = seoTitle ?? pageTitle ?? 'Argasso'
+  const BRAND = 'Argasso bokförlag'
+  $: title = seoTitle ?? pageTitle ?? BRAND
+  $: fullTitle = title === BRAND ? BRAND : `${title} | ${BRAND}`
   $: description = seoDescription ?? pageDescription ?? undefined
   $: canonicalUrl = canonical ?? $page.url.href
 </script>
@@ -22,7 +24,7 @@
   titleTemplate="%s | Argasso bokförlag"
   canonical={canonicalUrl}
   openGraph={{
-    title,
+    title: fullTitle,
     description: description ?? '',
     locale: 'sv_SE',
     type: ogType,
@@ -31,7 +33,7 @@
   }}
   twitter={{
     cardType: ogImage ? 'summary_large_image' : 'summary',
-    title,
+    title: fullTitle,
     description: description ?? '',
     ...(ogImage ? { image: ogImage.url, imageAlt: ogImage.alt ?? '' } : {}),
   }}

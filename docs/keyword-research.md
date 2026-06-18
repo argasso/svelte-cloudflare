@@ -62,25 +62,27 @@ Only 40 monthly searches for "Argasso". Growth comes from organic discovery, not
 
 ## Recommended Shopify SEO Updates
 
+> **Note:** The storefront automatically appends `| Argasso bokförlag` to every SEO title (and to `og:title` / `twitter:title`). Do **not** include `| Argasso bokförlag` or `| Argasso` in the SEO title fields — it will be added for you.
+
 ### Page: Startsida (home)
-**Current title issue:** "Välkommen till Argasso bokförlag" → double brand in `<title>`
-**Recommended SEO title:** `Lättlästa böcker för barn och ungdomar | Argasso bokförlag`
+**Current title issue:** "Välkommen till Argasso bokförlag" → double brand in `<title>` ✅ Fixed
+**Recommended SEO title:** `Lättlästa böcker för barn och ungdomar`
 **Recommended meta description:** `Argasso bokförlag erbjuder lättlästa böcker för barn och ungdomar — barnböcker, ungdomsböcker och faktaböcker som gör läsning rolig.`
 
 ### Page: Böcker → Barnböcker (`/bocker/barnbocker`)
-**Recommended SEO title:** `Lättlästa barnböcker | Barnböcker för barn | Argasso`
+**Recommended SEO title:** `Lättlästa barnböcker för barn`
 **Recommended meta description:** `Utforska våra lättlästa barnböcker – perfekta för barn som börjar läsa eller behöver extra lässtöd. Kapitelböcker, bilderböcker och mer.`
 
 ### Page: Böcker → Ungdomsböcker (`/bocker/ungdomsbocker`)
-**Recommended SEO title:** `Lättlästa ungdomsböcker | Böcker för unga | Argasso`
+**Recommended SEO title:** `Lättlästa ungdomsböcker`
 **Recommended meta description:** `Lättlästa ungdomsböcker med spännande historier – grafiska romaner, thrillers och mer. Böcker för ungdomar som uppskattar lättillgängliga texter.`
 
 ### Page: Grafiska romaner (`/bocker/ungdomsbocker/grafiska-romaner`)
-**Recommended SEO title:** `Grafiska romaner och seriealbum | Argasso bokförlag`
+**Recommended SEO title:** `Grafiska romaner och seriealbum`
 **Recommended meta description:** `Grafiska romaner och seriealbum för barn och unga. Klassiska berättelser i bildformat – spännande lättläst litteratur från Argasso.`
 
 ### Page: Faktaböcker (`/bocker/faktabocker`)
-**Recommended SEO title:** `Faktaböcker för barn och unga | Argasso`
+**Recommended SEO title:** `Faktaböcker för barn och unga`
 **Recommended meta description:** `Lättlästa faktaböcker om djur, historia, vetenskap och mer. Spännande faktaböcker för barn och ungdomar från Argasso bokförlag.`
 
 ---
@@ -95,7 +97,7 @@ Only 40 monthly searches for "Argasso". Growth comes from organic discovery, not
 
 ## Next Steps
 
-1. **Apply Shopify SEO titles/descriptions** above (admin → Pages/Collections → SEO section)
+1. ✅ **Apply Shopify SEO titles/descriptions** — use fields above; brand suffix added automatically
 2. **Investigate the "lättläst text för barn" GSC anomaly** — which URL is triggering position 3 with no clicks?
-3. **Fix the double brand in home page title** — change Shopify `startsida` page title to `Lättlästa böcker för barn och ungdomar`
+3. ✅ **Fix the double brand in home page title** — Shopify `startsida` page title updated
 4. **Upgrade DataForSEO plan** to access keyword_suggestions and related_keywords endpoints for deeper long-tail research
