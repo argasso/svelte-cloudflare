@@ -70,7 +70,7 @@ Only 40 monthly searches for "Argasso". Growth comes from organic discovery, not
 **Recommended meta description:** `Argasso bokförlag erbjuder lättlästa böcker för barn och ungdomar — barnböcker, ungdomsböcker och faktaböcker som gör läsning rolig.`
 
 ### Page: Böcker → Barnböcker (`/bocker/barnbocker`)
-**Recommended SEO title:** `Lättlästa barnböcker för barn`
+**Recommended SEO title:** `Lättlästa barnböcker | Barnböcker för barn`
 **Recommended meta description:** `Utforska våra lättlästa barnböcker – perfekta för barn som börjar läsa eller behöver extra lässtöd. Kapitelböcker, bilderböcker och mer.`
 
 ### Page: Böcker → Ungdomsböcker (`/bocker/ungdomsbocker`)
