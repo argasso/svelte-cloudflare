@@ -74,7 +74,7 @@ Only 40 monthly searches for "Argasso". Growth comes from organic discovery, not
 **Recommended meta description:** `Utforska våra lättlästa barnböcker – perfekta för barn som börjar läsa eller behöver extra lässtöd. Kapitelböcker, bilderböcker och mer.`
 
 ### Page: Böcker → Ungdomsböcker (`/bocker/ungdomsbocker`)
-**Recommended SEO title:** `Lättlästa ungdomsböcker`
+**Recommended SEO title:** `Lättlästa ungdomsböcker | Böcker för unga`
 **Recommended meta description:** `Lättlästa ungdomsböcker med spännande historier – grafiska romaner, thrillers och mer. Böcker för ungdomar som uppskattar lättillgängliga texter.`
 
 ### Page: Grafiska romaner (`/bocker/ungdomsbocker/grafiska-romaner`)
