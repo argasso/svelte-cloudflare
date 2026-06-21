@@ -43,6 +43,12 @@
             <a href="/forsaljningsvillkor" class="mb-2">Försäljnings- och leveransvilkor</a>
           </li>
           <li class="mb-2">
+            <a href="/angra-kop" class="mb-2">Ångra köp (ångerrätt)</a>
+          </li>
+          <li class="mb-2">
+            <a href="https://shopify.com/72704164175/account" class="mb-2">Returer (självbetjäning)</a>
+          </li>
+          <li class="mb-2">
             <a href="/integritetspolicy" class="mb-2">Integritetspolicy</a>
           </li>
           <li class="mb-2">

@@ -7,6 +7,7 @@ declare global {
         ARGASSO_FILES: R2Bucket
         TURNSTILE_SECRET_KEY: string
         TURNSTILE_SITE_KEY: string
+        RESEND_API_KEY: string
         PUBLIC_SHOPIFY_STOREFRONT_URL: string
         PUBLIC_SHOPIFY_STOREFRONT_TOKEN: string
       }
