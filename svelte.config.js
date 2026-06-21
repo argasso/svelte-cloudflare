@@ -17,7 +17,7 @@ const config = {
         mode: 'auto',
         directives: {
           'default-src': ['self'], // Fallback for most unspecified directives
-          'script-src': ['self', 'unsafe-inline', 'https://cdn.shopify.com'], // TODO: Remove unsafe-inline
+          'script-src': ['self', 'unsafe-inline', 'https://cdn.shopify.com', 'https://challenges.cloudflare.com'], // TODO: Remove unsafe-inline
           'style-src': ['self', 'unsafe-inline'],  // TODO: Remove unsafe-inline
           'img-src': ['self', 'data:', 'https://cdn.shopify.com'],
           'font-src': ['self'],
@@ -25,6 +25,7 @@ const config = {
           'base-uri': ['none'],   // Disallow dynamic <base> tags
           'form-action': ['self'], // Restrict form submissions to same origin
           'frame-ancestors': ['none'], // Prevent app from being embedded in iframes
+          'frame-src': ['https://challenges.cloudflare.com'], // Turnstile iframe
           'connect-src': ['self', 'https://shop.argasso.se']
         },
         // Use reportOnly initially to monitor violations
