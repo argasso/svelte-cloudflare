@@ -1,6 +1,5 @@
 <script lang="ts">
   import { enhance } from '$app/forms'
-  import { mode } from 'mode-watcher'
   import { Turnstile } from 'svelte-turnstile'
   import Button from '$lib/components/Button.svelte'
   import Section from '$lib/components/Section.svelte'
@@ -10,12 +9,7 @@
   export let data
   export let form
 
-  $: siteKey = data.TURNSTILE_SITE_KEY ?? '2x00000000000000000000AB'
-  let disabled = true
-
-  function activate() {
-    disabled = false
-  }
+  $: siteKey = data.TURNSTILE_SITE_KEY ?? '1x00000000000000000000AA'
 </script>
 
 <svelte:head>
@@ -142,7 +136,7 @@
 
         <div>
           <span class="mb-1 block text-sm font-medium">Verifiera att du inte är en robot</span>
-          <Turnstile {siteKey} on:callback={activate} theme={$mode} language="sv" />
+          <Turnstile {siteKey} theme="auto" language="sv" />
           <noscript>
             <div class="mt-2 flex items-center gap-2 rounded-lg bg-secondary p-3 text-sm">
               <CircleAlert class="h-4 w-4 shrink-0" />
@@ -152,7 +146,7 @@
         </div>
 
         <div>
-          <Button type="submit" size="lg" {disabled}>Bekräfta ångerrätt</Button>
+          <Button type="submit" size="lg">Bekräfta ångerrätt</Button>
           <p class="mt-3 max-w-prose text-xs text-muted-foreground">
             Genom att klicka på "Bekräfta ångerrätt" förklarar du att du frånträder ditt
             köpeavtal. En automatisk bekräftelse skickas till din e-post direkt efter inskickning.
