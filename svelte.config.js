@@ -26,7 +26,7 @@ const config = {
           'form-action': ['self'], // Restrict form submissions to same origin
           'frame-ancestors': ['none'], // Prevent app from being embedded in iframes
           'frame-src': ['self', 'https://challenges.cloudflare.com'], // Turnstile iframe + same-origin
-          'connect-src': ['self', 'https://shop.argasso.se']
+          'connect-src': ['self', 'https://shop.argasso.se', 'https://monorail-edge.shopifysvc.com']
         },
         // Use reportOnly initially to monitor violations
         // reportOnly: { /* same directives as above */ } 
