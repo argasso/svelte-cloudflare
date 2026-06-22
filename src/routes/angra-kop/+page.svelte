@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms'
+  import { mode } from 'mode-watcher'
   import { Turnstile } from 'svelte-turnstile'
   import Button from '$lib/components/Button.svelte'
   import Section from '$lib/components/Section.svelte'
@@ -136,7 +137,7 @@
 
         <div>
           <span class="mb-1 block text-sm font-medium">Verifiera att du inte är en robot</span>
-          <Turnstile {siteKey} theme="auto" language="sv" />
+          <Turnstile {siteKey} theme={$mode} language="sv" />
           <noscript>
             <div class="mt-2 flex items-center gap-2 rounded-lg bg-secondary p-3 text-sm">
               <CircleAlert class="h-4 w-4 shrink-0" />
