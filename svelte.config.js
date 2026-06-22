@@ -25,7 +25,7 @@ const config = {
           'base-uri': ['none'],   // Disallow dynamic <base> tags
           'form-action': ['self'], // Restrict form submissions to same origin
           'frame-ancestors': ['none'], // Prevent app from being embedded in iframes
-          'frame-src': ['https://challenges.cloudflare.com'], // Turnstile iframe
+          'frame-src': ['self', 'https://challenges.cloudflare.com'], // Turnstile iframe + same-origin
           'connect-src': ['self', 'https://shop.argasso.se']
         },
         // Use reportOnly initially to monitor violations
