@@ -273,8 +273,8 @@
   </section>
 </div>
 
-<div class="bg-muted">
-  {#if recommendations && recommendations.length > 0}
+{#if recommendations && recommendations.length > 0}
+  <div class="bg-muted">
     <section class="container mt-10 pt-10">
       <h3>Liknande titlar</h3>
       <div
@@ -287,5 +287,5 @@
         {/each}
       </div>
     </section>
-  {/if}
-</div>
+  </div>
+{/if}
