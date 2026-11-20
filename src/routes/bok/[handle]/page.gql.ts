@@ -6,7 +6,7 @@ import { graphql } from '../../../graphql'
 export const productQuery = graphql(
   `
     query Product($handle: String!, $metafieldIds: [HasMetafieldsIdentifier!]!) {
-      productRecommendations(productHandle: $handle) {
+      productRecommendations(productHandle: $handle, intent: COMPLEMENTARY) {
         id
         title
         handle
