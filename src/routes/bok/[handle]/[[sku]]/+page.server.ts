@@ -1,6 +1,8 @@
 import { error } from '@sveltejs/kit'
 import { client } from '../../../../client'
 import { productQuery } from '../page.gql'
+import { productsQuery } from '$lib/components/ProductsGrid.gql'
+import { isType, isNonNil } from '$lib'
 
 const metafields = [
   book('category', 'Kategori'),
@@ -50,7 +52,36 @@ export async function load({ fetch, url, params }) {
     error(404, 'Hittar inte boken')
   }
 
-  const recommendations = response.data.productRecommendations?.slice(0, 6)
+  const recommendedBooks = response.data.productRecommendations ?? []
+
+  const filters = response.data.product.authors?.references?.nodes
+    .filter(isType('Metaobject'))
+    .filter(isNonNil)
+    .map((a) => ({
+      productMetafield: {
+        namespace: 'custom',
+        key: 'authors',
+        value: a.id,
+      },
+    }))
+
+  const productsResponse = await client.query(productsQuery, { filters, first: 30 }, { fetch })
+
+  if (productsResponse.error) {
+    console.error('ProductsStore fetch failed', productsResponse.error)
+    error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
+  }
+
+  const authorBooks = productsResponse.data?.collection?.products.nodes ?? []
+
+  const seen = new Set([handle])
+  const recommendations = [...recommendedBooks, ...authorBooks]
+    .filter((book) => {
+      if (seen.has(book.handle)) return false
+      seen.add(book.handle)
+      return true
+    })
+    .slice(0, 6)
 
   const { variants, ...product } = response.data.product
   const variant = sku ? variants?.nodes.find((v) => v.sku == sku) : variants?.nodes.at(0)
