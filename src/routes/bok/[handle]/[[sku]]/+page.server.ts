@@ -1,8 +1,12 @@
 import { error } from '@sveltejs/kit'
 import { client } from '../../../../client'
 import { productQuery } from '../page.gql'
-import { productsQuery } from '$lib/components/ProductsGrid.gql'
+import { productsQuery, type TProductsServerResult } from '$lib/components/ProductsGrid.gql'
 import { isType, isNonNil } from '$lib'
+import { findMenuItemById, getPathToItem } from '$lib/menu'
+import type { VariablesOf } from '../../../../graphql'
+
+type ProductFilters = VariablesOf<typeof productsQuery>['filters']
 
 const metafields = [
   book('category', 'Kategori'),
@@ -36,7 +40,16 @@ function audio(key: string, label: string) {
 
 const metafieldIds = metafields.map(({ key, namespace }) => ({ key, namespace }))
 
-export async function load({ fetch, url, params }) {
+async function booksByFilter(fetch: typeof globalThis.fetch, filters: ProductFilters) {
+  const response = await client.query(productsQuery, { filters, first: 30 }, { fetch })
+  if (response.error) {
+    console.error('ProductsStore fetch failed', response.error)
+    error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
+  }
+  return response.data?.collection?.products.nodes ?? []
+}
+
+export async function load({ fetch, url, params, parent }) {
   const { handle, sku } = params
   const variables = {
     handle,
@@ -54,28 +67,47 @@ export async function load({ fetch, url, params }) {
 
   const recommendedBooks = response.data.productRecommendations ?? []
 
-  const filters = response.data.product.authors?.references?.nodes
-    .filter(isType('Metaobject'))
+  const authorIds =
+    response.data.product.authors?.references?.nodes
+      .filter(isType('Metaobject'))
+      .filter(isNonNil)
+      .map((a) => a.id) ?? []
+
+  const seriesTag = response.data.product.tags.find((tag) => tag.startsWith('series:'))
+
+  const defaultVariant = sku
+    ? response.data.product.variants.nodes.find((v) => v.sku == sku)
+    : response.data.product.variants.nodes.at(0)
+
+  const { menu } = await parent()
+  const categoryIds = defaultVariant?.category?.value
+    ? (JSON.parse(defaultVariant.category.value) as string[])
+    : []
+  const leafCategoryId = categoryIds
+    .map((id) => findMenuItemById(menu, id))
     .filter(isNonNil)
-    .map((a) => ({
-      productMetafield: {
-        namespace: 'custom',
-        key: 'authors',
-        value: a.id,
-      },
-    }))
+    .toSorted((a, b) => getPathToItem(b).length - getPathToItem(a).length)
+    .at(0)?.id
 
-  const productsResponse = await client.query(productsQuery, { filters, first: 30 }, { fetch })
-
-  if (productsResponse.error) {
-    console.error('ProductsStore fetch failed', productsResponse.error)
-    error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
-  }
-
-  const authorBooks = productsResponse.data?.collection?.products.nodes ?? []
+  const [seriesBooks, authorBooks, categoryBooks] = await Promise.all([
+    seriesTag ? booksByFilter(fetch, [{ tag: seriesTag }]) : ([] as TProductsServerResult['nodes']),
+    authorIds.length > 0
+      ? booksByFilter(
+          fetch,
+          authorIds.map((id) => ({
+            productMetafield: { namespace: 'custom', key: 'authors', value: id },
+          })),
+        )
+      : ([] as TProductsServerResult['nodes']),
+    leafCategoryId
+      ? booksByFilter(fetch, [
+          { variantMetafield: { namespace: 'book', key: 'category', value: leafCategoryId } },
+        ])
+      : ([] as TProductsServerResult['nodes']),
+  ])
 
   const seen = new Set([handle])
-  const recommendations = [...recommendedBooks, ...authorBooks]
+  const recommendations = [...recommendedBooks, ...seriesBooks, ...authorBooks, ...categoryBooks]
     .filter((book) => {
       if (seen.has(book.handle)) return false
       seen.add(book.handle)
