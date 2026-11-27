@@ -1,11 +1,8 @@
 import { error } from '@sveltejs/kit'
 import { client } from '../../../../client'
-import { productQuery } from '../page.gql'
-import { productsQuery, type TProductsServerResult } from '$lib/components/ProductsGrid.gql'
+import { productQuery, relatedBooksQuery } from '../page.gql'
+import { productsQuery } from '$lib/components/ProductsGrid.gql'
 import { isType, isNonNil } from '$lib'
-import type { VariablesOf } from '../../../../graphql'
-
-type ProductFilters = VariablesOf<typeof productsQuery>['filters']
 
 const metafields = [
   book('category', 'Kategori'),
@@ -39,8 +36,40 @@ function audio(key: string, label: string) {
 
 const metafieldIds = metafields.map(({ key, namespace }) => ({ key, namespace }))
 
-async function booksByFilter(fetch: typeof globalThis.fetch, filters: ProductFilters) {
-  const response = await client.query(productsQuery, { filters, first: 30 }, { fetch })
+function orQuery(terms: string[]) {
+  return terms.map((term) => `(${term})`).join(' OR ')
+}
+
+// Searches the whole catalog, not just the "frontpage" collection, since a
+// series can include books that aren't in it yet (e.g. unreleased titles).
+async function booksBySeriesTags(fetch: typeof globalThis.fetch, tags: string[]) {
+  if (tags.length === 0) return []
+  const response = await client.query(
+    relatedBooksQuery,
+    { query: orQuery(tags.map((tag) => `tag:"${tag}"`)), first: 30 },
+    { fetch },
+  )
+  if (response.error) {
+    console.error('RelatedBooks fetch failed', response.error)
+    error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
+  }
+  return response.data?.products.nodes ?? []
+}
+
+// The Storefront API's search `query` syntax can't filter on
+// metaobject-reference metafields, so author matching uses the collection
+// filter API instead (scoped to "frontpage", same as elsewhere on the site).
+// Each author is queried separately since Shopify ANDs entries within a
+// single `filters` array.
+async function booksByAuthor(fetch: typeof globalThis.fetch, authorId: string) {
+  const response = await client.query(
+    productsQuery,
+    {
+      filters: [{ productMetafield: { namespace: 'custom', key: 'authors', value: authorId } }],
+      first: 30,
+    },
+    { fetch },
+  )
   if (response.error) {
     console.error('ProductsStore fetch failed', response.error)
     error(500, 'Oj, någonting gick snett när vi försökte ladda sidan')
@@ -74,22 +103,11 @@ export async function load({ fetch, url, params }) {
 
   const seriesTags = response.data.product.tags.filter((tag) => tag.startsWith('series:'))
 
-  const [seriesBooks, authorBooks] = await Promise.all([
-    seriesTags.length > 0
-      ? booksByFilter(
-          fetch,
-          seriesTags.map((tag) => ({ tag })),
-        )
-      : ([] as TProductsServerResult['nodes']),
-    authorIds.length > 0
-      ? booksByFilter(
-          fetch,
-          authorIds.map((id) => ({
-            productMetafield: { namespace: 'custom', key: 'authors', value: id },
-          })),
-        )
-      : ([] as TProductsServerResult['nodes']),
+  const [seriesBooks, authorBookLists] = await Promise.all([
+    booksBySeriesTags(fetch, seriesTags),
+    Promise.all(authorIds.map((id) => booksByAuthor(fetch, id))),
   ])
+  const authorBooks = authorBookLists.flat()
 
   const seen = new Set([handle])
   const dedupe = (book: { handle: string }) => {

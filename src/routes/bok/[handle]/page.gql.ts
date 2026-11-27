@@ -3,6 +3,49 @@ import { priceFragment } from '$lib/components/Price.graphql'
 import { productSeoFragment } from '$lib/components/Seo.graphql'
 import { graphql } from '../../../graphql'
 
+// Searches the whole catalog (not just the "frontpage" collection), since
+// recommendation matches (series/author) may include products that aren't
+// in that collection, e.g. upcoming unreleased books.
+export const relatedBooksQuery = graphql(
+  `
+    query RelatedBooks($query: String!, $first: Int!) {
+      products(first: $first, query: $query) {
+        nodes {
+          id
+          title
+          handle
+          images(first: 1) {
+            nodes {
+              url
+              altText
+              height
+              width
+            }
+          }
+          ...AuthorsFragment
+          variants(first: 3) {
+            nodes {
+              id
+              price {
+                ...PriceFragment
+              }
+              discontinued: metafield(namespace: "book", key: "discontinued") {
+                value
+              }
+              binding: metafield(namespace: "book", key: "binding") {
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  `,
+  [authorsFragment, priceFragment],
+)
+
+export type TRelatedBooksQuery = typeof relatedBooksQuery
+
 export const productQuery = graphql(
   `
     query Product($handle: String!, $metafieldIds: [HasMetafieldsIdentifier!]!) {
