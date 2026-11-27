@@ -92,13 +92,16 @@ export async function load({ fetch, url, params }) {
   ])
 
   const seen = new Set([handle])
-  const recommendations = [...recommendedBooks, ...seriesBooks, ...authorBooks]
-    .filter((book) => {
-      if (seen.has(book.handle)) return false
-      seen.add(book.handle)
-      return true
-    })
-    .slice(0, 6)
+  const dedupe = (book: { handle: string }) => {
+    if (seen.has(book.handle)) return false
+    seen.add(book.handle)
+    return true
+  }
+
+  const primaryBooks = [...recommendedBooks, ...seriesBooks].filter(dedupe)
+  const authorMatches = authorBooks.filter(dedupe).slice(0, 6)
+
+  const recommendations = [...primaryBooks, ...authorMatches]
 
   const { variants, ...product } = response.data.product
   const variant = sku ? variants?.nodes.find((v) => v.sku == sku) : variants?.nodes.at(0)
