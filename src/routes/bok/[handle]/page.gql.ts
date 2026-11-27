@@ -38,6 +38,7 @@ export const productQuery = graphql(
         id
         title
         handle
+        tags
         description
         descriptionHtml
         options {
