@@ -72,10 +72,15 @@ export async function load({ fetch, url, params }) {
       .filter(isNonNil)
       .map((a) => a.id) ?? []
 
-  const seriesTag = response.data.product.tags.find((tag) => tag.startsWith('series:'))
+  const seriesTags = response.data.product.tags.filter((tag) => tag.startsWith('series:'))
 
   const [seriesBooks, authorBooks] = await Promise.all([
-    seriesTag ? booksByFilter(fetch, [{ tag: seriesTag }]) : ([] as TProductsServerResult['nodes']),
+    seriesTags.length > 0
+      ? booksByFilter(
+          fetch,
+          seriesTags.map((tag) => ({ tag })),
+        )
+      : ([] as TProductsServerResult['nodes']),
     authorIds.length > 0
       ? booksByFilter(
           fetch,
